@@ -1,0 +1,90 @@
+:root {
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
+	--theme: #0f0f0f;
+	--dark: #0a0a0a;
+	--chain-red: #ec1b24;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: url('../assets/img/bgBox.png') #000000;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-space-g);
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+button {
+	cursor: pointer;
+}
+
+button:disabled {
+	cursor: not-allowed !important;
+}
+
+input:-internal-autofill-selected,
+input:-webkit-autofill,
+input:autofill {
+	background-color: transparent !important;
+	background: transparent !important;
+	appearance: initial !important;
+	background-image: none !important;
+	color: #ec1b24 !important;
+}
+
+::-webkit-scrollbar {
+	width: 5px !important;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #000;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #ec1b241a;
+	cursor: pointer;
+	border-radius: 5px;
+	border: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #038af1;
+}
+
+.toolTip:not(.toolTip:disabled):hover::after {
+	content: attr(data-title);
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #333;
+	color: #fff;
+	font-family: var(--font-inter);
+	padding: 5px 10px;
+	border-radius: 5px;
+	white-space: nowrap;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	z-index: 10;
+	opacity: 1;
+	display: inline-block;
+	transition: opacity 0.3s;
+}
+
+.toolTip::after {
+	display: none;
+	opacity: 0;
+	pointer-events: none;
+}
