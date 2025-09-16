@@ -5,21 +5,12 @@ import s from '@/styles'
 import p from './Homepage.module.css'
 import t from './Tournament.module.css'
 import Container from './Container'
-
-function TournamentCard({ tournament: x }) {
-	return (
-		<section
-			className={cf(
-				s.wMax,
-				s.flex,
-				s.flexStart,
-				s.p_relative,
-				p.tournamentCard
-			)}
-		></section>
-	)
-}
+import TournamentCard from '../TournamentCard';
 
 export default function Tournament() {
-	return <Container tag='Tournament'></Container>
+	return <Container tag='Tournament'>
+		<TournamentCard tournament={1} />
+		<TournamentCard tournament={2} />
+		<TournamentCard tournament={3} />
+	</Container>
 }

@@ -9,7 +9,7 @@ export default function Container({ tag, children }) {
 		<section className={cf(s.wMax, s.flex, s.flexStart, p.section)}>
 			<div className={cf(s.wMax, s.flex, s.flexRight, p.labelContainer)}>
 				<h2 className={cf(s.h2, p.label)}>{tag}</h2>
-				<div className={cf(g.line)}></div>
+				<div className={cf(p.line)}></div>
 			</div>
 			<div className={cf(s.wMax, s.flex, s.flexStart, p.content)}>
 				{children}
