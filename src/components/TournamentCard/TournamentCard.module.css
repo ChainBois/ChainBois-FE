@@ -1,4 +1,4 @@
-:root {
+.card__percent {
 	--primary-light: rgba(228, 181, 107, 1);
 	--primary: #00abdf;
 	--primary-dark: rgba(235, 164, 53, 1);
@@ -7,9 +7,6 @@
 	--greyLight-2: #d5e0f3;
 	--greyLight-3: #c1d9f0;
 	--greyDark: #646b8c;
-}
-
-.card__percent {
 	position: absolute;
 	top: 20px;
 	left: 30px;
