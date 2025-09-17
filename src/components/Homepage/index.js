@@ -1,3 +1,4 @@
 export { default as Hero } from './Hero'
 export { default as Gameplay } from './Gameplay'
 export { default as Tournament } from './Tournament'
+export { default as Roadmap } from './Roadmap'

@@ -1,5 +1,6 @@
 .section {
 	overflow: hidden;
+	margin-bottom: 100px;
 }
 
 .labelContainer {
@@ -117,6 +118,8 @@
 	background: linear-gradient(
 		to bottom,
 		rgba(236, 27, 36, 1),
+		rgba(95, 24, 58, 1),
+		rgba(50, 18, 34, 1),
 		rgba(13, 13, 13, 1),
 		rgba(50, 18, 34, 1),
 		rgba(95, 24, 58, 1),

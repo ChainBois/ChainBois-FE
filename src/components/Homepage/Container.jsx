@@ -8,8 +8,8 @@ export default function Container({ tag, children }) {
 	return (
 		<section className={cf(s.wMax, s.flex, s.flexStart, p.section)}>
 			<div className={cf(s.wMax, s.flex, s.flexRight, p.labelContainer)}>
-				<h2 className={cf(s.h2, p.label)}>{tag}</h2>
-				<div className={cf(p.line)}></div>
+				<h2 className={cf(p.label)}>{tag}</h2>
+				<div className={cf(s.flexOne, p.line)}></div>
 			</div>
 			<div className={cf(s.wMax, s.flex, s.flexStart, p.content)}>
 				{children}

@@ -1,7 +1,11 @@
 'use client'
 
-import { ThirdwebProviders } from '@/context'
+import { ThirdwebProviders, MainContextProvider } from '@/context'
 
 export default function ContextWrapper({ children }) {
-	return <ThirdwebProviders>{children}</ThirdwebProviders>
+	return (
+		<ThirdwebProviders>
+			<MainContextProvider>{children}</MainContextProvider>
+		</ThirdwebProviders>
+	)
 }

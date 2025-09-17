@@ -1,0 +1,73 @@
+/* Tournament */
+.cardsWrapper {
+	padding-left: 200px;
+	overflow: hidden;
+	gap: 35px 0;
+	position: relative;
+	margin-bottom: 100px;
+}
+
+.parentContainer {
+	overflow: hidden;
+	position: relative;
+	width: 100%; /* Allow full width for horizontal scrolling */
+}
+
+.cards {
+	height: 675px; /* Fixed height matching tournament card height */
+	gap: 0 90px; /* Horizontal gap between tournament cards */
+}
+
+.carousal_navigation {
+	gap: 24px;
+	align-self: baseline;
+	margin: 0;
+	margin-left: calc(calc(calc(1202px)) - 184px);
+}
+
+.pagination_btn {
+	display: flex;
+	width: 80px;
+	height: 80px;
+	padding: 25px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	border-radius: 50%;
+	border: 1px solid #ec1b24;
+	background: rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.pagination_btn:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.pagination_btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.pagination_btn:disabled:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.next {
+	background: #ec1b24;
+}
+
+.next:hover {
+	background: #d91821;
+}
+
+.next:disabled {
+	background: #ec1b24;
+	opacity: 0.5;
+}
+
+.icon {
+	width: 30px;
+	height: 30px;
+	color: #fff;
+}

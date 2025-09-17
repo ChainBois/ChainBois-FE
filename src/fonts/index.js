@@ -1,4 +1,4 @@
-import { Inter, Space_Grotesk, Manrope } from 'next/font/google'
+import { Inter, Space_Grotesk, Manrope  } from 'next/font/google'
 
 const manrope = Manrope({
 	subsets: ['latin'],

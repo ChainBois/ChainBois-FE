@@ -9,6 +9,8 @@ import { FaRegFlag } from 'react-icons/fa6'
 import { HiOutlineTrophy } from 'react-icons/hi2'
 import { useCallback, useRef, useState, useEffect } from 'react'
 import BorderedButton from '../BorderedButton'
+import Ruins from '@/assets/img/Ruins.png'
+import Image from 'next/image'
 
 function TournamentStat({ tag, value, icon }) {
 	return (
@@ -45,25 +47,15 @@ function TournamentStat({ tag, value, icon }) {
 
 export default function TournamentCard() {
 	const circle = useRef(null)
-	const [progress, setProgress] = useState(65)
+	const [progress, setProgress] = useState(0)
+	const [targetProgress] = useState(65)
 
 	const circlePercent = useCallback(() => {
 		if (!circle) return
-		let change = 565.49 - (565.49 * progress) / 100
+		const circumference = Math.PI * (103 - 18)
+		let change = circumference - (circumference * progress) / 100
 		circle.current.style.strokeDashoffset = change
 	}, [progress])
-
-	// const isNumeric = useCallback(
-	// 	function (event) {
-	// 		if (!/^\d$/.test(event.key)) {
-	// 			return false
-	// 		}
-	// 		if (event.keyCode === 13) {
-	// 			changePercent()
-	// 		}
-	// 	},
-	// 	[]
-	// )
 
 	const changePercent = useCallback(
 		function () {
@@ -81,6 +73,14 @@ export default function TournamentCard() {
 		changePercent()
 	}, [changePercent])
 
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setProgress(targetProgress)
+		}, 100)
+
+		return () => clearTimeout(timer)
+	}, [targetProgress])
+
 	return (
 		<article
 			className={cf(
@@ -91,6 +91,11 @@ export default function TournamentCard() {
 				t.tournamentCard
 			)}
 		>
+			<Image
+				src={Ruins}
+				alt='Ruins'
+				className={t.card__img}
+			/>
 			<div className={cf(t.card__percent)}>
 				<svg className={cf(t.svg)}>
 					<defs>
@@ -113,21 +118,24 @@ export default function TournamentCard() {
 						</radialGradient>
 					</defs>
 					<circle
-						cx='90'
-						cy='90'
-						r='90'
+						cx='51.5'
+						cy='51.5'
+						r='42.5'
 						stroke='url(#gradient)'
 						id='circle'
 						ref={circle}
 						className={cf(t.circle)}
 					></circle>
 				</svg>
-				<div className={cf(t.circle)}></div>
-				<div className={cf(t.card__number)}>
-					<p>
+				<div
+					className={cf(s.flex, s.flex_dColumn, s.flexStart, t.card__number)}
+				>
+					<span className={cf(s.wMax, s.tCenter, s.dInlineBlock, t.progress)}>
 						{progress}
-						<span>Day{progress !== 1 ? 's' : ''}</span>
-					</p>
+					</span>
+					<span className={cf(s.wMax, s.tCenter, s.dInlineBlock, t.days)}>
+						Day{progress !== 1 ? 's' : ''}
+					</span>
 				</div>
 			</div>
 
