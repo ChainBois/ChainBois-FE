@@ -4,7 +4,13 @@ import { cf } from '@/utils'
 import p from './page.module.css'
 import s from '@/styles'
 import App from './_components/_App'
-import { Gameplay, Hero, Roadmap, Tournament } from '@/components/Homepage'
+import {
+	Gameplay,
+	Hero,
+	Roadmap,
+	Tournament,
+	Team,
+} from '@/components/Homepage'
 
 export default function Page() {
 	return (
@@ -13,6 +19,7 @@ export default function Page() {
 			<Gameplay />
 			<Tournament />
 			<Roadmap />
+			<Team />
 		</div>
 	)
 }

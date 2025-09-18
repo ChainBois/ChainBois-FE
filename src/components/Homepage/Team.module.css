@@ -1,0 +1,498 @@
+/* ===== TEAM COMPONENT STYLES ===== */
+
+/* Container for all team members */
+.members {
+	gap: 20px;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 40px 0;
+	margin-bottom: 100px;
+}
+
+/* Individual team member card */
+.member {
+	position: relative;
+	width: 170px;
+	height: 434px;
+	border-radius: 0;
+	overflow: hidden;
+	cursor: pointer;
+	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	background: linear-gradient(
+		to bottom,
+		rgba(236, 27, 36, 1),
+		rgba(54, 37, 12, 1),
+		rgba(13, 13, 13, 1),
+		rgba(54, 37, 12, 1),
+		rgba(236, 27, 36, 1)
+	);
+	clip-path: polygon(
+		0 0,
+		0 0,
+		0 0,
+		0 0,
+		calc(100% - 6px) 0,
+		100% 6px,
+		100% 100%,
+		calc(100% - 13px) 100%,
+		calc(100% - 22px) calc(100% - 15px),
+		26px calc(100% - 15px),
+		17px 100%,
+		0 100%,
+		0 0
+	);
+	padding: 2px;
+}
+
+/* Expanded state */
+.member.expanded {
+	width: 338px;
+	/* transform: scale(1.02); */
+	box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+	clip-path: polygon(
+		0 0,
+		32px 0,
+		40px 15px,
+		calc(100% - 215px) 15px,
+		calc(100% - 207px) 0,
+		100% 0,
+		100% 100%,
+		calc(100% - 130px) 100%,
+		calc(100% - 140px) calc(100% - 15px),
+		27px calc(100% - 15px),
+		15px 100%,
+		0 100%,
+		0 0
+	);
+	z-index: 10;
+}
+
+/* Highlighted state (cycling animation) */
+.member.highlighted {
+	/* background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); */
+	/* transform: scale(1.01); */
+	box-shadow: 0 12px 40px rgba(231, 76, 60, 0.3);
+}
+
+/* Main container within each member card */
+.container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	clip-path: polygon(
+		0 0,
+		0 0,
+		0 0,
+		0 0,
+		calc(100% - 5px) 0,
+		100% 5px,
+		100% 100%,
+		calc(100% - 9px) 100%,
+		calc(100% - 18px) calc(100% - 15px),
+		22px calc(100% - 15px),
+		13px 100%,
+		0 100%,
+		0 0
+	);
+	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.member.expanded .container {
+	clip-path: polygon(
+		0 0,
+		28px 0,
+		36px 15px,
+		calc(100% - 211px) 15px,
+		calc(100% - 203px) 0,
+		100% 0,
+		100% 100%,
+		calc(100% - 126px) 100%,
+		calc(100% - 136px) calc(100% - 15px),
+		24px calc(100% - 15px),
+		12px 100%,
+		0 100%,
+		0 0
+	);
+}
+
+/* ===== IMAGE CONTAINER & TRANSITIONS ===== */
+
+.imageContainer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0; /* Reset figure margin */
+}
+
+.img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Portrait image - visible when collapsed */
+.portrait {
+	opacity: 1;
+	object-fit: cover; /* Animated exit effect as mentioned */
+	z-index: 1;
+}
+
+/* Profile image - visible when expanded */
+.profile {
+	opacity: 0;
+	object-fit: cover;
+	z-index: 2;
+}
+
+/* Expanded state image transitions */
+.member.expanded .portrait {
+	opacity: 0;
+}
+
+.member.expanded .profile {
+	opacity: 1;
+}
+
+/* ===== CONTENT OVERLAY ===== */
+
+.content {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	padding: 0 30px 38px;
+	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	justify-content: flex-end;
+	align-items: flex-end;
+	z-index: 3;
+	background: linear-gradient(
+		to bottom,
+		rgba(11, 6, 15, 0) 0%,
+		rgba(8, 4, 11, 0.26) 60.37%,
+		#000 100%
+	);
+}
+
+.member.expanded .content {
+	justify-content: flex-end;
+}
+
+/* ===== MEMBER INFO ===== */
+
+.info {
+	flex: 1;
+	margin-right: auto;
+	opacity: 0;
+	transform: translateY(20px);
+	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.member.expanded .info {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.name {
+	color: #fff;
+	font-family: var(--font-manrope);
+	font-size: 22px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 120%; /* 26.4px */
+}
+
+.role {
+	color: #a1a1a1;
+	font-family: var(--font-manrope);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 120%; /* 19.2px */
+}
+
+/* ===== CONTROLS (Social Link + Buttons) ===== */
+
+.controls {
+	position: relative;
+	width: 53px;
+	height: 53px;
+	flex-shrink: 0;
+}
+
+/* Social link - visible when expanded */
+.socialLink {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #161616bb;
+	border-radius: 50%;
+	border: none;
+	opacity: 0;
+	transform: scale(0.8);
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	z-index: 3;
+}
+
+.socialLink:hover {
+	background: #161616;
+	transform: scale(0.85);
+}
+
+.member.expanded .socialLink {
+	opacity: 1;
+	transform: scale(1);
+}
+
+.socialIcon {
+	width: 20px;
+	height: 20px;
+	color: #ffffff;
+}
+
+/* ===== BUTTON CONTAINER (Z-INDEX LAYERING) ===== */
+
+.buttonContainer {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+}
+
+/* Base button styles */
+.expandBtn,
+.closeBtn {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	border: none;
+}
+
+/* Expand button - visible when collapsed */
+.expandBtn {
+	background: transparent;
+	opacity: 1;
+	transform: scale(1);
+	z-index: 5;
+}
+
+.expandBtn:hover {
+	background: #ec1b24;
+	transform: scale(1.05);
+}
+
+.expandBtn:active {
+	transform: scale(0.95);
+}
+
+/* Close button - visible when expanded */
+.closeBtn {
+	background: rgba(231, 76, 60, 0.8);
+	opacity: 0;
+	transform: scale(0.8);
+	z-index: 4;
+}
+
+.closeBtn:hover {
+	background: rgba(231, 76, 60, 0.9);
+	transform: scale(1.05);
+}
+
+.closeBtn:active {
+	transform: scale(0.95);
+}
+
+/* Button state transitions */
+.member.expanded .expandBtn {
+	opacity: 0;
+	transform: scale(0.8);
+	z-index: 4;
+}
+
+.member.expanded .closeBtn {
+	opacity: 1;
+	transform: scale(1);
+	z-index: 5;
+}
+
+/* Button icons */
+.expandIcon,
+.closeIcon {
+	/* width: 20px; */
+	/* height: 20px; */
+  font-size: 20px;
+	color: #ec1b24;
+	transition: transform 0.3s ease;
+}
+
+.expandBtn:hover .expandIcon {
+	transform: translateX(2px);
+}
+
+.closeBtn:hover .closeIcon {
+	transform: rotate(90deg);
+}
+
+/* ===== HIGHLIGHTED MEMBER BUTTON ANIMATION ===== */
+
+.member.highlighted .expandBtn {
+	background: #ec1b24;
+	/* box-shadow: 0 4px 16px rgba(231, 76, 60, 0.4); */
+	animation: pulseHighlight 2s ease-in-out infinite;
+}
+
+.member.highlighted .expandIcon {
+	color: #0a0a0a;
+}
+
+@keyframes pulseHighlight {
+	0%,
+	100% {
+		/* transform: scale(1); */
+		box-shadow: 0 4px 16px rgba(231, 76, 60, 0.4);
+	}
+	50% {
+		/* transform: scale(1.05); */
+		box-shadow: 0 6px 24px rgba(231, 76, 60, 0.6);
+	}
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet breakpoint */
+@media only screen and (max-width: 900px) {
+	.members {
+		gap: 16px;
+		padding: 32px 0;
+	}
+
+	/* .member {
+		width: 260px;
+		height: 380px;
+	}
+
+	.member.expanded {
+		width: 400px;
+		height: 300px;
+	} */
+}
+
+/* Mobile breakpoint */
+@media only screen and (max-width: 760px) {
+	.members {
+		gap: 20px;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	/* .member {
+		width: 320px;
+		height: 420px;
+	}
+
+	.member.expanded {
+		width: 340px;
+		height: 280px;
+	}
+
+	.content {
+		padding: 20px;
+	}
+
+	.name {
+		font-size: 1.3rem;
+	}
+
+	.role {
+		font-size: 0.9rem;
+	} */
+}
+
+/* Small mobile */
+@media only screen and (max-width: 480px) {
+	/* .member {
+		width: 280px;
+		height: 380px;
+	}
+  
+  .member.expanded {
+		width: 300px;
+		height: 240px;
+	}
+
+	.content {
+		padding: 16px;
+	}
+
+	.controls {
+		width: 44px;
+		height: 44px;
+	}
+
+	.expandIcon,
+	.closeIcon,
+	.socialIcon {
+		width: 18px;
+		height: 18px;
+	} */
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+
+/* Focus states */
+.expandBtn:focus,
+.closeBtn:focus,
+.socialLink:focus {
+	outline: 2px solid #4a90e2;
+	outline-offset: 2px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+	.member,
+	.img,
+	.content,
+	.info,
+	.socialLink,
+	.expandBtn,
+	.closeBtn {
+		transition: none;
+	}
+
+	.member.highlighted .expandBtn {
+		animation: none;
+	}
+}
+
+/* High contrast mode */
+/* @media (prefers-contrast: high) {
+	.member {
+		border: 2px solid #000;
+	}
+
+	.expandBtn,
+	.closeBtn {
+		border: 2px solid #fff;
+	}
+} */

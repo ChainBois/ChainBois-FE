@@ -1,5 +1,6 @@
 .roadmap {
 	gap: 40px;
+	margin-bottom: 100px;
 }
 
 .parent {
@@ -56,7 +57,7 @@
 }
 .title {
 	color: #d9d9d9;
-	font-family: var(--font-space-g);
+	font-family: var(--font-oto);
 	font-size: 30px;
 	font-style: normal;
 	font-weight: 500;
@@ -78,6 +79,6 @@
 	font-weight: 400;
 	line-height: normal;
 }
-.text.red {
+.red:where(.text, .title) {
 	color: #fff;
 }
