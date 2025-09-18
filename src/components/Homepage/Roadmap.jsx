@@ -42,9 +42,9 @@ export default function Roadmap() {
 	return (
 		<Container tag={'Project Roadmap'}>
 			<div className={cf(s.wMax, s.flex, s.flexCenter, r.roadmap)}>
-				<RoadmapCard title={'Q3 2024'}/>
-				<RoadmapCard title={'Q3 2024'}/>
-				<RoadmapCard title={'Q3 2024'}/>
+				<RoadmapCard title={'Q1 2025'}/>
+				<RoadmapCard title={'Q2 2025'}/>
+				<RoadmapCard title={'Q3 2025'}/>
 				<RoadmapCard title={'Q4 2005'} isRed />
 			</div>
 		</Container>

@@ -90,14 +90,7 @@
 	height: 672px;
 	border: none;
 	padding: 2px;
-	background: linear-gradient(
-		to bottom,
-		rgba(236, 27, 36, 1),
-		rgba(54, 37, 12, 1),
-		rgba(13, 13, 13, 1),
-		rgba(54, 37, 12, 1),
-		rgba(236, 27, 36, 1)
-	);
+	background: var(--background-gradient);
 }
 
 .card__container {

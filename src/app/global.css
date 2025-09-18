@@ -5,6 +5,14 @@
 	--theme: #0f0f0f;
 	--dark: #0a0a0a;
 	--chain-red: #ec1b24;
+	--background-gradient: linear-gradient(
+		to bottom,
+		rgba(236, 27, 36, 1),
+		rgba(54, 37, 12, 1),
+		transparent,
+		rgba(54, 37, 12, 1),
+		rgba(236, 27, 36, 1)
+	);
 }
 
 * {
@@ -17,8 +25,14 @@ body {
 	background: url('../assets/img/bgBox.png') #000000;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-space-g);
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-space-g);
 	padding: 0;
 	margin: 0;
 }
