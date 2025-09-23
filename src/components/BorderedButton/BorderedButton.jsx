@@ -4,6 +4,7 @@ import { cf } from '@/utils'
 import b from './BorderedButton.module.css'
 import s from '@/styles'
 import { memo } from 'react'
+import Link from 'next/link';
 
 /**
  * Renders a bordered button or link with customizable content and styles.

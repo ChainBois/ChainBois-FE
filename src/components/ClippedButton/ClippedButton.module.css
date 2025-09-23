@@ -1,0 +1,50 @@
+.clippedButton {
+	clip-path: polygon(
+		0 0,
+		calc(100% - 12px) 0,
+		100% 12px,
+		100% 100%,
+		50px 100%,
+		46px calc(100% - 6px),
+		24px calc(100% - 6px),
+		20px 100%,
+		0 100%
+	);
+	background: #ec1b24;
+	border: none;
+	padding: 1px;
+}
+
+.clippedButtonContent {
+	clip-path: polygon(
+		0 0,
+		calc(100% - 12px) 0,
+		100% 12px,
+		100% 100%,
+		45px 100%,
+		40px calc(100% - 6px),
+		23px calc(100% - 6px),
+		19px 100%,
+		0 100%
+	);
+	background: #ec1b24;
+	border: none;
+	gap: 10px;
+	padding: 15px 40px 15px 23px;
+}
+
+.clippedButtonText {
+	color: #0a0a0a;
+	font-family: var(--font-manrope);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 120%; /* 19.2px */
+}
+
+.clippedButtonIcon {
+	object-fit: contain;
+	width: 23px;
+	height: 23px;
+	aspect-ratio: 1/1;
+}

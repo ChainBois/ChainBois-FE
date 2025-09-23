@@ -1,24 +1,24 @@
 .section {
-    gap: 70px 0;
+	gap: 70px 0;
 }
 
 .labelContainer {
-    padding-left: 200px;
-    gap: 55px;
+	padding-left: 200px;
+	gap: 55px;
 }
 
 .label {
-    color: #FFF;
-text-align: right;
-font-family: var(--font-space-g);
-font-size: 50px;
-font-style: normal;
-font-weight: 700;
-line-height: 140%; /* 70px */
+	color: #fff;
+	text-align: right;
+	font-family: var(--font-space-g);
+	font-size: 50px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 140%; /* 70px */
 }
 
 .line {
-    height: 1px;
-    border:none;
-    background: rgba(255, 255, 255, 0.30);
+	height: 1px;
+	border: none;
+	background: rgba(255, 255, 255, 0.3);
 }
