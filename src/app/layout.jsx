@@ -22,12 +22,12 @@ export async function generateStaticParams() {
 // Generate metadata
 export async function generateMetadata() {
 	const baseUrl =
-		process.env.NEXT_PUBLIC_SITE_URL || 'https://gp-marketplace.vercel.app'
+		process.env.NEXT_PUBLIC_SITE_URL || 'https://chain-bois.vercel.app'
 
 	try {
 		return {
 			metadataBase: new URL(
-				process.env.NEXT_PUBLIC_SITE_URL || 'https://gp-marketplace.vercel.app'
+				process.env.NEXT_PUBLIC_SITE_URL || 'https://chain-bois.vercel.app'
 			),
 			title: `ChainBois | Elite Gaming on Avalanche`,
 			description:

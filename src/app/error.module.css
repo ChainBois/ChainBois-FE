@@ -1,0 +1,217 @@
+/* ErrorPage.module.css */
+
+.errorPage {
+  background: transparent;
+  color: #ffffff;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 100px 50px;
+}
+
+.errorPage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(220, 38, 38, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(220, 38, 38, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.logo {
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+
+.errorContainer {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.errorCode {
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 900;
+  color: #dc2626;
+  text-shadow: 
+    0 0 20px rgba(220, 38, 38, 0.5),
+    0 0 40px rgba(220, 38, 38, 0.3);
+  line-height: 0.8;
+  font-family: 'Orbitron', monospace;
+  letter-spacing: -0.02em;
+}
+
+.glitchEffect {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  position: relative;
+  animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+  0%, 100% { 
+    text-shadow: 
+      0.05em 0 0 #dc2626, 
+      -0.05em -0.025em 0 #3b82f6,
+      0.025em 0.05em 0 #10b981;
+  }
+  15% { 
+    text-shadow: 
+      0.05em 0 0 #dc2626, 
+      -0.05em -0.025em 0 #3b82f6,
+      0.025em 0.05em 0 #10b981;
+  }
+  16% { text-shadow: none; }
+  17% { 
+    text-shadow: 
+      0.05em 0 0 #dc2626, 
+      -0.05em -0.025em 0 #3b82f6,
+      0.025em 0.05em 0 #10b981;
+  }
+  50% { text-shadow: none; }
+  51% { 
+    text-shadow: 
+      0.05em 0 0 #dc2626, 
+      -0.05em -0.025em 0 #3b82f6,
+      0.025em 0.05em 0 #10b981;
+  }
+}
+
+.errorContent {
+  text-align: center;
+}
+
+.errorTitle {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  font-family: var(--font-inter);
+  line-height: 1.1;
+}
+
+.errorMessage {
+  font-size: 1.125rem;
+  color: #a1a1aa;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 500px;
+  font-family: var(--font-inter);
+}
+
+.actionButtons {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.primaryButton {
+  padding: 14px 24px;
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+}
+
+.primaryButton:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+}
+
+.secondaryButton {
+  padding: 14px 24px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #374151;
+  border-radius: 8px;
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.secondaryButton:hover {
+  background: #374151;
+  border-color: #4b5563;
+  transform: translateY(-2px);
+}
+
+.buttonIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.errorInfo {
+  text-align: center;
+  color: #71717a;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.errorId {
+  background: #1f2937;
+  color: #dc2626;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  margin-top: 8px;
+  display: inline-block;
+  border: 1px solid #374151;
+}
+
+.footerText {
+  color: #71717a;
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .actionButtons {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .errorContainer {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .glitchEffect {
+    font-size: 1.2rem;
+  }
+  
+  .errorMessage {
+    font-size: 1rem;
+  }
+}
