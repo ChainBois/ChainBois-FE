@@ -11,6 +11,7 @@ import {
 	Tournament,
 	Team,
 	Socials,
+	Partnership,
 } from '@/components/Homepage'
 
 export default function Page() {
@@ -22,6 +23,7 @@ export default function Page() {
 			<Roadmap />
 			<Team />
 			<Socials />
+			<Partnership />
 		</div>
 	)
 }

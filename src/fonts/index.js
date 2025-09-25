@@ -1,4 +1,4 @@
-import { Inter, Space_Grotesk, Manrope } from 'next/font/google'
+import { Inter, Space_Grotesk, Manrope, Anton } from 'next/font/google'
 import localFont from 'next/font/local'
 
 const inter = Inter({
@@ -23,4 +23,10 @@ const otomanopeeOne = localFont({
 	variable: '--font-oto',
 })
 
-export { inter, spaceGrotesk, manrope, otomanopeeOne }
+const anton = Anton({
+	subsets: ['latin'],
+	variable: '--font-anton',
+	weight: ['400'],
+})
+
+export { inter, spaceGrotesk, manrope, otomanopeeOne, anton }

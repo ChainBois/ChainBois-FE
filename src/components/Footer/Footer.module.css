@@ -1,0 +1,146 @@
+.footer {
+	background: #000;
+	padding-top: 20px;
+	overflow: hidden;
+}
+
+.topContainer {
+	padding: 0 245px;
+}
+
+.contactUs,
+.newsLetter {
+	width: 500px;
+}
+
+.contactUsTitle,
+.newsLetterTitle {
+	color: #fff;
+	font-family: var(--font-anton);
+	font-size: 80px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 80px; /* 100% */
+	text-transform: uppercase;
+}
+
+.contactUsLink {
+	color: #ec1b24;
+	font-family: var(--font-manrope);
+	font-size: 24px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 30px; /* 125% */
+	text-decoration-line: underline;
+	text-decoration-style: solid;
+	text-decoration-skip-ink: auto;
+	text-decoration-thickness: auto;
+	text-underline-offset: auto;
+	text-underline-position: from-font;
+	margin: 0 0 0 auto;
+}
+
+.separator {
+	width: 1px;
+	border: none;
+	background: rgba(255, 255, 255, 0.3);
+	height: 272px;
+}
+
+.newsLetterLink {
+	display: flex;
+	width: 240px;
+	height: 60px;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+	color: #000;
+	font-family: var(--font-anton);
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 20px; /* 100% */
+	text-transform: uppercase;
+	margin: 0 0 0 auto;
+	background: #ec1b24;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.bottomContainer {
+	gap: 80px;
+	padding: 235px 200px 65px;
+}
+
+.footerNav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 10px;
+}
+
+.footerNavTitle {
+	margin-bottom: 9px;
+	color: #6e6e6e;
+	font-family: var(--font-manrope);
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 150%; /* 21px */
+}
+
+.footerNavLink {
+	text-align: left;
+	color: #6e6e6e;
+	font-family: var(--font-manrope);
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 150%; /* 21px */
+	min-height: 20px;
+}
+
+.navLink {
+	color: #fff;
+	font-family: var(--font-manrope);
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 150%; /* 19.5px */
+}
+
+.navLink:hover {
+	color: #ec1b24;
+}
+
+.chainboisContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	
+}
+
+.chainbois {
+	width: 100%;
+	height: auto;
+	aspect-ratio: auto;
+	object-fit: contain;
+	object-position: center;
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
+}

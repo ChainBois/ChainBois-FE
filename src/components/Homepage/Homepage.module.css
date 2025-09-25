@@ -22,3 +22,13 @@
 	border: none;
 	background: rgba(255, 255, 255, 0.3);
 }
+
+.partnership {
+	padding: 85px 40px;
+}
+
+.brands {
+	height: 100px;
+	width: auto;
+	aspect-ratio: auto 1017 / 101;
+}
