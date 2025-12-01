@@ -92,24 +92,48 @@ function Member({
 	memberID,
 	isHighlighted,
 	deviceCapabilities,
+	collapseDelay = 300, // configurable collapse delay, default 300ms
 }) {
 	const { hasHover, isTouchPrimary } = deviceCapabilities
 
 	// Expand handler - respects device capabilities
 	const expand = useCallback(() => {
+		if (collapseTimer.current) {
+			clearTimeout(collapseTimer.current)
+			collapseTimer.current = null
+		}
 		if (expanded === memberID) return
 		setExpanded(memberID)
 	}, [expanded, memberID, setExpanded])
 
 	const collapseTimer = useRef(null)
+	const expandedRef = useRef(expanded)
+	// Collapse handler - always returns to default (member 1) if the expanded member hasn't changed.
+	// This means that collapsing will reset the expanded state to member 1, regardless of which member was previously expanded.
+	useEffect(() => {
+		expandedRef.current = expanded
+	}, [expanded])
 
-	// Collapse handler - returns to default (member 1)
+	// Collapse handler - returns to default (member 1) only if expanded member hasn't changed
 	const collapse = useCallback(() => {
 		if (collapseTimer.current) clearTimeout(collapseTimer.current)
-		if (expanded === 1) return
-		else collapseTimer.current = setTimeout(() => setExpanded(1), 1000)
-		// setExpanded(1)
-	}, [expanded, setExpanded])
+		if (expandedRef.current === 1) return
+		const currentExpanded = expandedRef.current
+		collapseTimer.current = setTimeout(() => {
+			// Only collapse if expanded member hasn't changed
+			if (expandedRef.current === currentExpanded) {
+				setExpanded(1)
+			}
+		}, collapseDelay)
+	}, [setExpanded, collapseDelay])
+
+	// Cancel collapse timer if expanded changes before timeout completes
+	useEffect(() => {
+		if (collapseTimer.current) {
+			clearTimeout(collapseTimer.current)
+			collapseTimer.current = null
+		}
+	}, [expanded])
 
 	// Event handlers based on device capabilities
 	const mouseHandlers =
@@ -271,6 +295,7 @@ export default function Team() {
 						memberID={member.id}
 						isHighlighted={highlightedMember === member.id}
 						deviceCapabilities={deviceCapabilities}
+						collapseDelay={300} // pass collapse delay as prop
 					/>
 				))}
 			</div>
