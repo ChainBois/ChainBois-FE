@@ -8,78 +8,56 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { FaXTwitter } from 'react-icons/fa6'
 import { GoArrowRight } from 'react-icons/go'
-import { MdClose } from 'react-icons/md'
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 
-// Device capability detection hook
+// Team members data
+const teamMembers = [
+	{ id: 1, name: 'John Doe', role: 'Co-Founder', img: '/img/JohnDoe.png' },
+	{ id: 2, name: 'Jane Smith', role: 'CEO', img: '/img/JaneSmith.png' },
+	{ id: 3, name: 'Mike Johnson', role: 'CTO', img: '/img/MikeJohnson.png' },
+	{ id: 4, name: 'Sarah Wilson', role: 'COO', img: '/img/JaneSmith.png' },
+	{ id: 5, name: 'David Brown', role: 'CFO', img: '/img/DavidBrown.png' },
+]
+
+// device capability detection
 function useDeviceCapabilities() {
-	const [capabilities, setCapabilities] = useState({
+	const [capabilities, set] = useState({
 		hasHover: false,
 		hasTouch: false,
 		isTouchPrimary: false,
 	})
 
 	useEffect(() => {
-		// Check for hover capability (mouse/trackpad)
 		const hasHover = window.matchMedia('(hover: hover)').matches
-
-		// Check for touch capability
 		const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-
-		// Determine if touch is the primary input (mobile-first approach)
 		const isTouchPrimary = hasTouch && !hasHover
-
-		setCapabilities({
-			hasHover,
-			hasTouch,
-			isTouchPrimary,
-		})
+		set({ hasHover, hasTouch, isTouchPrimary })
 	}, [])
 
 	return capabilities
 }
 
-// Cycling highlight animation hook
-function useCyclingHighlight(
-	totalMembers,
-	expandedMember,
-	cycleInterval = 3000
-) {
-	const [highlightedMember, setHighlightedMember] = useState(1)
-	const intervalRef = useRef(null)
-
-	const startCycle = useCallback(() => {
-		if (intervalRef.current) clearInterval(intervalRef.current)
-
-		intervalRef.current = setInterval(() => {
-			setHighlightedMember((current) => {
-				let next = current + 1
-
-				// Skip expanded cards and wrap around
-				while (next === expandedMember || next > totalMembers) {
-					if (next > totalMembers) {
-						next = 1
-					} else {
-						next += 1
-					}
-
-					// Prevent infinite loop
-					if (next === current) break
-				}
-
-				return next
-			})
-		}, cycleInterval)
-	}, [expandedMember, totalMembers, cycleInterval])
+// cycling highlight logic
+function useCyclingHighlight(total, expanded, interval = 3000) {
+	const [highlight, set] = useState(1)
+	const ref = useRef(null)
 
 	useEffect(() => {
-		startCycle()
-		return () => {
-			if (intervalRef.current) clearInterval(intervalRef.current)
-		}
-	}, [startCycle])
+		if (ref.current) clearInterval(ref.current)
 
-	return highlightedMember
+		ref.current = setInterval(() => {
+			set((cur) => {
+				let next = cur + 1
+				if (next > total) next = 1
+				if (next === expanded) next = next + 1 > total ? 1 : next + 1
+				return next
+			})
+		}, interval)
+
+		return () => clearInterval(ref.current)
+	}, [total, expanded, interval])
+
+	return highlight
 }
 
 function Member({
@@ -88,70 +66,12 @@ function Member({
 	img,
 	social,
 	expanded,
-	setExpanded,
 	memberID,
 	isHighlighted,
-	deviceCapabilities,
-	collapseDelay = 300, // configurable collapse delay, default 300ms
+	expand,
+	mouseHandlers,
 }) {
-	const { hasHover, isTouchPrimary } = deviceCapabilities
-
-	// Expand handler - respects device capabilities
-	const expand = useCallback(() => {
-		if (collapseTimer.current) {
-			clearTimeout(collapseTimer.current)
-			collapseTimer.current = null
-		}
-		if (expanded === memberID) return
-		setExpanded(memberID)
-	}, [expanded, memberID, setExpanded])
-
-	const collapseTimer = useRef(null)
-	const expandedRef = useRef(expanded)
-	// Collapse handler - always returns to default (member 1) if the expanded member hasn't changed.
-	// This means that collapsing will reset the expanded state to member 1, regardless of which member was previously expanded.
-	useEffect(() => {
-		expandedRef.current = expanded
-	}, [expanded])
-
-	// Collapse handler - returns to default (member 1) only if expanded member hasn't changed
-	const collapse = useCallback(() => {
-		if (collapseTimer.current) clearTimeout(collapseTimer.current)
-		if (expandedRef.current === 1) return
-		const currentExpanded = expandedRef.current
-		collapseTimer.current = setTimeout(() => {
-			// Only collapse if expanded member hasn't changed
-			if (expandedRef.current === currentExpanded) {
-				setExpanded(1)
-			}
-		}, collapseDelay)
-	}, [setExpanded, collapseDelay])
-
-	// Cancel collapse timer if expanded changes before timeout completes
-	useEffect(() => {
-		if (collapseTimer.current) {
-			clearTimeout(collapseTimer.current)
-			collapseTimer.current = null
-		}
-	}, [expanded])
-
-	// Event handlers based on device capabilities
-	const mouseHandlers =
-		hasHover && !isTouchPrimary
-			? {
-					onMouseEnter: expand,
-					onMouseLeave: collapse,
-			  }
-			: {}
-
-	const isExpanded = useMemo(() => expanded === memberID, [expanded, memberID])
-
-	useEffect(() => {
-		return () => {
-			if (collapseTimer.current) clearTimeout(collapseTimer.current)
-			collapseTimer.current = null
-		}
-	}, [])
+	const isExpanded = expanded === memberID
 
 	return (
 		<article
@@ -162,12 +82,11 @@ function Member({
 				isExpanded ? t.expanded : '',
 				isHighlighted && !isExpanded ? t.highlighted : ''
 			)}
+			data-memberid={memberID}
 			{...mouseHandlers}
 		>
 			<div className={cf(s.wMax, s.flex, s.flexCenter, t.container)}>
-				{/* Image container with semantic figure */}
 				<figure className={cf(s.wMax, s.flex, s.flexCenter, t.imageContainer)}>
-					{/* Portrait image - visible when collapsed */}
 					<Image
 						src={img}
 						alt={`${name} portrait`}
@@ -176,7 +95,6 @@ function Member({
 						className={cf(t.img, t.portrait)}
 					/>
 
-					{/* Profile image - visible when expanded */}
 					<Image
 						src={img}
 						alt={`${name} profile view`}
@@ -186,47 +104,28 @@ function Member({
 					/>
 				</figure>
 
-				{/* Content overlay */}
 				<div className={cf(s.wMax, s.flex, s.flexRight, t.content)}>
-					{/* Member information header */}
 					<header className={cf(t.info)}>
 						<h3 className={cf(t.name)}>{name}</h3>
 						<p className={cf(t.role)}>{role}</p>
 					</header>
 
-					{/* Navigation/controls container */}
 					<nav className={cf(s.flex, s.flexCenter, s.p_relative, t.controls)}>
-						{/* Social link - visible when expanded */}
 						<Link
 							href={social}
 							target='_blank'
 							rel='noopener noreferrer'
 							className={cf(t.socialLink)}
-							aria-label={`${name}'s Twitter profile`}
 						>
 							<FaXTwitter className={cf(t.socialIcon)} />
 						</Link>
 
-						{/* Button container for z-index layering */}
-						<div className={cf(s.p_absolute, t.buttonContainer)}>
-							{/* Expand button */}
-							<button
-								className={cf(s.flex, s.flexCenter, t.expandBtn)}
-								onClick={expand}
-								aria-label={`Expand ${name}'s profile`}
-							>
-								<GoArrowRight className={cf(t.expandIcon)} />
-							</button>
-
-							{/* Close button */}
-							{/* <button
-								className={cf(s.flex, s.flexCenter, t.closeBtn)}
-								onClick={collapse}
-								aria-label={`Close ${name}'s profile`}
-							>
-								<MdClose className={cf(t.closeIcon)} />
-							</button> */}
-						</div>
+						<button
+							className={cf(s.flex, s.flexCenter, t.expandBtn)}
+							onClick={() => expand(memberID)}
+						>
+							<GoArrowRight className={cf(t.expandIcon)} />
+						</button>
 					</nav>
 				</div>
 			</div>
@@ -235,67 +134,48 @@ function Member({
 }
 
 export default function Team() {
+	// default expanded is ALWAYS member 1
 	const [expanded, setExpanded] = useState(1)
-	const deviceCapabilities = useDeviceCapabilities()
+	const device = useDeviceCapabilities()
+	const { hasHover, isTouchPrimary } = device
+	const highlighted = useCyclingHighlight(teamMembers.length, expanded)
 
-	// Team members data
-	const teamMembers = [
-		{
-			id: 1,
-			name: 'John Doe',
-			role: 'Co-Founder',
-			img: '/img/JohnDoe.png',
-		},
-		{
-			id: 2,
-			name: 'Jane Smith',
-			role: 'CEO',
-			img: '/img/JaneSmith.png',
-		},
-		{
-			id: 3,
-			name: 'Mike Johnson',
-			role: 'CTO',
-			img: '/img/MikeJohnson.png',
-		},
-		{
-			id: 4,
-			name: 'Sarah Wilson',
-			role: 'COO',
-			img: '/img/JaneSmith.png',
-		},
-		{
-			id: 5,
-			name: 'David Brown',
-			role: 'CFO',
-			img: '/img/DavidBrown.png',
-		},
-		// {
-		// 	id: 6,
-		// 	name: 'Emily Davis',
-		// 	role: 'CIO',
-		// 	img: '/img/EmilyDavis.png',
-		// },
-	]
+	const expand = useCallback((id) => setExpanded(id), [])
 
-	const highlightedMember = useCyclingHighlight(teamMembers.length, expanded)
+	// collapse back to default when user leaves container
+	const collapseToDefault = useCallback(() => setExpanded(1), [])
+
+	const mouseHandlers =
+		hasHover && !isTouchPrimary ? { onMouseLeave: collapseToDefault } : {}
+
+	const memberMouseHandlers =
+		hasHover && !isTouchPrimary
+			? {
+					onMouseEnter: (e) => {
+						const id = Number(e.currentTarget.dataset.memberid)
+						expand(id)
+					},
+			  }
+			: {}
 
 	return (
 		<Container tag={'The Team'}>
-			<div className={cf(s.wMax, s.flex, s.flexCenter, t.members)}>
-				{teamMembers.map((member) => (
+			<div
+				className={cf(s.wMax, s.flex, s.flexCenter, t.members)}
+				{...mouseHandlers}
+			>
+				{teamMembers.map((m) => (
 					<Member
-						key={member.id}
-						name={member.name}
-						role={member.role}
-						img={member.img}
+						key={m.id}
+						name={m.name}
+						role={m.role}
+						img={m.img}
 						social={'https://x.com/ea_aro1914'}
 						expanded={expanded}
-						setExpanded={setExpanded}
-						memberID={member.id}
-						isHighlighted={highlightedMember === member.id}
-						deviceCapabilities={deviceCapabilities}
-						collapseDelay={300} // pass collapse delay as prop
+						memberID={m.id}
+						isHighlighted={highlighted === m.id}
+						expand={expand}
+						mouseHandlers={memberMouseHandlers}
 					/>
 				))}
 			</div>
