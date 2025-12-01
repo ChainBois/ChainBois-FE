@@ -101,10 +101,14 @@ function Member({
 		setExpanded(memberID)
 	}, [expanded, memberID, setExpanded])
 
+	const collapseTimer = useRef(null)
+
 	// Collapse handler - returns to default (member 1)
 	const collapse = useCallback(() => {
+		if (collapseTimer.current) clearTimeout(collapseTimer.current)
 		if (expanded === 1) return
-		setExpanded(1)
+		else collapseTimer.current = setTimeout(() => setExpanded(1), 1000)
+		// setExpanded(1)
 	}, [expanded, setExpanded])
 
 	// Event handlers based on device capabilities
@@ -115,8 +119,15 @@ function Member({
 					onMouseLeave: collapse,
 			  }
 			: {}
-	
+
 	const isExpanded = useMemo(() => expanded === memberID, [expanded, memberID])
+
+	useEffect(() => {
+		return () => {
+			if (collapseTimer.current) clearTimeout(collapseTimer.current)
+			collapseTimer.current = null
+		}
+	}, [])
 
 	return (
 		<article
