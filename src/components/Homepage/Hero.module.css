@@ -62,3 +62,66 @@
 	width: 353px;
 	padding: 5px;
 }
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Air landscape */
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.hero {
+		padding: 124px 66px;
+	}
+
+	.heroContent {
+		gap: 18px 0;
+	}
+
+	.heroTitle {
+		font-size: 48px;
+	}
+
+	.heroText {
+		font-size: 18px;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.heroTitle {
+		font-size: 36px;
+	}
+
+	.heroText {
+		font-size: 14px;
+	}
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
+}

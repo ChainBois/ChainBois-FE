@@ -1,0 +1,429 @@
+/**
+ * InputField Component Styles
+ * 
+ * Organization:
+ * 1. Base Label & Container Styles
+ * 2. Input Element Styles
+ * 3. Select Dropdown Styles
+ * 4. Custom Select (Visual) Styles
+ * 5. Password Toggle Styles
+ * 6. Validation & Notice Styles
+ * 7. Floating Badge Styles
+ * 8. Responsive Breakpoints
+ */
+
+/* ============================================================================
+   1. BASE LABEL & CONTAINER STYLES
+   ============================================================================ */
+
+.label_ {
+	position: relative;
+	max-width: 482px;
+	width: 100%;
+	min-height: 60px;
+	height: 60px;
+	flex-shrink: 0;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	background: #151515 !important;
+	padding: 12px 23px 12px 28px;
+	outline: none;
+}
+
+.label_.ignoreHeight {
+	height: initial !important;
+}
+
+.innerLabel {
+	color: #fff;
+	font-family: var(--font-inter) !important;
+	font-size: 16px !important;
+	font-style: normal !important;
+	font-weight: 500 !important;
+	line-height: 120% !important;
+	margin-bottom: 14px !important;
+}
+
+.noMargin {
+	margin-bottom: 0 !important;
+}
+
+.mini {
+	width: 48% !important;
+}
+
+.inputFieldCon {
+	gap: 34px;
+}
+
+.requiredMark {
+	color: #e41d1d;
+	font-family: var(--font-inter);
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 18px;
+}
+
+/* ============================================================================
+   2. INPUT ELEMENT STYLES
+   ============================================================================ */
+
+.input,
+.label_ input,
+.label_ .countryInput {
+	width: 100%;
+	color: #fff;
+	font-family: var(--font-inter);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	background-color: #151515;
+	border: none;
+	outline: none;
+}
+
+.input:disabled,
+.label_ input:disabled,
+.label_ .countryInput:disabled {
+	cursor: not-allowed;
+}
+
+.input_ {
+	display: flex;
+	padding: 16px;
+	align-items: flex-start;
+	gap: 10px;
+	border-radius: 10px !important;
+	border: 1px solid #262626 !important;
+	background: #080808 !important;
+	color: #fff !important;
+	font-family: var(--font-inter);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 120% !important;
+	resize: none;
+	box-shadow: none !important;
+}
+
+.input.password {
+	flex: 1;
+}
+
+/* Date Input - Hidden until focused */
+.input[type='date'] {
+	opacity: 0;
+}
+
+.input[type='date']:focus {
+	opacity: 1;
+}
+
+.filled {
+	opacity: 1 !important;
+}
+
+/* Focus States */
+.label_:focus-within {
+	background-color: #000 !important;
+}
+
+.label_:focus-within .input,
+.label_:focus-within input,
+.label_:focus-within .countryInput {
+	background-color: #000 !important;
+}
+
+/* ============================================================================
+   3. SELECT DROPDOWN STYLES (react-select)
+   ============================================================================ */
+
+.select {
+	align-self: stretch;
+	border: none !important;
+	color: #fff !important;
+	font-family: var(--font-inter);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 120% !important;
+}
+
+.selectControl_ {
+	display: flex;
+	padding: 16px;
+	align-items: flex-start;
+	gap: 10px;
+	border-radius: 10px !important;
+	border: 1px solid #262626 !important;
+	background: #080808 !important;
+	color: #fff !important;
+	font-family: var(--font-inter);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 120% !important;
+	resize: none;
+	box-shadow: none !important;
+}
+
+.selectControl {
+	padding: 12px 23px 12px 28px;
+	box-shadow: none !important;
+}
+
+.selectControl:focus {
+	box-shadow: none !important;
+	border-color: transparent !important;
+}
+
+.selectOption {
+	background: #262626 !important;
+	color: #fff !important;
+}
+
+.selectOption:hover,
+.selectOption:active {
+	background: var(--not-black) !important;
+}
+
+.valueContainer {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	gap: 5px;
+}
+
+.valueContainer > div {
+	color: #fff;
+	margin: 0 !important;
+}
+
+.menu {
+	color: #666 !important;
+	background: #262626 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.placeholder {
+	color: #666 !important;
+}
+
+.singleValue {
+	color: #fff;
+}
+
+/* Multi-Select Chips */
+.multiValue {
+	background: #000 !important;
+	border: 1px solid var(--yellow) !important;
+	border-radius: 5px !important;
+	overflow: hidden !important;
+}
+
+.multiValueLabel {
+	color: #fff !important;
+}
+
+.multiValueRemove {
+	background: #000 !important;
+	color: var(--yellow) !important;
+}
+
+.multiValueRemove:hover {
+	color: #e41d1d !important;
+}
+
+/* Indicators */
+.indicatorsContainer > span {
+	display: none;
+}
+
+.indicatorsContainer > div {
+	padding: 0;
+}
+
+.ignoreHeight {
+	height: initial !important;
+}
+
+/* ============================================================================
+   4. CUSTOM SELECT (Visual Button) STYLES
+   ============================================================================ */
+
+.selectionOptionWrapper {
+	padding: 0;
+	gap: 10px;
+}
+
+.selectionOption {
+	font-family: var(--font-inter) !important;
+	font-size: 16px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	line-height: 120% !important;
+	border: 1px solid #fff !important;
+	background-color: rgba(255, 255, 255, 0.2) !important;
+	color: #fff;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.selectionOptionCus {
+	font-family: var(--font-inter) !important;
+	font-size: 16px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	line-height: 120% !important;
+	border: 1px solid #262626 !important;
+	background-color: #151515 !important;
+	color: #666;
+	border-radius: 10px;
+	padding: 10px;
+	cursor: pointer;
+	transition: border-color 0.2s ease;
+}
+
+.selectionOptionCus:hover {
+	border-color: #444 !important;
+}
+
+.selected {
+	color: #000 !important;
+	background: var(--yellow) !important;
+	border-color: var(--yellow) !important;
+}
+
+.selectedCus {
+	color: #fff !important;
+	border-color: var(--yellow) !important;
+}
+
+/* ============================================================================
+   5. PASSWORD TOGGLE STYLES
+   ============================================================================ */
+
+.setVisible {
+	width: 30px;
+	height: 30px;
+	padding: 3px;
+	background: #000;
+	position: absolute;
+	border: none;
+	border-radius: 5px;
+	right: 5px;
+	color: #fff !important;
+	cursor: pointer;
+	transition: opacity 0.2s ease;
+}
+
+.setVisible:hover {
+	opacity: 0.8;
+}
+
+/* ============================================================================
+   6. VALIDATION & NOTICE STYLES
+   ============================================================================ */
+
+.inputWrapper {
+	gap: 8px;
+}
+
+.inputLittleNotice {
+	font-family: var(--font-inter);
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 15.6px;
+}
+
+.neutralNotice {
+	color: #666 !important;
+}
+
+.positiveNotice {
+	color: var(--success) !important;
+}
+
+.negativeNotice {
+	color: var(--red) !important;
+}
+
+/* ============================================================================
+   7. FLOATING BADGE STYLES
+   ============================================================================ */
+
+.floatingText {
+	background: #262626;
+	color: var(--yellow);
+	font-family: var(--font-inter);
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 150%;
+	border: none;
+	border-radius: 15px;
+	top: 0;
+	right: 0;
+	padding: 0 5px;
+}
+
+.floatingTextResolved {
+	color: #70c16c !important;
+}
+
+/* ============================================================================
+   8. RESPONSIVE BREAKPOINTS
+   ============================================================================ */
+
+/* Tablet Landscape */
+@media only screen and (max-width: 950px) and (min-width: 600px) and (max-height: 440px) {
+	/* Reserved for landscape tablet adjustments */
+}
+
+/* Tablet Portrait */
+@media only screen and (max-width: 900px) and (min-width: 835px) and (min-height: 441px) {
+	/* Reserved for portrait tablet adjustments */
+}
+
+/* Small Tablet / Large Phone */
+@media only screen and (max-width: 834px) {
+	.input,
+	.countryInput {
+		gap: 11px;
+	}
+
+	.inputFieldCon {
+		gap: 0;
+	}
+}
+
+/* Phone */
+@media only screen and (max-width: 480px) {
+	.mini {
+		width: 100% !important;
+	}
+
+	.inputFieldCon {
+		gap: 34px;
+	}
+
+	.input_ {
+		padding: 15px !important;
+		font-size: 12px !important;
+		line-height: 120% !important;
+	}
+}
+
+/* Small Phone */
+@media only screen and (max-width: 360px) {
+	/* Reserved for small phone adjustments */
+}
+
+/* Extra Small */
+@media only screen and (max-width: 300px) {
+	/* Reserved for extra small screen adjustments */
+}

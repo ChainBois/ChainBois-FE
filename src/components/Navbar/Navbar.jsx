@@ -11,6 +11,7 @@ import { memo, useState } from 'react'
 import Link from 'next/link'
 import { isEqual } from '@/hooks'
 import { MdArrowOutward } from 'react-icons/md'
+import { GiHamburgerMenu } from 'react-icons/gi'
 
 function NavItem({
 	tag = 'Home',
@@ -25,7 +26,6 @@ function NavItem({
 		({ action, tag, style, onMouseEnter, onMouseLeave }) =>
 			isLink ? (
 				<>
-					(
 					{action ? (
 						<Link
 							href={action}
@@ -44,7 +44,6 @@ function NavItem({
 							{tag}
 						</span>
 					)}
-					)
 				</>
 			) : (
 				<button
@@ -167,6 +166,10 @@ export default function Navbar() {
 
 					<PlayButton />
 				</div>
+
+				<button className={cf(s.flex, s.flexCenter, n.hamburgerWrapper)}>
+					<GiHamburgerMenu className={n.hamburger} />
+				</button>
 			</nav>
 		</header>
 	)

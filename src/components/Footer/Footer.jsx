@@ -147,6 +147,7 @@ export default function Footer() {
 			<figure className={cf(s.wMax, s.flex, s.flexCenter, f.chainboisContainer)}>
 				<Image
 					src={chainbois}
+					alt={'chainbois footer text'}
 					className={cf(f.chainbois)}
 				/>
 			</figure>

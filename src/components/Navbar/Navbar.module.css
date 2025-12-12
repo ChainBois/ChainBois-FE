@@ -10,6 +10,8 @@
 
 .logo {
 	object-fit: contain;
+	width: 240px;
+	height: 32.8px;
 }
 
 .navLinksWrapper {
@@ -116,12 +118,82 @@
 }
 
 @keyframes fadeIn {
-  0% {
-    transform: translateY(-40px) scale(0.5);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
+	0% {
+		transform: translateY(-40px) scale(0.5);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0) scale(1);
+		opacity: 1;
+	}
+}
+
+.hamburgerWrapper {
+	display: none;
+	padding: 9.8px 6.5px;
+	border: none;
+	border-radius: 3px;
+	background: #fff;
+	cursor: pointer;
+}
+
+.hamburger {
+	width: 20px;
+	height: 20px;
+	color: #000;
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.nav {
+		padding: 61px 66px 10px;
+	}
+
+	.logo {
+		width: 48px;
+		height: 30px;
+		object-fit: cover;
+		object-position: left;
+	}
+
+	.navItem,
+	.playButton {
+		font-size: 10px;
+		padding: 10px 8px;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.navLinksWrapper {
+		display: none;
+	}
+
+	.hamburgerWrapper {
+		display: flex;
+	}
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
 }
