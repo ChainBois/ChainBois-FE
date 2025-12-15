@@ -1,3 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+	--font-space-g: var(--font-space-g);
+	--font-inter: var(--font-inter);
+}
+
+
 :root {
 	--foreground-rgb: 0, 0, 0;
 	--background-start-rgb: 214, 219, 220;
@@ -5,49 +13,43 @@
 	--theme: #0f0f0f;
 	--dark: #0a0a0a;
 	--chain-red: #ec1b24;
-	--background-gradient: linear-gradient(
-		to bottom,
-		rgba(236, 27, 36, 1),
-		rgba(54, 37, 12, 1),
-		transparent,
-		rgba(54, 37, 12, 1),
-		rgba(236, 27, 36, 1)
-	);
+	--background-gradient: linear-gradient(to bottom,
+			rgba(236, 27, 36, 1),
+			rgba(54, 37, 12, 1),
+			transparent,
+			rgba(54, 37, 12, 1),
+			rgba(236, 27, 36, 1));
 }
 
-* {
-	box-sizing: border-box;
+
+@layer base {
+	* {
+		@apply box-border
+	}
+
+	body {
+		@apply m-0 p-0 bg-[url('../assets/img/bgBox.png')] bg-black font-inter;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-space-g p-0 m-0;
+	}
+
+	p {
+		@apply font-inter p-0 m-0;
+	}
+
+	button {
+		@apply cursor-pointer disabled:cursor-not-allowed;
+	}
 }
 
-body {
-	margin: 0;
-	padding: 0;
-	background: url('../assets/img/bgBox.png') #000000;
-}
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	font-family: var(--font-space-g);
-	padding: 0;
-	margin: 0;
-}
-
-a {
-	text-decoration: none;
-}
-
-button {
-	cursor: pointer;
-}
-
-button:disabled {
-	cursor: not-allowed !important;
-}
 
 input:-internal-autofill-selected,
 input:-webkit-autofill,
