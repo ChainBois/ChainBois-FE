@@ -26,7 +26,7 @@ export async function generateMetadata() {
   try {
     return {
       metadataBase: new URL(
-        process.env.NEXT_PUBLIC_SITE_URL || "https://chain-bois.vercel.app"
+        process.env.NEXT_PUBLIC_SITE_URL || "https://chain-bois.vercel.app",
       ),
       title: `ChainBois | Elite Gaming on Avalanche`,
       description:
@@ -76,14 +76,14 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cf(
           inter.variable,
           spaceGrotesk.variable,
           manrope.variable,
           otomanopeeOne.variable,
-          anton.variable
+          anton.variable,
         )}
       >
         <ContextWrapper>
