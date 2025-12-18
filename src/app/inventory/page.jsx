@@ -1,11 +1,7 @@
-import React from "react";
-import InventoryHero from "./components/InventoryHero";
-import Myweapons from "./components/Myweapons";
 import BorderedButton from "@/components/BorderedButton";
-import { BsCaretRightFill } from "react-icons/bs";
-import s from "@/styles";
 import { Hero } from "@/components/Homepage";
-import { cf } from "@/utils";
+import { BsCaretRightFill } from "react-icons/bs";
+import Myweapons from "./components/Myweapons";
 
 /**
  * Render the Inventory page containing a hero section and the user's weapons list.
@@ -33,7 +29,7 @@ export default function InventoryPage() {
               tag={"View Marketplace"}
               isLink={true}
               action={"#marketplace"}
-              icon={<BsCaretRightFill className={cf(s.dInlineBlock)} />}
+              icon={<BsCaretRightFill />}
             />
           </>
         }

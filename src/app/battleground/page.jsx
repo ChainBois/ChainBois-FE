@@ -1,16 +1,10 @@
 "use client";
-import React from "react";
-import TournamentMobileCarousel from "./components/TournamentMobileCarousel";
-import TournamentCard from "./components/TournamentCard";
-import BattleHero from "./components/BattleHero";
-import Collections from "./components/Collections";
-import UpcomingTournaments from "./components/UpcomingTournaments";
-import CompletedTournaments from "./components/CompletedTournaments";
-import { Hero } from "@/components/Homepage";
 import BorderedButton from "@/components/BorderedButton";
+import { Hero } from "@/components/Homepage";
 import { BsCaretRightFill } from "react-icons/bs";
-import s from "@/styles";
-import { cf } from "@/utils";
+import Collections from "./components/Collections";
+import CompletedTournaments from "./components/CompletedTournaments";
+import UpcomingTournaments from "./components/UpcomingTournaments";
 
 /**
  * Display the Battleground page with a header and tournament sections.
@@ -40,7 +34,7 @@ export default function BattlegroundPage() {
               tag={"View Training Room"}
               isLink={true}
               action={"#training-room"}
-              icon={<BsCaretRightFill className={cf(s.dInlineBlock)} />}
+              icon={<BsCaretRightFill />}
             />
           </>
         }
@@ -51,9 +45,3 @@ export default function BattlegroundPage() {
     </>
   );
 }
-
-// style={{
-//   clipPath: "polygon(20% 0%, 100% 0%, 100% 70%, 0% 70%, 0% 35%)",
-//   // height: "200px",
-//   // width: "160px",
-// }}

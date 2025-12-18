@@ -5,6 +5,7 @@ import b from './BorderedButton.module.css'
 import s from '@/styles'
 import { memo } from 'react'
 import Link from 'next/link';
+import { isEqual } from '@/hooks';
 
 /**
  * Renders a bordered button or link with customizable content and styles.

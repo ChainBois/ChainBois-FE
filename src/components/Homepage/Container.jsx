@@ -1,8 +1,8 @@
 'use client'
 
-import { cf } from '@/utils'
-import s from '@/styles'
-import p from './Homepage.module.css'
+import s from '@/styles';
+import { cf } from '@/utils';
+import p from './Homepage.module.css';
 
 export default function Container({ tag, children }) {
 	return (

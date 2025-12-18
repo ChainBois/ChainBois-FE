@@ -1,15 +1,13 @@
 'use client'
 
-import { cf } from '@/utils'
-import s from '@/styles'
-import p from './Homepage.module.css'
-import g from './Gameplay.module.css'
-import Container from './Container'
-import GameplayBg from '@/assets/img/Gameplay.png'
-import Image from 'next/image'
-import { BsCaretRightFill } from 'react-icons/bs'
-import { useMemo } from 'react'
-import BorderedButton from '../BorderedButton'
+import GameplayBg from '@/assets/img/Gameplay.png';
+import s from '@/styles';
+import { cf } from '@/utils';
+import Image from 'next/image';
+import { useMemo } from 'react';
+import { BsCaretRightFill } from 'react-icons/bs';
+import BorderedButton from '../BorderedButton';
+import g from './Gameplay.module.css';
 
 function OddTile({ title, number, text }) {
 	return (
@@ -134,7 +132,7 @@ export default function Gameplay() {
 					<BorderedButton
 						tag={'Watch Gameplay'}
 						action={() => {}}
-						icon={<BsCaretRightFill className={cf(s.dInlineBlock)} />}
+						icon={<BsCaretRightFill />}
 						borderButtonContent={g.gameplayButtonContent}
 						borderButtonText={g.gameplayButtonText}
 					/>

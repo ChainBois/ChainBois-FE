@@ -1,14 +1,14 @@
 'use client'
 
-import { cf } from '@/utils'
-import t from './Team.module.css'
-import s from '@/styles'
-import Container from './Container'
-import Link from 'next/link'
-import Image from 'next/image'
-import { FaXTwitter } from 'react-icons/fa6'
-import { GoArrowRight } from 'react-icons/go'
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
+import s from '@/styles';
+import { cf } from '@/utils';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { FaXTwitter } from 'react-icons/fa6';
+import { GoArrowRight } from 'react-icons/go';
+import Container from './Container';
+import t from './Team.module.css';
 
 // Team members data
 const teamMembers = [

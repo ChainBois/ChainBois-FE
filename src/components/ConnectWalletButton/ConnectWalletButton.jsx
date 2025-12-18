@@ -1,18 +1,17 @@
 "use client";
 
+import { thirdwebClient } from "@/lib";
+import s from "@/styles";
+import { cf } from "@/utils";
+import { somniaTestnet } from "thirdweb/chains";
 import {
   ConnectButton,
   darkTheme,
   useActiveAccount,
-  useActiveWallet,
-  useWalletBalance,
+  useWalletBalance
 } from "thirdweb/react";
-import { createWallet, inAppWallet } from "thirdweb/wallets";
-import { somniaTestnet } from "thirdweb/chains";
-import { thirdwebClient } from "@/lib";
-import s from "@/styles";
+import { createWallet } from "thirdweb/wallets";
 import c from "./ConnectWalletButton.module.css";
-import { cf } from "@/utils";
 
 const wallets = [
   // inAppWallet(), // email/social login (optional)
