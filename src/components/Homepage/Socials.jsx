@@ -1,12 +1,11 @@
 'use client'
 
-import Link from 'next/link'
-import ClippedButton from '../ClippedButton'
-import s from '@/styles'
-import { cf } from '@/utils'
-import x from './Socials.module.css'
-import { FaXTwitter } from 'react-icons/fa6'
-import { BsDiscord } from 'react-icons/bs'
+import s from '@/styles';
+import { cf } from '@/utils';
+import { BsDiscord } from 'react-icons/bs';
+import { FaXTwitter } from 'react-icons/fa6';
+import ClippedButton from '../ClippedButton';
+import x from './Socials.module.css';
 
 export default function Socials() {
 	return (

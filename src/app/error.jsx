@@ -1,13 +1,11 @@
 'use client'
 
-import { cf } from '@/utils'
-import s from '@/styles'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import CBBranding from '@/assets/svg/CBBranding.svg'
-import { MdRefresh, MdHome, MdArrowBack } from 'react-icons/md'
-import styles from './error.module.css'
+import s from '@/styles';
+import { cf } from '@/utils';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { MdArrowBack, MdHome, MdRefresh } from 'react-icons/md';
+import styles from './error.module.css';
 
 export default function ErrorPage({
 	errorCode = 500,

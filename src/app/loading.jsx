@@ -1,9 +1,9 @@
 'use client'
 
-import { cf } from '@/utils'
-import s from '@/styles'
-import { useEffect, useState } from 'react'
-import styles from './loading.module.css'
+import s from '@/styles';
+import { cf } from '@/utils';
+import { useEffect, useState } from 'react';
+import styles from './loading.module.css';
 
 export default function LoadingPage({
 	message = 'Initializing Battle Systems...',

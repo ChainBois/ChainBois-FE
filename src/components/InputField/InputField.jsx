@@ -1,12 +1,12 @@
 'use client'
 
-import { useRef, useState, useMemo, useEffect } from 'react'
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
-import Select from 'react-select'
-import { Shared as s } from '@/styles'
-import { cf } from '@/utils'
-import { resolveMinimumDatetime, resolveTagName, getFieldValue } from './utils'
-import styles from './InputField.module.css'
+import { Shared as s } from '@/styles';
+import { cf } from '@/utils';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import Select from 'react-select';
+import styles from './InputField.module.css';
+import { getFieldValue, resolveMinimumDatetime, resolveTagName } from './utils';
 
 // ============================================================================
 // SUB-COMPONENTS

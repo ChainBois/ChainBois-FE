@@ -1,25 +1,18 @@
 "use client";
 
-import { cf } from "@/utils";
-import s from "@/styles";
-import h from "./Hero.module.css";
-import p from "./Homepage.module.css";
-import HeroImg from "@/assets/img/Hero.png";
-import Image from "next/image";
-import { MdInfoOutline, MdChevronRight } from "react-icons/md";
-import Button from "./../BorderedButton";
 import lockOpened from "@/assets/svg/lockOpened.svg";
+import s from "@/styles";
+import { cf } from "@/utils";
+import Image from "next/image";
 import Link from "next/link";
+import { MdInfoOutline } from "react-icons/md";
 import ConnectWalletButton from "../ConnectWalletButton";
+import Button from "./../BorderedButton";
+import h from "./Hero.module.css";
 
 export default function Hero({ welcomeText, subText, links }) {
   return (
     <section className={cf(s.wMax, s.flex, s.spaceXBetween, h.hero)}>
-      {/* <Image
-				src={HeroImg}
-				alt='Hero'
-				className={h.heroImg}
-			/> */}
       <div
         className={cf(
           s.flex,

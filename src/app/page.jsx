@@ -1,17 +1,17 @@
 'use client'
 
-import { cf } from '@/utils'
-import p from './page.module.css'
-import s from '@/styles'
 import {
 	Gameplay,
 	HomePageHero,
-	Roadmap,
-	Tournament,
-	Team,
-	Socials,
 	Partnership,
-} from '@/components/Homepage'
+	Roadmap,
+	Socials,
+	Team,
+	Tournament,
+} from '@/components/Homepage';
+import s from '@/styles';
+import { cf } from '@/utils';
+import p from './page.module.css';
 
 export default async function Page() {
 	return (

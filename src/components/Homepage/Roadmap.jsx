@@ -1,9 +1,9 @@
 'use client'
 
-import Container from './Container'
-import s from '@/styles'
-import r from './Roadmap.module.css'
-import { cf } from '@/utils'
+import s from '@/styles';
+import { cf } from '@/utils';
+import Container from './Container';
+import r from './Roadmap.module.css';
 
 function RoadmapCard({ title, isRed = false }) {
 	return (

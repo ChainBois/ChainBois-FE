@@ -1,13 +1,11 @@
 'use client'
 
-import { cf } from '@/utils'
-import s from '@/styles'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import CBBranding from '@/assets/svg/CBBranding.svg'
-import { MdHome, MdArrowBack, MdSearch, MdExplore } from 'react-icons/md'
-import styles from './not-found.module.css'
+import s from '@/styles';
+import { cf } from '@/utils';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { MdArrowBack, MdExplore, MdHome, MdSearch } from 'react-icons/md';
+import styles from './not-found.module.css';
 
 export default function NotFoundPage() {
 	const router = useRouter()

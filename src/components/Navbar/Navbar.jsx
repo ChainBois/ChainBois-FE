@@ -1,17 +1,16 @@
 "use client";
 
-import s from "@/styles";
-import n from "./Navbar.module.css";
-import { cf } from "@/utils";
 import CB from "@/assets/svg/CB.svg";
-import CHAINBOIS from "@/assets/svg/CHAINBOIS.svg";
 import CBBranding from "@/assets/svg/CBBranding.svg";
-import Image from "next/image";
-import { memo, useMemo, useState } from "react";
-import Link from "next/link";
 import { isEqual, useMain } from "@/hooks";
-import { MdArrowOutward } from "react-icons/md";
+import s from "@/styles";
+import { cf } from "@/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { memo, useMemo, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { MdArrowOutward } from "react-icons/md";
+import n from "./Navbar.module.css";
 
 function NavItem({
   tag = "Home",
@@ -134,24 +133,24 @@ export default function Navbar() {
             <NavItem
               tag="Battleground"
               action={"/battleground"}
-              showTooltip={false} // Show tooltip for this item
+              showTooltip={false}
             />
             <NavItem
               tag="Inventory"
               action={"/inventory"}
-              showTooltip={false} // Show tooltip for this item
+              showTooltip={false}
             />
             <NavItem
               tag="Training Room"
-              showTooltip={true} // Show tooltip for this item
+              showTooltip={true}
             />
             <NavItem
               tag="Marketplace"
-              showTooltip={true} // Show tooltip for this item
+              showTooltip={true}
             />
             <NavItem
               tag="Merch"
-              showTooltip={true} // false: Don't show tooltip for this item (if it's ready)
+              showTooltip={true}
             />
           </ul>
 

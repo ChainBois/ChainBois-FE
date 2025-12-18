@@ -1,9 +1,9 @@
-import { inter, anton, spaceGrotesk, otomanopeeOne, manrope } from "@/fonts";
+import { anton, inter, manrope, otomanopeeOne, spaceGrotesk } from "@/fonts";
 import { cf } from "@/utils";
 import "react-loading-skeleton/dist/skeleton.css";
-import "./global.css";
 import App from "./_components/_App";
 import ContextWrapper from "./_components/_ContextWrapper";
+import "./global.css";
 
 // Configure route segment behavior
 export const dynamic = "force-dynamic";

@@ -1,16 +1,10 @@
 "use client";
-import React from "react";
-import TournamentMobileCarousel from "./components/TournamentMobileCarousel";
-import TournamentCard from "./components/TournamentCard";
-import BattleHero from "./components/BattleHero";
-import Collections from "./components/Collections";
-import UpcomingTournaments from "./components/UpcomingTournaments";
-import CompletedTournaments from "./components/CompletedTournaments";
-import { Hero } from "@/components/Homepage";
 import BorderedButton from "@/components/BorderedButton";
+import { Hero } from "@/components/Homepage";
 import { BsCaretRightFill } from "react-icons/bs";
-import s from "@/styles";
-import { cf } from "@/utils";
+import Collections from "./components/Collections";
+import CompletedTournaments from "./components/CompletedTournaments";
+import UpcomingTournaments from "./components/UpcomingTournaments";
 
 export default function BattlegroundPage() {
   return (
@@ -34,7 +28,7 @@ export default function BattlegroundPage() {
               tag={"View Training Room"}
               isLink={true}
               action={"#training-room"}
-              icon={<BsCaretRightFill className={cf(s.dInlineBlock)} />}
+              icon={<BsCaretRightFill />}
             />
           </>
         }

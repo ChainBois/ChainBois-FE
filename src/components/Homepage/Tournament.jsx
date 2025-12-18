@@ -1,15 +1,14 @@
 'use client'
 
-import { useMain, useResizeEffect, useThrottle } from '@/hooks'
-import { cf } from '@/utils'
-import s from '@/styles'
-import p from './Homepage.module.css'
-import t from './Tournament.module.css'
-import './Tournament.module.css'
-import Container from './Container'
-import TournamentCard from '../TournamentCard'
-import { LuArrowLeft, LuArrowRight } from 'react-icons/lu'
-import { useEffect, useRef, useState } from 'react'
+import { useMain, useResizeEffect, useThrottle } from '@/hooks';
+import s from '@/styles';
+import { cf } from '@/utils';
+import { useEffect, useRef, useState } from 'react';
+import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
+import TournamentCard from '../TournamentCard';
+import Container from './Container';
+import './Tournament.module.css';
+import t from './Tournament.module.css';
 
 export default function Tournament() {
 	const slidingCardsRef = useRef()

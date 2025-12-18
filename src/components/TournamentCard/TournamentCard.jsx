@@ -1,16 +1,16 @@
 'use client'
 
-import t from './TournamentCard.module.css'
-import './TournamentCard.module.css'
-import s from '@/styles'
-import { cf } from '@/utils'
-import { BsCaretRightFill } from 'react-icons/bs'
-import { FaRegFlag } from 'react-icons/fa6'
-import { HiOutlineTrophy } from 'react-icons/hi2'
-import { useCallback, useRef, useState, useEffect } from 'react'
-import BorderedButton from '../BorderedButton'
-import Ruins from '@/assets/img/Ruins.png'
-import Image from 'next/image'
+import Ruins from '@/assets/img/Ruins.png';
+import s from '@/styles';
+import { cf } from '@/utils';
+import Image from 'next/image';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { BsCaretRightFill } from 'react-icons/bs';
+import { FaRegFlag } from 'react-icons/fa6';
+import { HiOutlineTrophy } from 'react-icons/hi2';
+import BorderedButton from '../BorderedButton';
+import './TournamentCard.module.css';
+import t from './TournamentCard.module.css';
 
 function TournamentStat({ tag, value, icon }) {
 	return (
