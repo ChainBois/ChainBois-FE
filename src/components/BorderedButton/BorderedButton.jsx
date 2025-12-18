@@ -74,7 +74,7 @@ export default function BorderedButton({
 					{tag}
 				</span>
 				<span
-					className={cf(s.dInlineBlock, b.borderButtonIcon, borderButtonIcon)}
+					className={cf(s.flex, s.flexCenter, b.borderButtonIcon, borderButtonIcon)}
 				>
 					{icon}
 				</span>

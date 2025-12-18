@@ -5,7 +5,7 @@ import p from './page.module.css'
 import s from '@/styles'
 import {
 	Gameplay,
-	Hero,
+	HomePageHero,
 	Roadmap,
 	Tournament,
 	Team,
@@ -16,7 +16,7 @@ import {
 export default async function Page() {
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexStart, p.page)}>
-			<Hero />
+			<HomePageHero />
 			<Gameplay />
 			<Tournament />
 			<Roadmap />
