@@ -55,7 +55,7 @@ export default function LoadingPage({
 	}, [messages])
 
 	return (
-		<div className={cf(s.vHMax, s.flex, s.flex_dColumn, styles.loadingPage)}>
+		<div className={cf(s.flex, s.flex_dColumn, styles.loadingPage)}>
 			{/* Animated Background */}
 			<div className={styles.backgroundAnimation}>
 				<div className={cf(styles.particle, styles.particle1)}></div>

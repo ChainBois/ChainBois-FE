@@ -9,9 +9,9 @@ import Footer from "@/components/Footer";
 export default function App({ children }) {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <main className={cf(s.wMax, s.p_relative, a.main)}>{children}</main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

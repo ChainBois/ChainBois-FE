@@ -26,7 +26,7 @@ export default function ErrorPage({
 	}
 
 	return (
-		<div className={cf(s.vHMax, s.flex, s.flex_dColumn, styles.errorPage)}>
+		<div className={cf(s.flex, s.flex_dColumn, styles.errorPage)}>
 			{/* Main Content */}
 			<section
 				className={cf(

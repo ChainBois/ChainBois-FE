@@ -17,7 +17,7 @@ export default function NotFoundPage() {
 	}
 
 	return (
-		<div className={cf(s.vHMax, s.flex, s.flex_dColumn, styles.notFoundPage)}>
+		<div className={cf(s.flex, s.flex_dColumn, styles.notFoundPage)}>
 			<section
 				className={cf(
 					s.flexOne,
