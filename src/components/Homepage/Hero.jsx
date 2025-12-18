@@ -55,7 +55,7 @@ export const HomePageHero = () => {
       }
       links={
         <>
-          <Button
+          <BorderedButton
             tag={"Request Access"}
             action={() => {}}
             icon={

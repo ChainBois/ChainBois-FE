@@ -13,7 +13,7 @@ import s from '@/styles';
 import { cf } from '@/utils';
 import p from './page.module.css';
 
-export default async function Page() {
+export default function Page() {
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexStart, p.page)}>
 			<HomePageHero />

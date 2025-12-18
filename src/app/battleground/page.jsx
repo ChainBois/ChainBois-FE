@@ -39,9 +39,3 @@ export default function BattlegroundPage() {
     </>
   );
 }
-
-// style={{
-//   clipPath: "polygon(20% 0%, 100% 0%, 100% 70%, 0% 70%, 0% 35%)",
-//   // height: "200px",
-//   // width: "160px",
-// }}

@@ -140,18 +140,9 @@ export default function Navbar() {
               action={"/inventory"}
               showTooltip={false}
             />
-            <NavItem
-              tag="Training Room"
-              showTooltip={true}
-            />
-            <NavItem
-              tag="Marketplace"
-              showTooltip={true}
-            />
-            <NavItem
-              tag="Merch"
-              showTooltip={true}
-            />
+            <NavItem tag="Training Room" showTooltip={true} />
+            <NavItem tag="Marketplace" showTooltip={true} />
+            <NavItem tag="Merch" showTooltip={true} />
           </ul>
 
           <PlayButton />
