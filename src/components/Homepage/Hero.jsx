@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MdInfoOutline } from "react-icons/md";
 import ConnectWalletButton from "../ConnectWalletButton";
-import Button from "./../BorderedButton";
+import BorderedButton from "./../BorderedButton";
 import h from "./Hero.module.css";
 
 export default function Hero({ welcomeText, subText, links }) {
