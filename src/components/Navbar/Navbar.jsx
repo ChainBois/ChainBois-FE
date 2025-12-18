@@ -15,7 +15,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 function NavItem({
   tag = "Home",
-  action = "/",
+  action = null,
   isLink = true,
   showTooltip = true,
   tooltipText = "Coming Soon",
@@ -133,32 +133,24 @@ export default function Navbar() {
           <ul className={cf(s.flex, s.flexCenter, n.navLinks)}>
             <NavItem
               tag="Battleground"
-              action={"/#battleground"}
-              showTooltip={true} // Show tooltip for this item
-            />
-            <NavItem
-              tag="Armory"
-              action={"/#armory"}
-              showTooltip={true} // Show tooltip for this item
+              action={"/battleground"}
+              showTooltip={false} // Show tooltip for this item
             />
             <NavItem
               tag="Inventory"
-              action={"/#inventory"}
-              showTooltip={true} // Show tooltip for this item
+              action={"/inventory"}
+              showTooltip={false} // Show tooltip for this item
             />
             <NavItem
               tag="Training Room"
-              action={"/#training-room"}
               showTooltip={true} // Show tooltip for this item
             />
             <NavItem
               tag="Marketplace"
-              action={"/#marketplace"} // Fixed typo: was '/#martket'
               showTooltip={true} // Show tooltip for this item
             />
             <NavItem
               tag="Merch"
-              action={"/#merch"}
               showTooltip={true} // false: Don't show tooltip for this item (if it's ready)
             />
           </ul>
