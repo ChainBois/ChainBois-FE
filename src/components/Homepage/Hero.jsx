@@ -12,6 +12,15 @@ import lockOpened from "@/assets/svg/lockOpened.svg";
 import Link from "next/link";
 import ConnectWalletButton from "../ConnectWalletButton";
 
+/**
+ * Render a hero section with a title, descriptive text, action links, and a wallet CTA.
+ *
+ * @param {Object} props
+ * @param {React.ReactNode} props.welcomeText - Content rendered as the hero title.
+ * @param {React.ReactNode} props.subText - Content rendered as the hero descriptive text.
+ * @param {React.ReactNode} props.links - Action elements (buttons/links) rendered inside the hero actions navigation.
+ * @returns {JSX.Element} The hero section element.
+ */
 export default function Hero({ welcomeText, subText, links }) {
   return (
     <section className={cf(s.wMax, s.flex, s.spaceXBetween, h.hero)}>
