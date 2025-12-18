@@ -6,6 +6,12 @@ import Collections from "./components/Collections";
 import CompletedTournaments from "./components/CompletedTournaments";
 import UpcomingTournaments from "./components/UpcomingTournaments";
 
+/**
+ * Display the Battleground page with a header and tournament sections.
+ *
+ * Renders a Hero header (welcome text, subtext, and a training-room link button) followed by Collections, UpcomingTournaments, and CompletedTournaments sections.
+ * @returns {JSX.Element} The Battleground page component.
+ */
 export default function BattlegroundPage() {
   return (
     <>

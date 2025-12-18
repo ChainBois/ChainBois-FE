@@ -12,6 +12,20 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdArrowOutward } from "react-icons/md";
 import n from "./Navbar.module.css";
 
+/**
+ * Render a navigation item that can be a link, button, or static label with an optional hover tooltip.
+ *
+ * Renders a list item containing either a Next.js Link, a button, or a span depending on `isLink`
+ * and `action`. When `showTooltip` is true, displays `tooltipText` in a tooltip while hovered.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.tag="Home"] - Visible text for the nav item.
+ * @param {string|Function|null} [props.action=null] - URL string for links, click handler for buttons, or null for a non-interactive label.
+ * @param {boolean} [props.isLink=true] - If true, render as a link/span; if false, render as a button.
+ * @param {boolean} [props.showTooltip=true] - Whether to show a tooltip on hover.
+ * @param {string} [props.tooltipText="Coming Soon"] - Text displayed inside the tooltip.
+ * @returns {JSX.Element} The rendered navigation list item.
+ */
 function NavItem({
   tag = "Home",
   action = null,
@@ -104,6 +118,14 @@ function PlayButton() {
   );
 }
 
+/**
+ * Render the site header containing branding, primary navigation links, a play button, and a hamburger menu.
+ *
+ * Chooses a compact branding asset when the layout is small and arranges navigation items (some with tooltips),
+ * the play action, and a responsive hamburger control.
+ *
+ * @returns {JSX.Element} The navbar header element.
+ */
 export default function Navbar() {
   const { isSmall } = useMain();
   const branding = useMemo(() => (isSmall ? CB : CBBranding), [isSmall]);
