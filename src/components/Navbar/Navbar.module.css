@@ -158,7 +158,7 @@
 /* Small device */
 @media only screen and (max-width: 834px) {
 	.nav {
-		padding: 61px 66px 10px;
+		padding: 61px 64px 10px;
 	}
 
 	.logo {
@@ -177,6 +177,10 @@
 
 /* Tiny device */
 @media only screen and (max-width: 480px) {
+	.nav {
+		padding: 54px 34px 10px;
+	}
+
 	.navLinksWrapper {
 		display: none;
 	}

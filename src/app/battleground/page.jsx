@@ -5,6 +5,7 @@ import { BsCaretRightFill } from "react-icons/bs";
 import Collections from "./components/Collections";
 import CompletedTournaments from "./components/CompletedTournaments";
 import UpcomingTournaments from "./components/UpcomingTournaments";
+import h from "@/components/Homepage/Hero.module.css";
 
 /**
  * Display the Battleground page with a header and tournament sections.
@@ -35,6 +36,8 @@ export default function BattlegroundPage() {
               isLink={true}
               action={"#training-room"}
               icon={<BsCaretRightFill />}
+              borderButtonText={h.heroActionText}
+              borderButtonIcon={h.heroActionIcon}
             />
           </>
         }

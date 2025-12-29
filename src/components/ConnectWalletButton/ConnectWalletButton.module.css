@@ -94,3 +94,92 @@
   font-weight: 400 !important;
   line-height: 120% !important;
 }
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Air landscape */
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+  .standIn {
+    padding: 6px 7px 14px 17.5px;
+    width: 250px;
+    gap: 0px;
+  }
+
+  .standInDot {
+    margin: 0 0 4.5px auto;
+    width: 4.2px;
+    height: 4.2px;
+  }
+
+  .standInTitle {
+    font-size: 11px;
+    margin: 0 0 3.5px auto;
+  }
+
+  .standInText,
+  .standInFooterText {
+    font-size: 9px;
+  }
+
+  .standInText {
+    margin: 0 0 19px;
+  }
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+  .standIn {
+    padding: 5.5px 6.5px 12.5px 16px;
+  }
+
+  .standInDot {
+    margin: 0 0 4.5px auto;
+    width: 3.89px;
+    height: 3.89px;
+  }
+
+  .standInTitle {
+    font-size: 10px;
+    margin: 0 0 3px auto;
+  }
+
+  .standInText,
+  .standInFooterText {
+    font-size: 9px;
+  }
+
+  .standInText {
+    margin: 0 0 18px;
+  }
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
+}

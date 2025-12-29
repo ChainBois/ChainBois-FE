@@ -58,7 +58,9 @@ export const HomePageHero = () => {
       }
       subText={
         <>
-          ChainBois is a 3rd person shooter P2E game on AVAX <br />
+          ChainBois is a 3rd person shooter P2E{" "}
+          <br className={cf(h.lgHidden)} /> game on AVAX{" "}
+          <br className={cf(h.mdHidden)} />
           available on Mobile & PC.
         </>
       }
@@ -66,7 +68,8 @@ export const HomePageHero = () => {
         <>
           <BorderedButton
             tag={"Request Access"}
-            action={() => {}}
+            action={ () => { } }
+            borderButtonText={h.heroActionText}
             icon={
               <Image src={lockOpened} alt="lock" className={h.heroActionIcon} />
             }
@@ -75,7 +78,7 @@ export const HomePageHero = () => {
             href={"/docs"}
             className={cf(s.flex, s.flexCenter, h.heroAction)}
           >
-            <MdInfoOutline className={cf(s.dInlineBlock, h.heroActionIcon)} />
+            <MdInfoOutline className={cf(s.dInlineBlock,  h.heroActionIcon)} />
             <span className={cf(s.dInlineBlock, h.heroActionText)}>
               Read Docs
             </span>

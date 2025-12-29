@@ -1,66 +1,70 @@
 .hero {
-	padding: 140px 200px 140px;
+  padding: 140px 200px 140px;
 }
 
 .heroContent {
-	gap: 20px 0;
-	margin: 0 0 50px;
+  gap: 20px 0;
+  margin: 0 0 50px;
 }
 
 .heroTitle {
-	color: #fff;
-	text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-	font-family: var(--font-space-g);
-	font-size: 90px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: 100%; /* 90px */
+  color: #fff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  font-family: var(--font-space-g);
+  font-size: 90px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 90px */
 }
 
 .heroText {
-	color: #fff;
-	font-family: var(--font-inter);
-	font-size: 18px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: 160%; /* 28.8px */
+  color: #fff;
+  font-family: var(--font-inter);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%; /* 28.8px */
 }
 
 .heroAction {
-	height: 44px;
-	padding: 0 18px;
-	gap: 8px;
-	border: none;
-	border-radius: 3px;
-	background: rgba(255, 255, 255, 0.5);
-	color: #121212;
-	font-family: var(--font-inter);
-	font-size: 10px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: 140%; /* 14px */
+  height: 44px;
+  padding: 0 18px;
+  gap: 8px;
+  border: none;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.5);
+  color: #121212;
+  font-family: var(--font-inter);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 14px */
 }
 
 .heroAction:hover {
-	background: #fff;
-	/* color: #fff; */
+  background: #fff;
+  /* color: #fff; */
 }
 
 .heroActionIcon {
-	width: 12px;
-	height: 12px;
-	aspect-ratio: 1/1;
+  width: 12px;
+  height: 12px;
+  aspect-ratio: 1/1;
 }
 
 .heroActions {
-	gap: 10px;
+  gap: 10px;
 }
 
 .heroCTA {
-	align-self: flex-end;
-	height: 150px;
-	width: 353px;
-	padding: 5px;
+  align-self: flex-end;
+  height: 150px;
+  width: 353px;
+  padding: 5px;
+}
+
+.lgHidden {
+  display: none;
 }
 
 /* --------------------------- Media Queries ------------------------- */
@@ -86,32 +90,61 @@
 
 /* Small device */
 @media only screen and (max-width: 834px) {
-	.hero {
-		padding: 124px 66px;
-	}
+  .hero {
+    padding: 124px 64px;
+  }
 
-	.heroContent {
-		gap: 18px 0;
-	}
+  .heroContent {
+    gap: 18px 0;
+  }
 
-	.heroTitle {
-		font-size: 48px;
-	}
+  .heroTitle {
+    font-size: 48px;
+  }
 
-	.heroText {
-		font-size: 18px;
-	}
+  .heroText {
+    font-size: 18px;
+  }
+
+  .lgHidden {
+    display: unset;
+  }
+
+  .mdHidden {
+    display: none;
+  }
+
+  .heroCTA {
+    width: 250px;
+    height: 89px;
+  }
 }
 
 /* Tiny device */
 @media only screen and (max-width: 480px) {
-	.heroTitle {
-		font-size: 36px;
-	}
+  .hero {
+    padding: 62px 34px;
+  }
 
-	.heroText {
-		font-size: 14px;
-	}
+  .heroTitle {
+    font-size: 36px;
+  }
+
+  .heroText {
+    font-size: 14px;
+  }
+
+  .heroCTA {
+    width: 100%;
+  }
+
+  .heroActionText {
+	font-size: 10px;
+  }
+
+  .heroActionIcon {
+	font-size: 12px;
+  }
 }
 
 /* iPhone 12 */

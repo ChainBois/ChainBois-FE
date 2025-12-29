@@ -20,7 +20,6 @@ const wallets = [
   createWallet("app.phantom"),
   createWallet("com.coinbase.wallet"),
   createWallet("com.trustwallet.app"),
-  // createWallet('com.safepal'),
 ];
 
 const StandIn = () => {
