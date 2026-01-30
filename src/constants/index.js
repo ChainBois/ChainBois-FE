@@ -8,6 +8,8 @@ export const DEFAULT_SIZE = process.env.NEXT_PUBLIC_DEFAULT_SIZE
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
 export const WEBSOCKET_URL = process.env.NEXT_PUBLIC_WEBSOCKET_URL
 export const PUBLIC_ENV = process.env.NEXT_PUBLIC_ENV
+export const MOBILE_QUERY = '(max-width: 480px)'
+export const TABLET_QUERY = '(max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape)'
 export const PERA_FETCH_PROPERTIES_COLLECTIBLE = {
 	asset_id: 1173059803,
 	name: 'Gunny Hero: Hazel',

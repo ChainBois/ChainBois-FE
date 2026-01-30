@@ -13,7 +13,6 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 6rem;
 	width: 103px;
 	height: 103px;
 	z-index: 1;
@@ -162,8 +161,11 @@
 
 .borderButtonText,
 .playIcon {
-	color: #121212;
-	font-size: 16px;
+	display: inline-flex;
+	justify-content: flex-start;
+	align-items: center;
+	color: #121212 !important;
+	font-size: 16px !important;
 }
 
 .tournamentMeta {
@@ -201,6 +203,9 @@
 .card__stat__icon {
 	width: 16.5px;
 	height: 16.5px;
+	display: inline-flex;
+	justify-content: flex-start;
+	align-items: flex-start;
 }
 
 .card__stat__value {
@@ -222,5 +227,265 @@
 
 .flag,
 .trophy {
-	font-weight: 16px;
+	font-size: 16px !important;
+}
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Air landscape */
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.tournamentCard {
+		width: 546px;
+		height: 305px;
+	}
+
+	.card__container {
+		padding: 14px 25px 43px;
+		gap: 16px;
+	}
+
+	.tournamentInfo {
+		padding: 18px;
+	}
+
+	.tournamentInfo,
+	.tournamentMeta {
+		width: 280px;
+		border-radius: 4.6px;
+	}
+
+	.tournamentTitle {
+		font-size: 27px;
+		margin-bottom: 3px;
+	}
+
+	.tournamentLore {
+		font-size: 8px;
+		margin-bottom: 12px;
+	}
+
+	.borderButtonContent {
+		padding: 9px 12px;
+	}
+
+	.borderButtonText,
+	.playIcon {
+		font-size: 7px !important;
+	}
+
+	.tournamentMeta {
+		padding: 9px;
+		gap: 28px;
+	}
+
+	.card__stat {
+		gap: 4px;
+	}
+
+	.card__stat__tag {
+		font-size: 5.5px;
+	}
+
+	.card__stat__inner__wrapper {
+		gap: 2.5px;
+	}
+
+	.card__stat__icon {
+		width: 6.5px;
+		height: 6.5px;
+	}
+
+	.card__stat__value {
+		font-size: 7px;
+	}
+
+	.statusIndicator {
+		width: 7px;
+		height: 7px;
+	}
+
+	.flag,
+	.trophy {
+		font-size: 6px !important;
+	}
+
+	.svg {
+		display: none;
+	}
+
+	.card__percent {
+		top: 14px;
+		left: 25px;
+		width: 52px !important;
+		height: 52px !important;
+	}
+
+	.card__number {
+		width: 52px !important;
+		height: 52px !important;
+	}
+
+	.card__number {
+		padding: 2.7px 4.5px !important;
+		gap: 1px !important;
+	}
+
+	.card__number .progress {
+		font-size: 9px !important;
+	}
+
+	.card__number .days {
+		font-size: 3.5px !important;
+	}
+
+	.borderButton {
+		padding: 2.5px;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.tournamentCard {
+		width: 244px;
+		height: 136.5px;
+		padding: 1px;
+	}
+
+	.card__container {
+		padding: 20px 11px 18px;
+		gap: 16px;
+	}
+
+	.tournamentInfo {
+		padding: 8px;
+	}
+
+	.tournamentInfo,
+	.tournamentMeta {
+		width: 126px;
+		border-radius: 2px;
+	}
+
+	.tournamentTitle {
+		font-size: 12px;
+		margin-bottom: 1.5px;
+	}
+
+	.tournamentLore {
+		font-size: 3.5px;
+		margin-bottom: 5.4px;
+	}
+
+	.borderButtonContent {
+		padding: 4px 6px;
+		gap: 2px;
+	}
+
+	.borderButtonText,
+	.playIcon {
+		font-size: 3.8px !important;
+		line-height: normal;
+	}
+
+	.tournamentMeta {
+		padding: 4px 4px 4.5px;
+		gap: 12.5px;
+	}
+
+	.card__stat {
+		gap: 2px;
+	}
+
+	.card__stat__tag {
+		font-size: 2.6px;
+	}
+
+	.card__stat__inner__wrapper {
+		gap: 0.5px;
+	}
+
+	.card__stat__icon {
+		width: 2.8px;
+		height: 2.8px;
+		line-height: normal;
+	}
+
+	.card__stat__value {
+		font-size: 3.24px;
+		line-height: normal;
+	}
+
+	.statusIndicator {
+		width: 2.8px;
+		height: 2.8px;
+	}
+
+	.flag,
+	.trophy {
+		font-size: 2.8px !important;
+	}
+
+	.svg {
+		display: none;
+	}
+
+	.card__percent {
+		top: 20px;
+		left: 11px;
+		width: 20px !important;
+		height: 20px !important;
+	}
+
+	.card__number {
+		width: 20px !important;
+		height: 20px !important;
+	}
+
+	.card__number {
+		padding: 2px 2px 1.2px !important;
+		gap: 2px !important;
+	}
+
+	.card__number .progress {
+		font-size: 8px !important;
+	}
+
+	.card__number .days {
+		font-size: 4px !important;
+	}
+
+	.borderButton {
+		padding: 1.2px !important;
+	}
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
 }

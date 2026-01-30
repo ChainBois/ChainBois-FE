@@ -1,0 +1,306 @@
+---hooks/useWindowEvent.js
+
+'use client'
+
+import { useEffect } from 'react'
+import { useThrottle } from './useThrottle'
+import { useWindowEffect } from './useWindowEffect'
+
+/**
+ * A custom React hook for managing a single window event listener with throttling.
+ * Automatically handles SSR compatibility and cleanup on unmount.
+ *
+ * @param {string} event - The window event name to listen for (e.g., 'resize', 'scroll', 'keydown')
+ * @param {Function} handler - The event handler function to execute when the event fires
+ * @param {Array<any>} [deps=[]] - Dependencies array for the handler function (similar to useEffect deps)
+ * @param {number} [throttleMs=100] - Throttle delay in milliseconds to limit handler execution frequency
+ * @param {AddEventListenerOptions|boolean} [options={}] - Standard addEventListener options
+ * @param {boolean} [options.passive] - If true, indicates that the function will never call preventDefault()
+ * @param {boolean} [options.once] - If true, the listener will be automatically removed after triggering once
+ * @param {boolean} [options.capture] - If true, the listener will be triggered during the capture phase
+ * @param {AbortSignal} [options.signal] - An AbortSignal to remove the event listener
+ *
+ * @returns {void}
+ *
+ * @example
+ * // Basic usage - throttled resize handler
+ * useWindowEvent('resize', () => {
+ *   console.log('Window resized:', window.innerWidth, window.innerHeight)
+ * })
+ *
+ * @example
+ * // With dependencies and custom throttling
+ * const [count, setCount] = useState(0)
+ * useWindowEvent('scroll', () => {
+ *   console.log('Scroll event, count is:', count)
+ * }, [count], 200)
+ *
+ * @example
+ * // With event listener options
+ * useWindowEvent('wheel', handleWheel, [], 50, { passive: true })
+ *
+ * @example
+ * // Keyboard event handling
+ * useWindowEvent('keydown', (event) => {
+ *   if (event.key === 'Escape') {
+ *     closeModal()
+ *   }
+ * }, [closeModal])
+ *
+ * @example
+ * // One-time event listener
+ * useWindowEvent('load', () => {
+ *   console.log('Window loaded')
+ * }, [], 0, { once: true })
+ *
+ * @since 1.0.0
+ * @see {@link useThrottle} for general function throttling
+ * @see {@link useWindowEffect} for handling multiple events simultaneously
+ */
+export const useWindowEvent = (
+	event,
+	handler,
+	deps = [],
+	throttleMs = 100,
+	options = {}
+) => {
+	const throttledHandler = useThrottle(handler, deps, throttleMs)
+
+	useEffect(() => {
+		if (typeof window === 'undefined') return
+
+		window.addEventListener(event, throttledHandler, options)
+
+		return () => {
+			window.removeEventListener(event, throttledHandler, options)
+		}
+	}, [event, throttledHandler, options])
+}
+
+---hooks/useWindowEffect.js
+
+'use client'
+
+import { throttle } from '@/utils'
+import { useEffect, useMemo } from 'react'
+import { useWindowEvent } from './useWindowEvent'
+
+/**
+ * A custom React hook that manages multiple window event listeners with throttling capabilities.
+ * Automatically handles SSR compatibility, prevents memory leaks, and provides efficient event management.
+ *
+ * @param {Array<{event: string, handler: Function}>} events - Array of event configuration objects
+ * @param {string} events[].event - The window event name (e.g., 'resize', 'scroll', 'keydown')
+ * @param {Function} events[].handler - The event handler function for this event
+ * @param {Array<any>} [deps=[]] - Dependencies array for all event handlers (similar to useEffect deps)
+ * @param {number} [throttleMs=100] - Throttle delay in milliseconds applied to all handlers
+ * @param {AddEventListenerOptions|boolean} [options={}] - Standard addEventListener options for all events
+ * @param {boolean} [options.passive] - If true, indicates handlers will never call preventDefault()
+ * @param {boolean} [options.once] - If true, listeners will be automatically removed after first trigger
+ * @param {boolean} [options.capture] - If true, listeners will trigger during the capture phase
+ * @param {AbortSignal} [options.signal] - An AbortSignal to remove all event listeners
+ *
+ * @returns {void}
+ *
+ * @example
+ * // Multiple related events
+ * useWindowEffect([
+ *   { event: 'resize', handler: handleResize },
+ *   { event: 'orientationchange', handler: handleOrientationChange }
+ * ], [isReady], 150)
+ *
+ * @example
+ * // Scroll and mouse events with passive option
+ * useWindowEffect([
+ *   { event: 'scroll', handler: handleScroll },
+ *   { event: 'wheel', handler: handleWheel },
+ *   { event: 'touchmove', handler: handleTouch }
+ * ], [scrollPosition], 50, { passive: true })
+ *
+ * @example
+ * // Keyboard shortcuts system
+ * const [shortcuts, setShortcuts] = useState({})
+ * useWindowEffect([
+ *   { event: 'keydown', handler: handleKeyDown },
+ *   { event: 'keyup', handler: handleKeyUp }
+ * ], [shortcuts], 0) // No throttling for keyboard events
+ *
+ * @example
+ * // Focus management
+ * useWindowEffect([
+ *   { event: 'focus', handler: handleFocus },
+ *   { event: 'blur', handler: handleBlur },
+ *   { event: 'visibilitychange', handler: handleVisibilityChange }
+ * ], [isActive])
+ *
+ * @since 1.0.0
+ * @see {@link useWindowEvent} for handling a single window event
+ */
+export const useWindowEffect = (
+	events,
+	deps = [],
+	throttleMs = 100,
+	options = {}
+) => {
+	const throttledHandlers = useMemo(() => {
+		return events.map(({ event, handler }) => ({
+			event,
+			handler: throttle(handler, throttleMs),
+		}))
+	}, [events, throttleMs, ...deps])
+
+	useEffect(() => {
+		if (typeof window === 'undefined') return
+
+		throttledHandlers.forEach(({ event, handler }) => {
+			window.addEventListener(event, handler, options)
+		})
+
+		return () => {
+			throttledHandlers.forEach(({ event, handler }) => {
+				window.removeEventListener(event, handler, options)
+				handler.cleanup?.()
+			})
+		}
+	}, [throttledHandlers, options])
+}
+
+---hooks/useResizeEffect.js
+
+'use client'
+
+import { useEffect, useCallback } from 'react'
+import { useWindowEffect } from './useWindowEffect'
+import { useWindowEvent } from './useWindowEvent'
+
+/**
+ * A custom React hook that executes a callback function when the window size changes.
+ * Handles window resize, device orientation changes, and initial load events with throttling.
+ * Provides immediate execution on mount for initial sizing calculations.
+ *
+ * @param {Function} callback - The function to execute when resize events occur
+ * @param {Array<any>} [deps=[]] - Dependencies array for the callback function
+ * @param {number} [throttleTime=150] - Throttle delay in milliseconds (optimized for resize events)
+ * @param {Object} [options={}] - Configuration options
+ * @param {boolean} [options.includeLoad=true] - Whether to listen for window load events
+ * @param {boolean} [options.includeOrientation=true] - Whether to listen for orientation changes
+ * @param {boolean} [options.includeDOMReady=false] - Whether to listen for DOMContentLoaded
+ * @param {boolean} [options.executeOnMount=true] - Whether to execute callback immediately on mount
+ * @param {AddEventListenerOptions} [options.eventOptions={ passive: true }] - Event listener options
+ *
+ * @returns {void}
+ *
+ * @example
+ * // Basic usage - handle window resize
+ * useResizeEffect(() => {
+ *   const { width, height } = getViewportSize()
+ *   updateLayout(width, height)
+ * })
+ *
+ * @example
+ * // With dependencies and custom throttling
+ * const [breakpoint, setBreakpoint] = useState('desktop')
+ * useResizeEffect(() => {
+ *   const width = window.innerWidth
+ *   const newBreakpoint = getBreakpoint(width)
+ *   if (newBreakpoint !== breakpoint) {
+ *     setBreakpoint(newBreakpoint)
+ *   }
+ * }, [breakpoint], 100)
+ *
+ * @example
+ * // Custom configuration
+ * useResizeEffect(handleResize, [dependency], 200, {
+ *   includeOrientation: false,  // Skip orientation events
+ *   includeDOMReady: true,      // Include DOMContentLoaded
+ *   executeOnMount: false,      // Don't run on mount
+ *   eventOptions: { passive: false }
+ * })
+ *
+ * @example
+ * // Responsive component sizing
+ * const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+ *
+ * useResizeEffect(() => {
+ *   setDimensions({
+ *     width: window.innerWidth,
+ *     height: window.innerHeight
+ *   })
+ * }, [])
+ *
+ * @since 1.0.0
+ * @see {@link useWindowEffect} for handling multiple window events
+ * @see {@link useWindowEvent} for handling single window events
+ */
+export const useResizeEffect = (
+	callback,
+	deps = [],
+	throttleTime = 150,
+	options = {}
+) => {
+	const {
+		includeLoad = true,
+		includeOrientation = true,
+		includeDOMReady = false,
+		executeOnMount = true,
+		eventOptions = { passive: true },
+	} = options
+
+	// Memoize callback to prevent unnecessary re-renders
+	const memoizedCallback = useCallback(callback, deps)
+
+	// Build events array based on options
+	const events = []
+
+	// Always include resize - it's the core event
+	events.push({ event: 'resize', handler: memoizedCallback })
+
+	if (includeLoad) {
+		events.push({ event: 'load', handler: memoizedCallback })
+	}
+
+	if (includeOrientation) {
+		events.push({ event: 'orientationchange', handler: memoizedCallback })
+	}
+
+	if (includeDOMReady) {
+		events.push({ event: 'DOMContentLoaded', handler: memoizedCallback })
+	}
+
+	// Use the robust useWindowEffect for event management
+	useWindowEffect(events, deps, throttleTime, eventOptions)
+
+	// Execute callback immediately on mount if requested
+	useEffect(() => {
+		if (executeOnMount && typeof window !== 'undefined') {
+			memoizedCallback()
+		}
+	}, [executeOnMount, memoizedCallback])
+}
+
+/**
+ * A simplified version of useResizeEffect for basic resize handling.
+ * Only listens to window resize events with default settings.
+ *
+ * @param {Function} callback - The function to execute on window resize
+ * @param {Array<any>} [deps=[]] - Dependencies array for the callback function
+ * @param {number} [throttleTime=150] - Throttle delay in milliseconds
+ *
+ * @returns {void}
+ *
+ * @example
+ * // Simple resize handler
+ * useSimpleResize(() => {
+ *   console.log('Window resized to:', window.innerWidth, 'x', window.innerHeight)
+ * })
+ *
+ * @since 1.0.0
+ */
+export const useSimpleResize = (callback, deps = [], throttleTime = 150) => {
+	useResizeEffect(callback, deps, throttleTime, {
+		includeLoad: false,
+		includeOrientation: false,
+		includeDOMReady: false,
+		executeOnMount: false,
+	})
+}

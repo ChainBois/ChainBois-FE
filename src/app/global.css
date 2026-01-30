@@ -20,7 +20,8 @@
 }
 
 body {
-	margin: 0;
+	max-width: 1770px;
+	margin: 0 auto;
 	padding: 0;
 	background: url('../assets/img/bgBox.png') #000000;
 }

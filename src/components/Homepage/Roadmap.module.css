@@ -75,3 +75,152 @@
 .red:where(.text, .title) {
 	color: #fff;
 }
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Air landscape */
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.roadmap {
+		gap: 20px;
+		margin-bottom: 64px;
+	}
+
+	.parent {
+		width: 156.5px;
+		height: 162px;
+		clip-path: polygon(
+			0 0,
+			20px 0,
+			30px 15px,
+			calc(100% - 145px) 15px,
+			calc(100% - 135px) 0,
+			100% 0,
+			100% 100%,
+			0 100%
+		);
+		border-bottom-right-radius: 8px;
+	}
+
+	.card {
+		background: #0b060f;
+		width: 100%;
+		height: 100%;
+		padding: 24px 16px 20px;
+		clip-path: polygon(
+			0 0,
+			17px 0,
+			27px 15px,
+			calc(100% - 142px) 15px,
+			calc(100% - 132px) 0,
+			100% 0,
+			100% 100%,
+			0 100%
+		);
+		border-bottom-right-radius: 8px;
+	}
+
+	.header {
+		gap: 14.5px;
+	}
+
+	.title {
+		font-size: 15.6px;
+	}
+
+	.subtitle {
+		font-size: 8.3px;
+	}
+
+	.text {
+		font-size: 6.4px !important;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.roadmap {
+		gap: 20px;
+		margin-bottom: 64px;
+	}
+
+	.parent {
+		width: 156.5px;
+		height: 162px;
+		clip-path: polygon(
+			0 0,
+			20px 0,
+			30px 15px,
+			calc(100% - 145px) 15px,
+			calc(100% - 135px) 0,
+			100% 0,
+			100% 100%,
+			0 100%
+		);
+		border-bottom-right-radius: 8px;
+	}
+
+	.card {
+		background: #0b060f;
+		width: 100%;
+		height: 100%;
+		padding: 24px 16px 20px;
+		clip-path: polygon(
+			0 0,
+			17px 0,
+			27px 15px,
+			calc(100% - 142px) 15px,
+			calc(100% - 132px) 0,
+			100% 0,
+			100% 100%,
+			0 100%
+		);
+		border-bottom-right-radius: 8px;
+	}
+
+	.header {
+		gap: 14.5px;
+	}
+
+	.title {
+		font-size: 15.6px;
+	}
+
+	.subtitle {
+		font-size: 8.3px;
+	}
+
+	.text {
+		font-size: 6.4px !important;
+	}
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
+}

@@ -135,6 +135,7 @@ export default function Gameplay() {
 						icon={<BsCaretRightFill />}
 						borderButtonContent={g.gameplayButtonContent}
 						borderButtonText={g.gameplayButtonText}
+						borderButtonIcon={g.gameplayButtonText}
 					/>
 				</div>
 			</div>

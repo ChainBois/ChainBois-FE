@@ -9,7 +9,7 @@ import p from './Homepage.module.css';
 export default function Partnership() {
 	return (
 		<figure className={cf(s.wMax, s.flex, s.flexCenter, p.partnership)}>
-			<Image src={partnership} className={cf(p.brands)}/>
+			<Image src={partnership} alt={'brand partnerships'} className={cf(p.brands)}/>
 		</figure>
 	)
 }

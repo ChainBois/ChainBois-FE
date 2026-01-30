@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from 'react'
 import { useWindowEffect } from './useWindowEffect'
 import { useWindowEvent } from './useWindowEvent'
+import { throttle } from '@/utils';
 
 /**
  * A custom React hook that executes a callback function when the window size changes.
@@ -67,7 +68,7 @@ export const useResizeEffect = (
 	callback,
 	deps = [],
 	throttleTime = 150,
-	options = {}
+	options = {},
 ) => {
 	const {
 		includeLoad = true,
@@ -80,26 +81,43 @@ export const useResizeEffect = (
 	// Memoize callback to prevent unnecessary re-renders
 	const memoizedCallback = useCallback(callback, deps)
 
-	// Build events array based on options
+	// Build events array based on options for window-level events
 	const events = []
-
-	// Always include resize - it's the core event
+	// Keep window.resize for manual browser window dragging events
 	events.push({ event: 'resize', handler: memoizedCallback })
-
 	if (includeLoad) {
 		events.push({ event: 'load', handler: memoizedCallback })
 	}
-
 	if (includeOrientation) {
 		events.push({ event: 'orientationchange', handler: memoizedCallback })
 	}
-
 	if (includeDOMReady) {
 		events.push({ event: 'DOMContentLoaded', handler: memoizedCallback })
 	}
 
-	// Use the robust useWindowEffect for event management
+	// Use the robust useWindowEffect for legacy window event management
 	useWindowEffect(events, deps, throttleTime, eventOptions)
+
+	// CRITICAL ADDITION: Use ResizeObserver to reliably detect DevTools/viewport changes
+	useEffect(() => {
+		if (typeof window === 'undefined') return
+
+		// Throttle the callback specifically for the observer if needed
+		const throttledObserverCallback = throttle(memoizedCallback, throttleTime)
+
+		const resizeObserver = new ResizeObserver((entries) => {
+			// The callback runs when observed element size changes
+			throttledObserverCallback()
+		})
+
+		// Observe the root HTML element or body for viewport dimension changes
+		resizeObserver.observe(document.documentElement || document.body)
+
+		return () => {
+			resizeObserver.unobserve(document.documentElement || document.body)
+			throttledObserverCallback.cleanup?.() // Clean up the throttled function if it has a method
+		}
+	}, [memoizedCallback, throttleTime])
 
 	// Execute callback immediately on mount if requested
 	useEffect(() => {

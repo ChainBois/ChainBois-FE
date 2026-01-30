@@ -127,9 +127,9 @@
 	height: 100%;
 }
 
-.tileHeader {
+/* .tileHeader {
 	gap: 16px;
-}
+} */
 
 .tileTitleNumber {
 	color: #787167;
@@ -184,3 +184,192 @@
   border-left: 2px solid #ff007a;
   border-right: 2px solid #ff007a;
 } */
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Air landscape */
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.labelContainer {
+		height: 115px;
+	}
+
+	.title {
+		font-size: 96px;
+		width: 1350px;
+	}
+
+	.gameplay {
+		padding: 0 64px;
+	}
+
+	.gameplayBg {
+		width: calc(100% - 128px);
+	}
+
+	.oddTile {
+		height: 165px;
+		width: 165px;
+	}
+
+	.tile {
+		height: 150px;
+		width: 167px;
+	}
+
+	.oddTileHeader {
+		gap: 30px 0;
+	}
+
+	.oddTileTitleNumber {
+		font-size: 41px;
+	}
+
+	.oddTileTitle,
+	.tileTitle {
+		font-size: 10.5px;
+	}
+
+	.oddTileText,
+	.tileText {
+		font-size: 7.3px;
+	}
+
+	.tileTitleNumber {
+		font-size: 26.21px;
+	}
+
+	.tileContainer {
+		padding: 15.5px 20.5px;
+	}
+
+	.oddTile {
+		padding: 9px 20.5px 26px;
+	}
+
+	.tiles {
+		gap: 0 10px;
+		height: 165px;
+	}
+
+	.tilesWrapper {
+		padding: 0 34px;
+		height: 165px;
+	}
+
+	.gameplayButtonContent {
+		padding: 10px 15px !important;
+	}
+
+	.gameplayButtonText {
+		font-size: 8.25px !important;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.labelContainer {
+		height: 77px;
+	}
+
+	.title {
+		font-size: 64px;
+		width: 950px;
+	}
+
+	.gameplay {
+		padding: 0 32px;
+	}
+
+	.gameplayBg {
+		width: calc(100% - 64px);
+	}
+
+	.tiles {
+		flex-direction: row !important;
+		gap: 10px;
+	}
+
+	.oddTile {
+		height: 138px;
+		width: 146px;
+	}
+
+	.tile {
+		height: 128px;
+		width: 146px;
+	}
+
+	.oddTileHeader {
+		gap: 27px 0;
+	}
+
+	.oddTileTitleNumber {
+		font-size: 37px;
+	}
+
+	.oddTileTitle,
+	.tileTitle {
+		font-size: 9px;
+	}
+
+	.oddTileText,
+	.tileText {
+		font-size: 6.5px;
+	}
+
+	.tileTitleNumber {
+		font-size: 22.5px;
+	}
+
+	.tileContainer {
+		padding: 13px 13px;
+	}
+
+	.oddTile {
+		padding: 8px 13px 20px;
+	}
+
+	.tiles {
+		gap: 0 10px;
+		height: unset;
+		align-items: flex-end !important;
+		justify-content: center !important;
+		gap: 10px !important;
+	}
+
+	.tilesWrapper {
+		padding: 0 10px;
+		height: unset;
+	}
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
+}

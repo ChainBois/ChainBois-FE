@@ -34,7 +34,7 @@ function TournamentStat({ tag, value, icon }) {
           t.card__stat__inner__wrapper,
         )}
       >
-        <span className={cf(s.tLeft, s.dInlineBlock, t.card__stat__icon)}>
+        <span className={cf(t.card__stat__icon)}>
           {icon}
         </span>
         <span className={cf(s.tLeft, s.dInlineBlock, t.card__stat__value)}>
