@@ -33,3 +33,14 @@
 .socialButtonContent {
 	background: rgb(10, 10, 10);
 }
+
+@media only screen and (max-width: 834px) {
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.socials {
+		gap: 79px 0;
+		margin: 0 0 100px;
+	}
+}

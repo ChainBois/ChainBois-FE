@@ -110,14 +110,14 @@
 		clip-path: polygon(
 			0 0,
 			20px 0,
-			30px 15px,
-			calc(100% - 145px) 15px,
-			calc(100% - 135px) 0,
+			25px 6px,
+			calc(100% - 68px) 6px,
+			calc(100% - 63px) 0,
 			100% 0,
 			100% 100%,
 			0 100%
 		);
-		border-bottom-right-radius: 8px;
+		border-bottom-right-radius: 5px;
 	}
 
 	.card {
@@ -128,14 +128,14 @@
 		clip-path: polygon(
 			0 0,
 			17px 0,
-			27px 15px,
-			calc(100% - 142px) 15px,
-			calc(100% - 132px) 0,
+			22px 6.3px,
+			calc(100% - 65px) 6.3px,
+			calc(100% - 60px) 0,
 			100% 0,
 			100% 100%,
 			0 100%
 		);
-		border-bottom-right-radius: 8px;
+		border-bottom-right-radius: 5px;
 	}
 
 	.header {
@@ -159,7 +159,7 @@
 @media only screen and (max-width: 480px) {
 	.roadmap {
 		gap: 20px;
-		margin-bottom: 64px;
+		margin-bottom: 50px;
 	}
 
 	.parent {
@@ -168,14 +168,14 @@
 		clip-path: polygon(
 			0 0,
 			20px 0,
-			30px 15px,
-			calc(100% - 145px) 15px,
-			calc(100% - 135px) 0,
+			25px 6px,
+			calc(100% - 68px) 6px,
+			calc(100% - 63px) 0,
 			100% 0,
 			100% 100%,
 			0 100%
 		);
-		border-bottom-right-radius: 8px;
+		border-bottom-right-radius: 5px;
 	}
 
 	.card {
@@ -186,14 +186,14 @@
 		clip-path: polygon(
 			0 0,
 			17px 0,
-			27px 15px,
-			calc(100% - 142px) 15px,
-			calc(100% - 132px) 0,
+			22px 6.3px,
+			calc(100% - 65px) 6.3px,
+			calc(100% - 60px) 0,
 			100% 0,
 			100% 100%,
 			0 100%
 		);
-		border-bottom-right-radius: 8px;
+		border-bottom-right-radius: 5px;
 	}
 
 	.header {

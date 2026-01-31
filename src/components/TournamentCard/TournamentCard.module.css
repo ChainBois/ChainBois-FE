@@ -350,11 +350,11 @@
 	}
 
 	.card__number .progress {
-		font-size: 9px !important;
+		font-size: 22px !important;
 	}
 
 	.card__number .days {
-		font-size: 3.5px !important;
+		font-size: 8px !important;
 	}
 
 	.borderButton {

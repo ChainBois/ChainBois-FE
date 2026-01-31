@@ -48,3 +48,10 @@
 	height: 23px;
 	aspect-ratio: 1/1;
 }
+
+@media only screen and (max-width: 834px) {
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+}

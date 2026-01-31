@@ -89,7 +89,7 @@
 		0 100%,
 		0 0
 	);
-	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	/* transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); */
 	background: url('../../assets/img/bgBox.png') #000000;
 }
 
@@ -247,35 +247,15 @@
 	transform: scale(0.85);
 }
 
-.member.expanded .socialLink {
-	opacity: 1;
-	transform: scale(1);
-	z-index: 3;
-}
-
 .socialIcon {
 	width: 20px;
 	height: 20px;
 	color: #ffffff;
 }
 
-/* ===== BUTTON CONTAINER (Z-INDEX LAYERING) ===== */
-
-.buttonContainer {
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 3;
-}
-
-.member.expanded .buttonContainer {
-	z-index: 2;
-}
-
 /* Base button styles */
 .expandBtn,
-.closeBtn {
+.socialLink {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -305,31 +285,14 @@
 	transform: scale(0.95);
 }
 
-/* Close button - visible when expanded */
-.closeBtn {
-	background: rgba(231, 76, 60, 0.8);
-	opacity: 0;
-	transform: scale(0.8);
-	z-index: 4;
-}
-
-.closeBtn:hover {
-	background: rgba(231, 76, 60, 0.9);
-	transform: scale(1.05);
-}
-
-.closeBtn:active {
-	transform: scale(0.95);
-}
-
 /* Button state transitions */
 .member.expanded .expandBtn {
 	opacity: 0;
 	transform: scale(0.8);
-	z-index: 4;
+	z-index: -1;
 }
 
-.member.expanded .closeBtn {
+.member.expanded .socialLink {
 	opacity: 1;
 	transform: scale(1);
 	z-index: 5;
@@ -337,20 +300,17 @@
 
 /* Button icons */
 .expandIcon,
-.closeIcon {
-	/* width: 20px; */
-	/* height: 20px; */
-  font-size: 20px;
-	color: #ec1b24;
+.socialIcon {
+	font-size: 20px;
 	transition: transform 0.3s ease;
+}
+
+.expandIcon {
+	color: #ec1b24;
 }
 
 .expandBtn:hover .expandIcon {
 	transform: translateX(2px);
-}
-
-.closeBtn:hover .closeIcon {
-	transform: rotate(90deg);
 }
 
 /* ===== HIGHLIGHTED MEMBER BUTTON ANIMATION ===== */
@@ -385,83 +345,24 @@
 		gap: 16px;
 		padding: 32px 0;
 	}
-
-	/* .member {
-		width: 260px;
-		height: 380px;
-	}
-
-	.member.expanded {
-		width: 400px;
-		height: 300px;
-	} */
 }
 
 /* Mobile breakpoint */
 @media only screen and (max-width: 760px) {
 	.members {
-		gap: 20px;
-		flex-direction: column;
-		align-items: center;
+		gap: 10px;
 	}
-
-	/* .member {
-		width: 320px;
-		height: 420px;
-	}
-
-	.member.expanded {
-		width: 340px;
-		height: 280px;
-	}
-
-	.content {
-		padding: 20px;
-	}
-
-	.name {
-		font-size: 1.3rem;
-	}
-
-	.role {
-		font-size: 0.9rem;
-	} */
 }
 
 /* Small mobile */
 @media only screen and (max-width: 480px) {
-	/* .member {
-		width: 280px;
-		height: 380px;
-	}
-  
-  .member.expanded {
-		width: 300px;
-		height: 240px;
-	}
-
-	.content {
-		padding: 16px;
-	}
-
-	.controls {
-		width: 44px;
-		height: 44px;
-	}
-
-	.expandIcon,
-	.closeIcon,
-	.socialIcon {
-		width: 18px;
-		height: 18px;
-	} */
 }
 
 /* ===== ACCESSIBILITY IMPROVEMENTS ===== */
 
 /* Focus states */
 .expandBtn:focus,
-.closeBtn:focus,
+.socialIcon:focus,
 .socialLink:focus {
 	outline: 2px solid #4a90e2;
 	outline-offset: 2px;
@@ -475,7 +376,7 @@
 	.info,
 	.socialLink,
 	.expandBtn,
-	.closeBtn {
+	.socialIcon {
 		transition: none;
 	}
 
@@ -491,7 +392,225 @@
 	}
 
 	.expandBtn,
-	.closeBtn {
+	.socialIcon {
 		border: 2px solid #fff;
 	}
 } */
+
+@media only screen and (max-width: 834px) {
+	.member {
+		width: 100px;
+		height: 225px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+		clip-path: polygon(
+			0 0,
+			0 0,
+			0 0,
+			0 0,
+			calc(100% - 3px) 0,
+			100% 3px,
+			100% 100%,
+			calc(100% - 7px) 100%,
+			calc(100% - 14px) calc(100% - 6px),
+			16px calc(100% - 6px),
+			9px 100%,
+			0 100%,
+			0 0
+		);
+	}
+
+	/* Expanded state */
+	.member.expanded {
+		width: 175px;
+		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+		clip-path: polygon(
+			0 0,
+			17px 0,
+			25px 6px,
+			calc(100% - 114px) 6px,
+			calc(100% - 107px) 0,
+			100% 0,
+			100% 100%,
+			calc(100% - 68px) 100%,
+			calc(100% - 75px) calc(100% - 6px),
+			27px calc(100% - 6px),
+			20px 100%,
+			0 100%,
+			0 0
+		);
+	}
+
+	/* Main container within each member card */
+	.container {
+		clip-path: polygon(
+			0 0,
+			0 0,
+			0 0,
+			0 0,
+			calc(100% - 2px) 0,
+			100% 2px,
+			100% 100%,
+			calc(100% - 4px) 100%,
+			calc(100% - 11px) calc(100% - 6px),
+			13px calc(100% - 6px),
+			6px 100%,
+			0 100%,
+			0 0
+		);
+	}
+
+	.member.expanded .container {
+		clip-path: polygon(
+			0 0,
+			14px 0,
+			22px 6px,
+			calc(100% - 111px) 6px,
+			calc(100% - 104px) 0,
+			100% 0,
+			100% 100%,
+			calc(100% - 65px) 100%,
+			calc(100% - 72px) calc(100% - 6px),
+			24px calc(100% - 6px),
+			17px 100%,
+			0 100%,
+			0 0
+		);
+	}
+
+	.content {
+		padding: 0 15.5px 20px;
+	}
+
+	.name {
+		font-size: 11.3px;
+	}
+
+	.role {
+		font-size: 8.27px;
+	}
+
+	.controls {
+		width: 27px;
+		height: 27px;
+	}
+
+	.socialIcon {
+		width: 12px;
+		height: 11.2px;
+	}
+
+	.expandIcon {
+		font-size: 12px;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.members {
+		margin-bottom: 30.5px;
+	}
+	.member {
+		width: 73.5px;
+		height: 188px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+		clip-path: polygon(
+			0 0,
+			0 0,
+			0 0,
+			0 0,
+			calc(100% - 3px) 0,
+			100% 3px,
+			100% 100%,
+			calc(100% - 7px) 100%,
+			calc(100% - 14px) calc(100% - 6px),
+			16px calc(100% - 6px),
+			9px 100%,
+			0 100%,
+			0 0
+		);
+	}
+
+	/* Expanded state */
+	.member.expanded {
+		width: 146.5px;
+		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+		clip-path: polygon(
+			0 0,
+			10px 0,
+			17px 6px,
+			calc(100% - 92px) 6px,
+			calc(100% - 85px) 0,
+			100% 0,
+			100% 100%,
+			calc(100% - 46px) 100%,
+			calc(100% - 53px) calc(100% - 6px),
+			17px calc(100% - 6px),
+			10px 100%,
+			0 100%,
+			0 0
+		);
+	}
+
+	/* Main container within each member card */
+	.container {
+		clip-path: polygon(
+			0 0,
+			0 0,
+			0 0,
+			0 0,
+			calc(100% - 2px) 0,
+			100% 2px,
+			100% 100%,
+			calc(100% - 4px) 100%,
+			calc(100% - 11px) calc(100% - 6px),
+			13px calc(100% - 6px),
+			6px 100%,
+			0 100%,
+			0 0
+		);
+	}
+
+	.member.expanded .container {
+		clip-path: polygon(
+			0 0,
+			7px 0,
+			14px 6px,
+			calc(100% - 89px) 6px,
+			calc(100% - 82px) 0,
+			100% 0,
+			100% 100%,
+			calc(100% - 43px) 100%,
+			calc(100% - 50px) calc(100% - 6px),
+			14px calc(100% - 6px),
+			7px 100%,
+			0 100%,
+			0 0
+		);
+	}
+
+	.content {
+		padding: 0 10.5px 16px;
+	}
+
+	.name {
+		font-size: 9.5px;
+	}
+
+	.role {
+		font-size: 6.9px;
+	}
+
+	.controls {
+		width: 22.5px;
+		height: 22.5px;
+	}
+
+	.socialIcon {
+		width: 9.9px;
+		height: 9.3px;
+	}
+
+	.expandIcon {
+		font-size: 8.6px;
+	}
+}
