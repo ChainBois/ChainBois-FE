@@ -25,6 +25,7 @@
 
 .partnership {
 	padding: 85px 40px;
+	margin: 0;
 }
 
 .brands {
@@ -68,6 +69,14 @@
 	.label {
 		font-size: 22.5px;
 	}
+
+	.partnership {
+		padding: 60px 40px;
+	}
+
+	.brands {
+		height: 52px;
+	}
 }
 
 /* Tiny device */
@@ -83,6 +92,14 @@
 
 	.label {
 		font-size: 22.5px;
+	}
+
+	.partnership {
+		padding: 27px 40px;
+	}
+
+	.brands {
+		height: 23px;
 	}
 }
 

@@ -118,7 +118,6 @@
 	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
-	
 }
 
 .chainbois {
@@ -129,8 +128,97 @@
 	object-position: center;
 }
 
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.topContainer {
+		padding: 0 115px;
+	}
+
+	.contactUs, .newsLetter {
+		width: unset;
+	}
+
+	.contactUsTitle {
+		font-size: 37.69px;
+		line-height: normal;
+	}
+
+	.contactUsLink {
+		font-size: 11.31px;
+	}
+
+	.newsLetterTitle {
+		font-size: 37.69px;
+		line-height: 37.69px;
+	}
+
+	.footerNavTitle {
+		font-size: 8px;
+		margin: 0;
+	}
+
+	.navLink {
+		font-size: 10px;
+	}
+
+	.newsLetterLink {
+		width: 114px;
+		height: 28px;
+		font-size: 9.5px;
+	}
+
+	.separator {
+		height: 130px;
+	}
+
+	.bottomContainer {
+		padding: 66px 105px 52px 0;
+		gap: 12px;
+	}
+}
+
 /* Tiny device */
 @media only screen and (max-width: 480px) {
+	.topContainer {
+		padding: 0 48px;
+	}
+
+	.contactUsTitle {
+		font-size: 24px;
+	}
+
+	.contactUsLink {
+		font-size: 8px;
+	}
+
+	.newsLetterTitle {
+		font-size: 17px;
+		line-height: 17px;
+	}
+
+	.footerNavTitle {
+		font-size: 6px;
+		margin: 0;
+	}
+
+	.navLink {
+		font-size: 8px;
+	}
+
+	.newsLetterLink {
+		width: 96px;
+		height: 24px;
+		font-size: 8px;
+	}
+
+	.separator {
+		height: 75px;
+	}
+
+	.bottomContainer {
+		padding: 25px 43px 43px 85px;
+		gap: 12px;
+	}
 }
 
 /* iPhone 12 */

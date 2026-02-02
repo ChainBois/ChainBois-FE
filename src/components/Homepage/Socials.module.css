@@ -35,12 +35,25 @@
 }
 
 @media only screen and (max-width: 834px) {
+	.socials {
+		gap: 70px 0;
+		margin: 0 0 60px;
+	}
+
+	.links {
+		gap: 0 22.5px;
+	}
+
+	.socialIcon {
+		width: 9px;
+		height: 9px;
+	}
 }
 
 /* Tiny device */
 @media only screen and (max-width: 480px) {
 	.socials {
-		gap: 79px 0;
-		margin: 0 0 100px;
+		gap: 29px 0;
+		margin: 0 0 30px;
 	}
 }

@@ -6,7 +6,7 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	padding: 40px 0;
-	margin-bottom: 100px;
+	margin-bottom: 89px;
 }
 
 /* Individual team member card */
@@ -398,6 +398,10 @@
 } */
 
 @media only screen and (max-width: 834px) {
+	.members {
+		margin-bottom: 11px;
+	}
+
 	.member {
 		width: 100px;
 		height: 225px;

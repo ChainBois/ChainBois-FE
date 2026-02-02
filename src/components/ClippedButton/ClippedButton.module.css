@@ -50,6 +50,50 @@
 }
 
 @media only screen and (max-width: 834px) {
+	.clippedButton {
+		clip-path: polygon(
+			0 0,
+			calc(100% - 5px) 0,
+			100% 5px,
+			100% 100%,
+			24px 100%,
+			21px calc(100% - 4px),
+			12px calc(100% - 4px),
+			9px 100%,
+			0 100%
+		);
+		padding: 1px;
+	}
+
+	.clippedButtonContent {
+		clip-path: polygon(
+			0 0,
+			calc(100% - 5px) 0,
+			100% 5px,
+			100% 100%,
+			24px 100%,
+			21px calc(100% - 4px),
+			10px calc(100% - 4px),
+			7px 100%,
+			0 100%
+		);
+		gap: 3.7px;
+		padding: 6px 21px 8px 11.3px;
+	}
+
+	.clippedButtonText {
+		font-size: 7px;
+	}
+
+	.clippedButtonIcon {
+		width: 9px;
+		height: 9px;
+	}
+
+	.socialIcon {
+		width: 9px;
+		height: 9px;
+	}
 }
 
 /* Tiny device */
