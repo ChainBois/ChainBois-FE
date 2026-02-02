@@ -1,8 +1,8 @@
-import { PUBLIC_ENV } from '@/constants'
+// import { PUBLIC_ENV } from '@/constants'
 import { trimDecimal } from './trimDecimal'
 
 export const toMicroUnits = (num, exponent) => {
-	if (PUBLIC_ENV !== 'production')
+	if (process.env.NODE_ENV !== 'production')
 		console.log('toMicroUnits init debug', { num, exponent })
 	if (typeof num !== 'number' || typeof exponent !== 'number') {
 		throw new TypeError('Both arguments must be numbers')
@@ -10,7 +10,7 @@ export const toMicroUnits = (num, exponent) => {
 
 	// Step 1: Trim the number using your smart logic
 	const trimmed = trimDecimal(num, { decimals: exponent })
-	if (PUBLIC_ENV !== 'production') console.log('debug log: trimmed', trimmed)
+	if (process.env.NODE_ENV !== 'production') console.log('debug log: trimmed', trimmed)
 
 	// Step 2: Convert to string for safe manipulation
 	const numStr = trimmed.toExponential().includes('e')
@@ -39,7 +39,7 @@ export const toMicroUnits = (num, exponent) => {
 		finalStr = raw + '0'.repeat(totalShift)
 	}
 
-	if (PUBLIC_ENV !== 'production')
+	if (process.env.NODE_ENV !== 'production')
 		console.log(
 			'toMicroUnits args',
 			{

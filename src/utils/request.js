@@ -1,4 +1,4 @@
-import { PUBLIC_ENV } from '@/constants'
+// import { PUBLIC_ENV } from '@/constants'
 import axios from 'axios'
 
 const serverURI = process.env.NEXT_PUBLIC_BACKEND_BASE_URI
@@ -95,7 +95,7 @@ export const requestUpload = async ({
 	maxSizeInMB = 10, // Maximum file size in MB
 } = {}) => {
 	// 🔍 MOBILE DEBUGGING: Log file object structure
-	if (debug && PUBLIC_ENV !== 'production') {
+	if (debug && process.env.NODE_ENV !== 'production') {
 		console.group('🔍 MOBILE UPLOAD DEBUG')
 		console.log('📱 User Agent:', navigator.userAgent)
 		console.log('📄 File Object Details:', {
@@ -238,7 +238,7 @@ export const requestUpload = async ({
 		// 📤 Append to FormData with validated file
 		formData.append(fieldName, fileToUpload)
 
-		if (debug && PUBLIC_ENV !== 'production') {
+		if (debug && process.env.NODE_ENV !== 'production') {
 			console.log('📤 FormData Contents:', {
 				fieldName,
 				fileName: fileToUpload.name,
@@ -255,7 +255,7 @@ export const requestUpload = async ({
 		// 🌐 Execute upload with enhanced error context
 		const response = await axiosCall?.[method](path, formData, axiosConfig)
 
-		if (debug && PUBLIC_ENV !== 'production') {
+		if (debug && process.env.NODE_ENV !== 'production') {
 			console.log('✅ Upload Success:', {
 				status: response.status,
 				dataKeys: Object.keys(response.data || {}),
@@ -271,7 +271,7 @@ export const requestUpload = async ({
 		}
 	} catch (error) {
 		// 📱 MOBILE-SPECIFIC ERROR HANDLING
-		if (debug && PUBLIC_ENV !== 'production') {
+		if (debug && process.env.NODE_ENV !== 'production') {
 			console.group('❌ MOBILE UPLOAD ERROR')
 			console.error('Error Details:', error)
 			console.log('Request Config:', axiosConfig)
