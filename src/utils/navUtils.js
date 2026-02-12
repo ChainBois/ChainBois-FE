@@ -1,5 +1,3 @@
-import { COLLECTION_RE } from '@/constants'
-
 function getBasePath(path) {
 	const firstSlash = path.indexOf('/')
 	const secondSlash = path.indexOf('/', firstSlash + 1)
@@ -39,7 +37,8 @@ export function isFocused({
 	if (link === '/') {
 		if (pathname !== link && testForCollection) {
 			const path = getBasePath(pathname)
-			return COLLECTION_RE.test(path)
+			const regex = /^\/[a-f0-9]{24}$/
+			return regex.test(path)
 		}
 
 		return useStrictHome

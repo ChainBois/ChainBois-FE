@@ -1,0 +1,125 @@
+.card {
+	padding: 2px;
+	/* box-shadow: 0px 0px 20px 0px rgba(236, 27, 36, 1) inset; */
+	clip-path: polygon(
+		0 5px,
+		15% 0,
+		calc(15% + 5px) 10px,
+		calc(85% - 5px) 10px,
+		85% 0,
+		100% 5px,
+		100% calc(100% - 30px),
+		75% calc(100% - 10px),
+		50% 100%,
+		25% calc(100% - 10px),
+		0 calc(100% - 30px)
+	);
+	width: 400px;
+	background: rgba(236, 27, 36, 1);
+}
+
+.content {
+	clip-path: polygon(
+		0 5px,
+		calc(15% - 4px) 0,
+		calc(calc(15% - 4px) + 5px) 10px,
+		calc(calc(85% + 4px) - 5px) 10px,
+		calc(85% + 4px) 0,
+		100% 5px,
+		100% calc(100% - 30px),
+		75% calc(100% - 10px),
+		50% 100%,
+		25% calc(100% - 10px),
+		0 calc(100% - 30px)
+	);
+	background: url('../../assets/img/bgBox.png') #000000;
+	gap: 10px 0;
+	padding: 15px 15px 30px;
+}
+
+.showcase {
+	height: auto;
+	aspect-ratio: 16 / 10;
+}
+
+/* .imageContainer {
+} */
+
+.image {
+	object-fit: cover;
+	object-position: center;
+}
+
+.header {
+	gap: 6px 0;
+}
+
+.name {
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-style: Bold;
+	font-size: 32px;
+	line-height: 140%;
+}
+
+.description {
+	font-family: var(--font-space-g);
+	font-weight: 400;
+	font-style: Regular;
+	font-size: 14px;
+	line-height: 140%;
+}
+
+.price {
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-style: Bold;
+	font-size: 20px;
+	line-height: 140%;
+	color: rgba(236, 27, 36, 1);
+}
+
+.footer {
+	gap: 6px 0;
+}
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Air landscape */
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
+}

@@ -162,8 +162,8 @@ export default function Navbar() {
 							showTooltip={false}
 						/>
 						<NavItem
-							tag='Inventory'
-							action={'/inventory'}
+							tag='Armory'
+							action={'/armory'}
 							showTooltip={false}
 						/>
 						<NavItem

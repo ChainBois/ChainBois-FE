@@ -1,0 +1,21 @@
+.playButton {
+	background: rgba(236, 27, 36, 1);
+	padding: 12px 45px;
+	clip-path: polygon(
+		0 0,
+		calc(100% - 25px) 0,
+		100% 16px,
+		100% 100%,
+		25px 100%,
+		0 calc(100% - 16px)
+	);
+	border: none;
+	font-family: var(--font-inter);
+	font-weight: 500;
+	font-style: Medium;
+	font-size: 21.51px;
+	line-height: 120%;
+	letter-spacing: 0%;
+	vertical-align: middle;
+	color: rgba(255, 255, 255, 1);
+}

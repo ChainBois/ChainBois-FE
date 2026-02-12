@@ -1,0 +1,72 @@
+.menuOption {
+	padding: 0 10px;
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-style: Bold;
+	font-size: 28px;
+	line-height: 140%;
+	letter-spacing: 0%;
+	border: none;
+	position: relative;
+	background: transparent;
+	color: rgba(255, 255, 255, 1);
+}
+
+.menuOption::before,
+.menuOption::after {
+	pointer-events: none;
+	content: '';
+	position: absolute;
+	left: 50%;
+	width: 0%;
+    transition: all 0.3s ease;
+	height: 2px;
+	background: linear-gradient(90deg, #0a0a0a 0%, #ec1b24 51%, #0a0a0a 100%);
+    transform: translateX(-50%);
+}
+
+.menuOption::before {
+	top: 0;
+}
+
+.menuOption::after {
+	bottom: 0;
+}
+
+.menuOption:hover,
+.menuOption.isActive {
+	color: rgba(236, 27, 36, 1);
+}
+
+.menuOption:hover::before,
+.menuOption:hover::after,
+.menuOption.isActive::before,
+.menuOption.isActive::after {
+	width: 100%;
+}
+
+/* Query specifically for touchscreen devices */
+/* @media only screen and (hover: none) {
+	.menuOption::before,
+	.menuOption::after {
+		width: 100%;
+	}
+} */
+
+.parent {
+	overflow: visible;
+	margin-bottom: 76px;
+}
+
+.wrapper {
+	overflow: auto;
+	scroll-snap-type: x mandatory;
+	scroll-behavior: smooth;
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+.menu {
+	gap: 38px;
+	height: 45px;
+}

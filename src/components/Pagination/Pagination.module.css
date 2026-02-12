@@ -1,0 +1,142 @@
+.parent {
+	padding: 25px 0 10px;
+	width: 100%;
+	max-width: 670px;
+	margin-left: auto;
+}
+
+.parent.full {
+	max-width: initial;
+}
+
+.stepsCon {
+	padding-left: 18px;
+}
+
+.showing {
+	padding: 5px;
+}
+
+.showing,
+.steps {
+	color: #ffffff;
+	font-family: var(--font-inter);
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 150%;
+	/* 27px */
+}
+
+.navigationBtns {
+	gap: 14px;
+	/* padding-left: 45px; */
+}
+
+.navigationBtn {
+	gap: 0 18px;
+	border: none;
+	background: transparent;
+}
+
+.pageIcon {
+    width: 30px;
+	height: 30px;
+}
+
+.pageIconWrapper {
+	width: 44px;
+	height: 44px;
+	border: 1px solid rgba(236, 27, 37, 0.5);
+	background: rgba(236, 27, 36, 0.2);
+	transition:
+		border-color 0.5s,
+		background 0s;
+	border-radius: 50% !important;
+    color: rgba(255, 255, 255, 1);
+}
+
+.hide {
+	font-family: var(--font-space-g);
+	font-weight: 500;
+	font-style: Medium;
+	font-size: 36px;
+	line-height: 120%;
+	letter-spacing: 0%;
+	text-align: center;
+    color: rgba(255, 255, 255, 1);
+}
+
+.navigationBtn:hover .pageIconWrapper {
+	border-color: rgba(236, 27, 36, .75);
+}
+
+.navigationBtn:active .pageIconWrapper {
+	background: rgba(236, 27, 36, 1);
+}
+
+.navigationBtn:disabled .pageIconWrapper {
+	border: 1px solid #000 !important;
+	background: rgba(236, 27, 36, 0.2) !important;
+	color: #262626 !important;
+}
+
+/* .nav1 {
+    border-radius: 0px 0px 0px 10px;
+}
+
+.nav2 {
+    border-radius: 0px 0px 10px 0px;
+} */
+
+.arrow {
+	width: 24px;
+	height: 24px;
+}
+
+.nav1 .arrow {
+	transform: rotate(-90deg);
+}
+
+.nav2 .arrow {
+	transform: rotate(90deg);
+}
+
+/* --------------------------- Media Queries ------------------------- */
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* iPad Air landscape */
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.stepsCon {
+		padding-left: 0;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.navigationBtns {
+		padding-left: 14px;
+	}
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
