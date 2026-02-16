@@ -15,7 +15,7 @@ const MenuOption = ({ tag, action }) => {
 	)
 }
 
-export default function ScrollMenu({}) {
+export default function ScrollMenu({options = []}) {
 	return (
 		<div className={cf(s.wMax, s.flex, m.parent)}>
 			<div className={cf(s.wMax, s.flex, s.flexLeft, m.wrapper)}>

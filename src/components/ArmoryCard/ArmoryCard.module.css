@@ -2,17 +2,18 @@
 	padding: 2px;
 	/* box-shadow: 0px 0px 20px 0px rgba(236, 27, 36, 1) inset; */
 	clip-path: polygon(
-		0 5px,
-		15% 0,
+		0px 5px,
+		15% 0px,
 		calc(15% + 5px) 10px,
+		50% 2px,
 		calc(85% - 5px) 10px,
-		85% 0,
+		85% 0px,
 		100% 5px,
 		100% calc(100% - 30px),
 		75% calc(100% - 10px),
 		50% 100%,
 		25% calc(100% - 10px),
-		0 calc(100% - 30px)
+		0px calc(100% - 30px)
 	);
 	width: 400px;
 	background: rgba(236, 27, 36, 1);
@@ -20,17 +21,18 @@
 
 .content {
 	clip-path: polygon(
-		0 5px,
-		calc(15% - 4px) 0,
-		calc(calc(15% - 4px) + 5px) 10px,
-		calc(calc(85% + 4px) - 5px) 10px,
-		calc(85% + 4px) 0,
+		0px 5px,
+		calc(15% - 4px) 0px,
+		calc(15% + 1px) 10px,
+		50% 2px,
+		calc(85% - 1px) 10px,
+		calc(85% + 4px) 0px,
 		100% 5px,
 		100% calc(100% - 30px),
 		75% calc(100% - 10px),
 		50% 100%,
 		25% calc(100% - 10px),
-		0 calc(100% - 30px)
+		0px calc(100% - 30px)
 	);
 	background: url('../../assets/img/bgBox.png') #000000;
 	gap: 10px 0;
@@ -74,13 +76,14 @@
 	font-family: var(--font-space-g);
 	font-weight: 700;
 	font-style: Bold;
-	font-size: 20px;
+	font-size: 18px;
 	line-height: 140%;
 	color: rgba(236, 27, 36, 1);
 }
 
 .footer {
 	gap: 6px 0;
+	margin-top: 10px;
 }
 
 /* --------------------------- Media Queries ------------------------- */

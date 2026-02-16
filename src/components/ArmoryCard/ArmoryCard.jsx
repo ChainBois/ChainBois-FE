@@ -55,7 +55,7 @@ export default function ArmoryCard({ image, name, description, price }) {
 					<FloatingStars
 						count={6}
 						duration={2500}
-						colorScheme='gold'
+						colorScheme='red'
 						containerStyle={{
 							position: 'absolute',
 							inset: 0,
