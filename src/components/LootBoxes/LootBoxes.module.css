@@ -1,0 +1,164 @@
+/* Tournament */
+.cardsWrapper {
+	padding-left: 200px;
+	overflow: hidden;
+	gap: 94px 0;
+	position: relative;
+	margin-bottom: 100px;
+}
+
+.parentContainer {
+	overflow: hidden;
+	position: relative;
+	width: 100%; /* Allow full width for horizontal scrolling */
+}
+
+.cards {
+	height: 535px; /* Fixed height matching tournament card height */
+	gap: 0 90px; /* Horizontal gap between tournament cards */
+}
+
+.carousal_navigation {
+	gap: 24px;
+	align-self: baseline;
+	margin: 0;
+	margin-left: calc(calc(calc(1133px)) - 184px);
+}
+
+.pagination_btn {
+	display: flex;
+	width: 80px;
+	height: 80px;
+	padding: 25px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	border-radius: 50%;
+	border: 1px solid #ec1b24;
+	background: rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.pagination_btn:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.pagination_btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.pagination_btn:disabled:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.next {
+	background: #ec1b24;
+}
+
+.next:hover {
+	background: #d91821;
+}
+
+.next:disabled {
+	background: #ec1b24;
+	opacity: 0.5;
+}
+
+.icon {
+	width: 30px;
+	height: 30px;
+	color: #fff;
+}
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Air landscape */
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* iPad Mini landscape */
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
+
+/* Special (Range of iPad Pro - iPad Mini)*/
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
+
+/* Mobile landscape */
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.cards {
+		height: 305px; /* Fixed height matching tournament card height */
+		gap: 0 45px; /* Horizontal gap between tournament cards */
+	}
+
+	.cardsWrapper {
+		padding-left: 64px;
+		gap: 16.5px;
+	}
+
+	.carousal_navigation {
+		gap: 10px;
+		margin: 0 0 0 calc(calc(calc(546px)) - 83px);
+	}
+
+	.pagination_btn {
+		width: 36.36px;
+		height: 36.36px;
+		padding: 0px;
+	}
+
+	.icon {
+		width: 13.64px;
+		height: 13.64px;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.cards {
+		height: 136.5px; /* Fixed height matching tournament card height */
+		gap: 0 19px; /* Horizontal gap between tournament cards */
+	}
+
+	.cardsWrapper {
+		padding-left: 32px;
+		margin-bottom: 43px;
+	}
+
+	.carousal_navigation {
+		gap: 10px;
+		margin: 0 0 0 calc(calc(calc(244px)) - 66px);
+	}
+
+	.pagination_btn {
+		width: 28.2px;
+		height: 28.2px;
+		padding: 0px;
+	}
+
+	.icon {
+		width: 10px;
+		height: 10px;
+	}
+}
+
+/* iPhone 12 */
+@media only screen and (max-width: 390px) {
+}
+
+/* Super Tiny device */
+@media only screen and (max-width: 360px) {
+}
+
+/* Query specifically for touchscreen devices */
+@media only screen and (hover: none) {
+}

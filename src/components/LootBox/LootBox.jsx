@@ -132,6 +132,30 @@ export default function LootBox({ rarity = 'bronze' }) {
 	}, [rarity])
 	return (
 		<article className={cf(s.flex, s.flexLeft, l.container, rarityClass)}>
+			<div
+				className={cf(
+					s.wMax,
+					s.hMax,
+					s.p_absolute,
+					s.flex,
+					s.flexCenter,
+					l.shadowWrapper,
+				)}
+			>
+				<div
+					className={cf(
+						s.wMax,
+						s.hMax,
+						s.flex,
+						s.flexRight,
+						s.p_relative,
+						l.shadowContainer,
+					)}
+				>
+					<div className={cf(l.shadow, rarityClass)}></div>
+					<div className={cf(l.shadow, l.shadowClone, rarityClass)}></div>
+				</div>
+			</div>
 			<figure className={cf(s.wMax, s.flex, s.flexCenter, l.imageContainer)}>
 				<Image
 					src={lootBox}

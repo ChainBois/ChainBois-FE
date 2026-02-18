@@ -25,6 +25,53 @@
 	border-color: rgba(236, 27, 36, 1);
 }
 
+.shadowWrapper {
+	overflow: hidden;
+	z-index: -1;
+}
+
+.shadow {
+	height: 100%;
+	width: 40%;
+	flex: unset;
+	border-radius: 160px;
+	right: 50px;
+	bottom: 0;
+	position: absolute;
+}
+
+.shadow:not(.shadowClone).bronze {
+	box-shadow: 0px 0px 100px 100px rgba(250, 230, 200, 0.2);
+}
+
+.shadow:not(.shadowClone).silver {
+	box-shadow: 0px 0px 100px 100px rgba(227, 242, 253, 0.2);
+}
+
+.shadow:not(.shadowClone).gold {
+	box-shadow: 0px 0px 100px 100px rgba(255, 167, 31, 0.2);
+}
+
+.shadow:not(.shadowClone).epic {
+	box-shadow: 0px 0px 100px 100px rgba(236, 27, 36, 0.2);
+}
+
+.shadowClone.bronze {
+	box-shadow: inset 0px 0px 100px 100px rgba(250, 230, 200, 0.2);
+}
+
+.shadowClone.silver {
+	box-shadow: inset 0px 0px 100px 100px rgba(227, 242, 253, 0.2);
+}
+
+.shadowClone.gold {
+	box-shadow: inset 0px 0px 100px 100px rgba(255, 167, 31, 0.2);
+}
+
+.shadowClone.epic {
+	box-shadow: inset 0px 0px 100px 100px rgba(236, 27, 36, 0.2);
+}
+
 .imageContainer {
 	position: absolute;
 	z-index: 0;
