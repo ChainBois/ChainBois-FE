@@ -1,0 +1,62 @@
+.polyButton {
+	height: auto;
+	width: 170px;
+	aspect-ratio: 170 / 56 !important;
+	border: none;
+	padding: 1px;
+}
+
+.polyButton.right {
+	background: rgba(236, 27, 36, 1);
+}
+
+.polyButton.left {
+	background: rgba(133, 133, 133, 1);
+}
+
+.right {
+	clip-path: polygon(0 0, calc(100% - 15%) 0, 100% 60%, 100% 100%, 0 100%, 0 0);
+}
+
+.left {
+	clip-path: polygon(0 100%, 0 60%, 15% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.polyButtonContainer {
+	background: #000000;
+	width: 100%;
+	height: 100%;
+	padding: 3.5px;
+}
+
+.polyButtonContainer.right {
+	clip-path: polygon(0 0, calc(100% - 15%) 0, 100% calc(60% + 1px), 100% 100%, 0 100%, 0 0);
+}
+
+.polyButtonContainer.left {
+	clip-path: polygon(0 100%, 0 calc(60% + 1px), 15% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.polyButtonContent {
+	background: rgba(236, 27, 36, 1);
+	width: 100%;
+	height: 100%;
+}
+
+.polyButtonContent.right {
+    background: rgba(236, 27, 36, 1);
+	clip-path: polygon(0 0, calc(100% - 15%) 0, 100% calc(60% + 4px), 100% 100%, 0 100%, 0 0);
+}
+
+.polyButtonContent.left {
+    clip-path: polygon(0 100%, 0 calc(60% + 4px), 15% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.polyButtonText {
+	color: #fff;
+	font-family: var(--font-inter);
+	font-size: 16px;
+	font-style: medium;
+	font-weight: 700;
+	line-height: 120%;
+}

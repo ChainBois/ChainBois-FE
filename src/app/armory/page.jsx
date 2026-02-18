@@ -13,6 +13,7 @@ import SMG from '@/assets/img/SMG.png'
 import AR from '@/assets/img/AR.png'
 import MKR from '@/assets/img/MKR.png'
 import { PaginationLocal } from '@/components/Pagination'
+import LootBox from '@/components/LootBox'
 
 const cards = [
 	{
@@ -134,6 +135,17 @@ export default function Page() {
 							full
 						/>
 					</div>
+				</div>
+			</Container>
+			<Container
+				tag={'Loot Boxes'}
+				cusClass={cf(p.container)}
+			>
+				<div className={cf(s.wMax, s.flex, s.flexTop, p.lootBoxes)}>
+					<LootBox rarity={'bronze'} />
+					<LootBox rarity={'silver'} />
+					<LootBox rarity={'gold'} />
+					<LootBox rarity={'epic'} />
 				</div>
 			</Container>
 		</div>

@@ -4,8 +4,8 @@ import { cf } from '@/utils'
 import b from './BorderedButton.module.css'
 import s from '@/styles'
 import { memo } from 'react'
-import Link from 'next/link';
-import { isEqual } from '@/hooks';
+import Link from 'next/link'
+import { isEqual } from '@/hooks'
 
 /**
  * Renders a bordered button or link with customizable content and styles.
@@ -52,7 +52,7 @@ export default function BorderedButton({
 					{children}
 				</button>
 			),
-		(prev, next) => isEqual(prev, next)
+		(prev, next) => isEqual(prev, next),
 	)
 	return (
 		<Responder
@@ -66,7 +66,7 @@ export default function BorderedButton({
 					s.flex,
 					s.flexCenter,
 					b.borderButtonContent,
-					borderButtonContent
+					borderButtonContent,
 				)}
 			>
 				<span
@@ -74,11 +74,18 @@ export default function BorderedButton({
 				>
 					{tag}
 				</span>
-				<span
-					className={cf(s.flex, s.flexCenter, b.borderButtonIcon, borderButtonIcon)}
-				>
-					{icon}
-				</span>
+				{icon ? (
+					<span
+						className={cf(
+							s.flex,
+							s.flexCenter,
+							b.borderButtonIcon,
+							borderButtonIcon,
+						)}
+					>
+						{icon}
+					</span>
+				) : null}
 			</span>
 		</Responder>
 	)

@@ -7,6 +7,7 @@ export {
 } from './arrayUtils'
 export { asyncFilter } from './asyncFilter'
 export { bigintToSafeNumber as btn } from './btn'
+export { capitalizeFirstLetter as cap } from './capitalizeFirstLetter'
 export { cf } from './cf'
 export { convertTime } from './convertTime'
 export { deBounce } from './deBounce'

@@ -1,6 +1,6 @@
 'use client'
 
-import { Shared as s } from '@/styles'
+import s from '@/styles'
 import { cf } from '@/utils'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'

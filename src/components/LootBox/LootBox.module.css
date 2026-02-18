@@ -1,0 +1,147 @@
+.container {
+	border-width: 1.2px;
+	border-style: solid;
+	background: rgba(24, 24, 24, 0.2);
+	width: 1133px;
+	height: 345px;
+	overflow: visible;
+	border-radius: 20px;
+	position: relative;
+}
+
+.container.bronze {
+	border-color: rgba(250, 230, 200, 1);
+}
+
+.container.silver {
+	border-color: rgba(227, 242, 253, 1);
+}
+
+.container.gold {
+	border-color: rgba(255, 167, 31, 1);
+}
+
+.container.epic {
+	border-color: rgba(236, 27, 36, 1);
+}
+
+.imageContainer {
+	position: absolute;
+	z-index: 0;
+	overflow: visible;
+	border-radius: 0 0 20px 20px;
+	width: 100%;
+	bottom: 0;
+	margin: 0;
+	pointer-events: none;
+}
+
+.lootBox {
+	aspect-ratio: auto;
+	height: auto;
+	width: 100%;
+	object-fit: contain;
+	object-position: bottom;
+	border-radius: 0 0 20px 20px;
+	pointer-events: none;
+}
+
+.content {
+	position: relative;
+	width: 55%;
+	gap: 15px 0;
+	padding-left: 110px;
+}
+
+.header {
+	gap: 8px 0;
+}
+
+.title {
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-style: Bold;
+	font-size: 64px;
+	line-height: 140%;
+	letter-spacing: 0%;
+}
+
+.title.bronze {
+	color: rgba(250, 227, 195, 1);
+}
+
+.title.silver {
+	color: rgba(227, 242, 253, 1);
+}
+
+.title.gold {
+	color: rgba(255, 167, 31, 1);
+}
+
+.title.epic {
+	color: rgba(236, 27, 36, 1);
+}
+
+.description {
+	font-family: var(--font-space-g);
+	font-weight: 500;
+	font-style: Medium;
+	font-size: 24px;
+	line-height: 140%;
+	letter-spacing: 0%;
+	color: rgba(255, 255, 255, 1);
+}
+
+.footer {
+	gap: 0 75px;
+}
+
+.purchaseContainer {
+	gap: 23px 0;
+}
+
+.price {
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-style: Bold;
+	font-size: 20px;
+	line-height: 140%;
+	letter-spacing: 0%;
+	color: rgba(236, 27, 36, 1);
+}
+
+/* .probabilitiesContainer {} */
+
+.probabilitiesTitle,
+.probability {
+	font-family: var(--font-space-g);
+	font-weight: 500;
+	font-style: Medium;
+	font-size: 20px;
+	line-height: 140%;
+	letter-spacing: 0%;
+	color: rgba(255, 255, 255, 1);
+}
+
+.probabilities {
+	margin: 5px 0;
+}
+
+/* .probability {} */
+
+/* .probabilityName {} */
+
+/* .probabilityValue {} */
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+}
