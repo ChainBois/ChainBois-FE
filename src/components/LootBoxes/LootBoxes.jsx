@@ -223,7 +223,7 @@ export default function LootBoxes() {
                     onMouseLeave={handleMouseLeave}
                 >
                     <div
-                        className={cf(s.flex, s.flex_dColumn, s.spaceXCenter, l.cards)}
+                        className={cf(s.flex, s.flex_dColumn, s.spaceXEnd, l.cards)}
                         ref={slidingCardsRef}
                         style={{
                             transition: 'transform 0.5s ease-in-out',
