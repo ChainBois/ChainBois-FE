@@ -195,6 +195,10 @@ export default function LootBox({ rarity = 'bronze' }) {
 						<PolyButton
 							tag='Buy Now'
 							side='right'
+							polyButton={ l.polyButton }
+							polyButtonContainer={l.polyButtonContainer}
+							polyButtonContent={l.polyButtonContent}
+							polyButtonText={l.polyButtonText}
 						/>
 						{/* TODO: Add action and isLink */}
 					</div>

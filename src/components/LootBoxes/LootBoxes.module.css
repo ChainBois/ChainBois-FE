@@ -96,7 +96,7 @@
 /* Small device */
 @media only screen and (max-width: 834px) {
 	.cards {
-		height: 305px; /* Fixed height matching tournament card height */
+		height: 245px; /* Fixed height matching tournament card height */
 		gap: 0 45px; /* Horizontal gap between tournament cards */
 	}
 
@@ -107,7 +107,7 @@
 
 	.carousal_navigation {
 		gap: 10px;
-		margin: 0 0 0 calc(calc(calc(546px)) - 83px);
+		margin: 0 0 0 calc(calc(calc(524px)) - 83px);
 	}
 
 	.pagination_btn {

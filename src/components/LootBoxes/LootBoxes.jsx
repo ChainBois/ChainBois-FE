@@ -53,7 +53,7 @@ export default function LootBoxes() {
     const getCardWidth = useCallback(
         () => {
             if (isMobile) return 243.5 + 19
-            if (isTablet) return 546 + 45
+            if (isTablet) return 524 + 45
             return 1133 + 90 // Default to desktop size
         },
         [isMobile, isTablet], // Depend on the new breakpoints
