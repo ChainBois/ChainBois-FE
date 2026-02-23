@@ -5,6 +5,7 @@ import b from './ClippedButton.module.css'
 import s from '@/styles'
 import { memo } from 'react'
 import Link from 'next/link';
+import { isEqual } from '@/hooks';
 
 /**
  * ClippedButton is a customizable button or link component with optional icon and styling.
@@ -21,7 +22,7 @@ import Link from 'next/link';
  * @param {string} [props.clippedButtonIcon] - Additional class names for the button icon.
  * @returns {JSX.Element} The rendered button or link component.
  */
-export default function ClippedButton({
+const ClippedButton = memo(({
 	tag,
 	icon,
 	action,
@@ -31,7 +32,7 @@ export default function ClippedButton({
 	clippedButtonText = '',
 	clippedButtonIcon = '',
 	...props
-}) {
+}) => {
 	const Responder = memo(
 		({ action, style, children }) =>
 			isLink ? (
@@ -81,4 +82,6 @@ export default function ClippedButton({
 			</span>
 		</Responder>
 	)
-}
+}, (prev, next) => isEqual(prev, next))
+
+export default ClippedButton

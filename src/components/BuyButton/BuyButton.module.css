@@ -1,4 +1,4 @@
-.playButton {
+.buyButton {
 	background: rgba(236, 27, 36, 1);
 	padding: 12px 45px;
 	clip-path: polygon(
@@ -18,4 +18,39 @@
 	letter-spacing: 0%;
 	vertical-align: middle;
 	color: rgba(255, 255, 255, 1);
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.buyButton {
+		padding: 8px 30px;
+		font-size: 14.5px;
+		clip-path: polygon(
+			0 0,
+			calc(100% - 18px) 0,
+			100% 12px,
+			100% 100%,
+			18px 100%,
+			0 calc(100% - 12px)
+		);
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.buyButton {
+		padding: 5px 20px;
+		font-size: 10px;
+		clip-path: polygon(
+			0 0,
+			calc(100% - 14px) 0,
+			100% 8px,
+			100% 100%,
+			14px 100%,
+			0 calc(100% - 8px)
+		);
+	}
 }

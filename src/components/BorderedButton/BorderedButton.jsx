@@ -22,7 +22,7 @@ import { isEqual } from '@/hooks'
  * @param {string} [props.borderButtonIcon] - Additional class names for the button icon.
  * @returns {JSX.Element} The rendered bordered button or link component.
  */
-export default function BorderedButton({
+const BorderedButton = memo(({
 	tag,
 	icon,
 	action,
@@ -32,7 +32,7 @@ export default function BorderedButton({
 	borderButtonText = '',
 	borderButtonIcon = '',
 	...props
-}) {
+}) => {
 	const Responder = memo(
 		({ action, style, children }) =>
 			isLink ? (
@@ -89,4 +89,6 @@ export default function BorderedButton({
 			</span>
 		</Responder>
 	)
-}
+}, (prev, next) => isEqual(prev, next))
+
+export default BorderedButton

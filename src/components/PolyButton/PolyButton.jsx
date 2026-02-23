@@ -5,6 +5,7 @@ import s from '@/styles'
 import b from './PolyButton.module.css'
 import { memo, useMemo } from 'react'
 import Link from 'next/link'
+import { isEqual } from '@/hooks';
 
 /**
  * PolyButton is a customizable button or link component with optional icon and styling.
@@ -19,7 +20,7 @@ import Link from 'next/link'
  * @param {string} [polyButtonText=''] - Additional class names for the button text.
  * @returns {JSX.Element} The rendered button or link component.
  */
-export default function PolyButton({
+const PolyButton  = memo(({
 	tag,
 	action,
 	isLink = false,
@@ -29,7 +30,7 @@ export default function PolyButton({
 	polyButtonContent = '',
 	polyButtonText = '',
 	...props
-}) {
+}) => {
 	const Responder = memo(
 		({ action, style, children }) =>
 			isLink ? (
@@ -102,4 +103,6 @@ export default function PolyButton({
 			</div>
 		</Responder>
 	)
-}
+}, (prev, next) => isEqual(prev, next))
+
+export default PolyButton

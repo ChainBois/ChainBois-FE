@@ -10,6 +10,7 @@
 	position: relative;
 	background: transparent;
 	color: rgba(255, 255, 255, 1);
+	transition: all 0.3s ease;
 }
 
 .menuOption::before,
@@ -19,10 +20,10 @@
 	position: absolute;
 	left: 50%;
 	width: 0%;
-    transition: all 0.3s ease;
+	transition: all 0.3s ease;
 	height: 2px;
 	background: linear-gradient(90deg, #0a0a0a 0%, #ec1b24 51%, #0a0a0a 100%);
-    transform: translateX(-50%);
+	transform: translateX(-50%);
 }
 
 .menuOption::before {
@@ -67,6 +68,43 @@
 }
 
 .menu {
-	gap: 38px;
+	gap: 0 48px;
 	height: 45px;
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.menuOption {
+		font-size: 18px;
+	}
+
+	.menu {
+		gap: 0 38px;
+		height: 40px;
+	}
+
+	.parent {
+		padding-left: 17.5px;
+		margin-bottom: 20px;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.menuOption {
+		font-size: 12.5px;
+	}
+
+	.menu {
+		gap: 0 13px;
+		height: 20px;
+	}
+
+	.parent {
+		padding-left: 12.5px;
+	}
 }

@@ -9,11 +9,11 @@
 		calc(85% - 5px) 10px,
 		85% 0px,
 		100% 5px,
-		100% calc(100% - 30px),
-		75% calc(100% - 10px),
+		100% 92.5%,
+		75% 97.5%,
 		50% 100%,
-		25% calc(100% - 10px),
-		0px calc(100% - 30px)
+		25% 97.5%,
+		0px 92.5%
 	);
 	width: 400px;
 	background: rgba(236, 27, 36, 1);
@@ -23,16 +23,17 @@
 	clip-path: polygon(
 		0px 5px,
 		calc(15% - 4px) 0px,
+
 		calc(15% + 1px) 10px,
 		50% 2px,
 		calc(85% - 1px) 10px,
 		calc(85% + 4px) 0px,
 		100% 5px,
-		100% calc(100% - 30px),
-		75% calc(100% - 10px),
+		100% 92.5%,
+		75% 97.5%,
 		50% 100%,
-		25% calc(100% - 10px),
-		0px calc(100% - 30px)
+		25% 97.5%,
+		0px 92.5%
 	);
 	background: url('../../assets/img/bgBox.png') #000000;
 	gap: 10px 0;
@@ -109,10 +110,48 @@
 
 /* Small device */
 @media only screen and (max-width: 834px) {
+	.card {
+		width: 310px;
+	}
+
+	.content {
+		gap: 5px 0;
+	}
+
+	.name {
+		font-size: 18.5px;
+	}
+
+	.description {
+		font-size: 12px;
+	}
+
+	.price {
+		font-size: 14px;
+	}
 }
 
 /* Tiny device */
 @media only screen and (max-width: 480px) {
+	.card {
+		width: 156px;
+	}
+
+	.content {
+		gap: 5px 0;
+	}
+
+	.name {
+		font-size: 14px;
+	}
+
+	.description {
+		font-size: 10px;
+	}
+
+	.price {
+		font-size: 8px;
+	}
 }
 
 /* iPhone 12 */

@@ -40,7 +40,7 @@
 }
 
 .pageIcon {
-    width: 20px;
+	width: 20px;
 	height: 20px;
 }
 
@@ -53,7 +53,7 @@
 		border-color 0.5s,
 		background 0s;
 	border-radius: 50% !important;
-    color: rgba(255, 255, 255, 1);
+	color: rgba(255, 255, 255, 1);
 }
 
 .hide {
@@ -64,11 +64,11 @@
 	line-height: 120%;
 	letter-spacing: 0%;
 	text-align: center;
-    color: rgba(255, 255, 255, 1);
+	color: rgba(255, 255, 255, 1);
 }
 
 .navigationBtn:hover .pageIconWrapper {
-	border-color: rgba(236, 27, 36, .75);
+	border-color: rgba(236, 27, 36, 0.75);
 }
 
 .navigationBtn:active .pageIconWrapper {
@@ -127,13 +127,22 @@
 	.stepsCon {
 		padding-left: 0;
 	}
+
+	.pageIconWrapper {
+		width: 32px;
+		height: 32px;
+	}
+
+	.hide {
+		font-size: 22px;
+	}
 }
 
 /* Tiny device */
 @media only screen and (max-width: 480px) {
-	.navigationBtns {
+	/* .navigationBtns {
 		padding-left: 14px;
-	}
+	} */
 }
 
 /* Super Tiny device */

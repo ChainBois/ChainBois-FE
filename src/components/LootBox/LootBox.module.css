@@ -28,6 +28,7 @@
 .shadowWrapper {
 	overflow: hidden;
 	z-index: -1;
+	border-radius: 20px;
 }
 
 .shadow {
@@ -254,4 +255,75 @@
 
 /* Tiny device */
 @media only screen and (max-width: 480px) {
+	.container {
+		width: 240px;
+		height: 365px;
+		justify-content: center !important;
+		align-items: flex-start !important;
+	}
+
+	.shadow {
+		height: 40%;
+		width: 100%;
+		right: 0;
+	}
+
+	.content {
+		width: 100%;
+		padding: 25px 25px 0;
+	}
+
+	.header {
+		gap: 3.5px;
+	}
+
+	.title {
+		font-size: 29px;
+	}
+
+	.description {
+		font-size: 11px;
+	}
+
+	.footer {
+		gap: 10px 0;
+		justify-content: space-between !important;
+	}
+
+	.price {
+		font-size: 9.25px;
+	}
+
+	.polyButton {
+		width: 70px !important;
+	}
+
+	.polyButtonContainer {
+		padding: 2px !important;
+	}
+
+	.polyButtonContent {
+		clip-path: polygon(
+			0 0,
+			calc(100% - 15%) 0,
+			100% calc(60% + 2.5px),
+			100% 100%,
+			0 100%,
+			0 0
+		) !important;
+		padding-left: 25% !important;
+	}
+
+	.polyButtonText {
+		font-size: 7.35px !important;
+	}
+
+	.probabilities {
+		padding-left: 25px;
+	}
+
+	.probabilitiesTitle,
+	.probability {
+		font-size: 9.25px;
+	}
 }

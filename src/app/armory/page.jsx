@@ -14,7 +14,8 @@ import AR from '@/assets/img/AR.png'
 import MKR from '@/assets/img/MKR.png'
 import { PaginationLocal } from '@/components/Pagination'
 import LootBox from '@/components/LootBox'
-import LootBoxes from '@/components/LootBoxes';
+import LootBoxes from '@/components/LootBoxes'
+import MaxWidth from '@/components/MaxWidth'
 
 const cards = [
 	{
@@ -116,27 +117,36 @@ export default function Page() {
 				tag={'Weapons'}
 				cusClass={cf(p.container)}
 			>
-				<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
+				<MaxWidth
+					maxWidth={{ max: '1562px', tablet: '770px', mobile: '330px' }}
+					position={'right'}
+				>
 					<ScrollMenu />
-					<div className={cf(s.wMax, s.flex, s.spaceXBetween, p.cards)}>
-						{cards.map((card) => (
-							<ArmoryCard
-								key={card.id}
-								image={card.image}
-								name={card.name}
-								description={card.description}
-								price={card.price}
+				</MaxWidth>
+				<MaxWidth
+					maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
+				>
+					<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
+						<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
+							{cards.map((card) => (
+								<ArmoryCard
+									key={card.id}
+									image={card.image}
+									name={card.name}
+									description={card.description}
+									price={card.price}
+								/>
+							))}
+							<PaginationLocal
+								array={[]}
+								refArray={cards}
+								step={9}
+								setArray={() => {}}
+								full
 							/>
-						))}
-						<PaginationLocal
-							array={[]}
-							refArray={cards}
-							step={9}
-							setArray={() => {}}
-							full
-						/>
+						</div>
 					</div>
-				</div>
+				</MaxWidth>
 			</Container>
 			<LootBoxes />
 		</div>

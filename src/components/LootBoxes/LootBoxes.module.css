@@ -1,6 +1,6 @@
 /* Tournament */
 .cardsWrapper {
-	padding-left: 200px;
+	/* padding-left: 200px; */
 	overflow: hidden;
 	gap: 94px 0;
 	position: relative;
@@ -14,8 +14,8 @@
 }
 
 .cards {
-	height: 485px; /* Fixed height matching tournament card height */
-	gap: 0 90px; /* Horizontal gap between tournament cards */
+	height: 485px; /* Fixed height matching lootbox card height */
+	gap: 0 90px; /* Horizontal gap between lootbox cards */
 }
 
 .carousal_navigation {
@@ -96,12 +96,12 @@
 /* Small device */
 @media only screen and (max-width: 834px) {
 	.cards {
-		height: 245px; /* Fixed height matching tournament card height */
-		gap: 0 45px; /* Horizontal gap between tournament cards */
+		height: 225px; /* Fixed height matching lootbox card height */
+		gap: 0 45px; /* Horizontal gap between lootbox cards */
 	}
 
 	.cardsWrapper {
-		padding-left: 64px;
+		/* padding-left: 64px; */
 		gap: 16.5px;
 	}
 
@@ -125,18 +125,18 @@
 /* Tiny device */
 @media only screen and (max-width: 480px) {
 	.cards {
-		height: 136.5px; /* Fixed height matching tournament card height */
-		gap: 0 19px; /* Horizontal gap between tournament cards */
+		height: 366px; /* Fixed height matching lootbox card height */
+		gap: 0 19px; /* Horizontal gap between lootbox cards */
 	}
 
 	.cardsWrapper {
-		padding-left: 32px;
+		/* padding-left: 32px; */
 		margin-bottom: 43px;
 	}
 
 	.carousal_navigation {
 		gap: 10px;
-		margin: 0 0 0 calc(calc(calc(244px)) - 66px);
+		margin: 0 0 0 calc(calc(calc(240px)) - 66px);
 	}
 
 	.pagination_btn {

@@ -25,7 +25,7 @@ export default function ArmoryCard({ image, name, description, price }) {
 				>
 					<FloatingStars
 						count={12}
-						duration={6000}
+						static={true}
 						colorScheme='red'
 						containerStyle={{
 							position: 'absolute',
@@ -54,7 +54,7 @@ export default function ArmoryCard({ image, name, description, price }) {
 					</figure>
 					<FloatingStars
 						count={6}
-						duration={2500}
+						static={true}
 						colorScheme='red'
 						containerStyle={{
 							position: 'absolute',

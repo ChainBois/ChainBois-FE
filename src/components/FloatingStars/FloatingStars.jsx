@@ -9,18 +9,25 @@ import React, { useState, useEffect, useRef } from 'react';
  * Stars spawn in cycles with randomized positions, sizes, and delays for a dynamic cosmic effect.
  * Perfect for reward screens, achievement unlocks, rare item displays, or decorative backgrounds.
  * 
+ * ⚡ PERFORMANCE OPTIMIZED:
+ * - Uses Intersection Observer to pause animations when off-screen
+ * - Reduces lag during scroll with viewport detection
+ * - Efficient CSS-only animations
+ * 
  * @param {Object} props - Component props
  * @param {number} [props.count=8] - Base number of stars per cycle (actual count varies ±2 randomly)
  * @param {number} [props.duration=3000] - Animation duration in milliseconds for each star cycle
  * @param {number} [props.respawnDelay=500] - Delay in milliseconds between star cycles
  * @param {('red'|'blue'|'gold'|'purple'|'white')} [props.colorScheme='red'] - Predefined color scheme for stars
+ * @param {('spin'|'blink'|'pulse')} [props.animationType='blink'] - Animation style: 'spin' (rotate), 'blink' (opacity flicker), 'pulse' (gentle glow)
+ * @param {boolean} [props.static=false] - If true, stars are displayed statically without animation
  * @param {Object} [props.containerStyle={}] - Custom CSS styles for the container div
  * @param {Object} [props.starBaseStyle={}] - Custom CSS styles applied to each individual star
  * 
  * @example
  * // Basic usage - Stars fill parent container
  * <div style={{ position: 'relative', width: '400px', height: '400px' }}>
- *   <FloatingStars count={8} colorScheme="red" />
+ *   <FloatingStars count={8} colorScheme="red" animationType="blink" />
  * </div>
  * 
  * @example
@@ -30,6 +37,7 @@ import React, { useState, useEffect, useRef } from 'react';
  *   <FloatingStars 
  *     count={10}
  *     colorScheme="gold"
+ *     animationType="blink"
  *     containerStyle={{
  *       position: 'absolute',
  *       inset: '-50px', // Extends 50px beyond card edges
@@ -39,86 +47,27 @@ import React, { useState, useEffect, useRef } from 'react';
  * </div>
  * 
  * @example
- * // Full-screen background stars
- * <FloatingStars 
- *   count={15}
- *   duration={5000}
- *   colorScheme="white"
- *   containerStyle={{
- *     position: 'fixed',
- *     inset: 0,
- *     zIndex: 0
- *   }}
- *   starBaseStyle={{
- *     opacity: 0.3 // Subtle background effect
- *   }}
- * />
- * 
- * @example
- * // Layered stars with different settings
- * <div style={{ position: 'relative' }}>
- *   // Background layer
- *   <FloatingStars 
- *     count={12}
- *     duration={6000}
- *     colorScheme="white"
- *     starBaseStyle={{ opacity: 0.2 }}
- *   />
- *   
- *   // Your content
- *   <div style={{ position: 'relative', zIndex: 1 }}>
- *     <h1>Content Here</h1>
+ * // Grid of cards - performance optimized
+ * {cards.map(card => (
+ *   <div key={card.id} style={{ position: 'relative' }}>
+ *     <Card {...card} />
+ *     <FloatingStars 
+ *       count={6}
+ *       animationType="blink" // Better performance than spin
+ *       containerStyle={{
+ *         position: 'absolute',
+ *         inset: '-30px',
+ *         pointerEvents: 'none'
+ *       }}
+ *     />
  *   </div>
- *   
- *   // Foreground layer
- *   <FloatingStars 
- *     count={6}
- *     duration={2500}
- *     colorScheme="gold"
- *     containerStyle={{
- *       position: 'absolute',
- *       inset: 0,
- *       pointerEvents: 'none'
- *     }}
- *   />
- * </div>
- * 
- * @example
- * // All props with descriptions
- * <FloatingStars 
- *   // Number of stars (will vary ±2 randomly)
- *   count={8}
- *   
- *   // Animation duration in milliseconds
- *   duration={3000}
- *   
- *   // Delay between star cycles
- *   respawnDelay={500}
- *   
- *   // Color scheme: 'red', 'blue', 'gold', 'purple', 'white'
- *   colorScheme="red"
- *   
- *   // Custom styles for the container div
- *   containerStyle={{
- *     position: 'absolute',
- *     inset: '-100px', // Extends 100px beyond parent
- *     pointerEvents: 'none', // Stars don't block mouse events
- *     zIndex: 10
- *   }}
- *   
- *   // Custom styles applied to each star
- *   starBaseStyle={{
- *     opacity: 0.6,
- *     // You can override any CSS property here
- *   }}
- * />
+ * ))}
  * 
  * @notes
  * - Parent container must have `position: relative` or `position: absolute`
  * - Use `pointerEvents: 'none'` in containerStyle if stars shouldn't block interactions
- * - Negative `inset` values extend stars beyond parent boundaries
- * - Positive `inset` values shrink the star spawn area inward
- * - Use `zIndex` in containerStyle to control layering
+ * - `animationType="blink"` is recommended for grids/lists for better scroll performance
+ * - Component automatically pauses when scrolled out of view
  * - Stars use CSS clip-path with percentage coordinates, so they scale perfectly
  * 
  * @colorSchemes
@@ -128,6 +77,12 @@ import React, { useState, useEffect, useRef } from 'react';
  * - 'gold': Golden yellow (#ffd700, #ffed4e)
  * - 'purple': Deep purple (#9d4edd, #c77dff)
  * - 'white': White/silver (#ffffff, #e0e0e0)
+ * 
+ * @animationTypes
+ * Available animation types:
+ * - 'spin': Stars rotate while appearing/disappearing (most dynamic, higher GPU usage)
+ * - 'blink': Stars blink/flicker like real stars (best performance, recommended for grids)
+ * - 'pulse': Gentle glow without rotation (balanced performance and visual appeal)
  */
 const FloatingStars = ({ 
   count = 8,
@@ -135,17 +90,21 @@ const FloatingStars = ({
   starBaseStyle = {},
   duration = 3000,
   respawnDelay = 500,
-  colorScheme = 'red'
+  colorScheme = 'red',
+  animationType = 'blink', // Default to blink for better performance
+  static: isStatic = false // New prop for static stars
 }) => {
   const [stars, setStars] = useState([]);
-  const timersRef = useRef([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const containerRef = useRef(null);
+  const intervalRef = useRef(null);
 
   // Color schemes for the stars
   const colorSchemes = {
     red: {
-      primary: '#ff3366',
-      secondary: '#ff6b9d',
-      glow: 'rgba(255, 51, 102, 0.8)'
+      primary: '#d91821',
+      secondary: '#d8242d',
+      glow: 'rgba(217, 24, 33, 0.8)'
     },
     blue: {
       primary: '#3366ff',
@@ -174,68 +133,88 @@ const FloatingStars = ({
   // Generate a random star configuration
   const generateStar = (id) => ({
     id,
-    // Random position within container (evenly distributed)
     x: Math.random() * 100,
     y: Math.random() * 100,
-    // Random size between 12px and 28px
     size: 12 + Math.random() * 16,
-    // Random rotation
     rotation: Math.random() * 360,
-    endRotation: Math.random() * 360 + 360, // Always rotate at least 360deg
-    // Random opacity for variation
+    endRotation: Math.random() * 360 + 360,
     opacity: 0.7 + Math.random() * 0.3,
-    // Random delay for staggered effect
-    delay: 0,
-    // Color variation
+    delay: Math.random() * 500,
     colorIndex: Math.random() > 0.5 ? 0 : 1,
-    // Unique key for forcing re-render
-    key: Date.now() + Math.random()
+    key: `star-${id}-${Date.now()}-${Math.random()}`
   });
 
-  // Initialize and manage continuous star flow
+  // Intersection Observer to pause animations when off-screen (PERFORMANCE OPTIMIZATION)
   useEffect(() => {
-    // Clear any existing timers
-    timersRef.current.forEach(timer => clearTimeout(timer));
-    timersRef.current = [];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsVisible(entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0,
+        rootMargin: '100px' // Start animating before entering viewport
+      }
+    );
 
-    // Initialize stars with staggered delays
-    const initialStars = Array.from({ length: count }, (_, i) => ({
-      ...generateStar(i),
-      delay: (i / count) * duration * 0.6 // Stagger initial appearance
-    }));
-    setStars(initialStars);
-
-    // Set up individual respawn cycle for each star
-    initialStars.forEach((star, index) => {
-      const scheduleRespawn = (initialDelay) => {
-        const timer = setTimeout(() => {
-          setStars(prev => {
-            const newStars = [...prev];
-            newStars[index] = generateStar(index);
-            return newStars;
-          });
-          // Schedule next respawn
-          scheduleRespawn(duration + respawnDelay);
-        }, initialDelay);
-        
-        timersRef.current.push(timer);
-      };
-
-      // Start the respawn cycle after initial animation completes
-      scheduleRespawn(star.delay + duration + respawnDelay);
-    });
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     return () => {
-      timersRef.current.forEach(timer => clearTimeout(timer));
-      timersRef.current = [];
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
     };
-  }, [count, duration, respawnDelay]);
+  }, []);
 
-  return (
-    <>
-      <style>
-        {`
-          @keyframes float {
+  // Initialize and refresh stars (only when visible)
+  useEffect(() => {
+    // For static stars, generate once and return
+    if (isStatic) {
+      const starCount = Math.floor(Math.random() * 5) + count - 2;
+      const newStars = Array.from({ length: starCount }, (_, i) => generateStar(i));
+      setStars(newStars);
+      return; // No cleanup needed for static stars
+    }
+
+    // Animated stars logic (existing behavior)
+    if (!isVisible) {
+      // Clear interval and stars when not visible (PERFORMANCE)
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      setStars([]); // Remove stars to reduce DOM elements
+      return;
+    }
+
+    const generateStars = () => {
+      const starCount = Math.floor(Math.random() * 5) + count - 2;
+      const newStars = Array.from({ length: starCount }, (_, i) => generateStar(i));
+      setStars(newStars);
+    };
+
+    generateStars();
+
+    intervalRef.current = setInterval(() => {
+      generateStars();
+    }, duration + respawnDelay);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [count, duration, respawnDelay, isVisible, isStatic]);
+
+  // Generate animation keyframes based on type
+  const getAnimationKeyframes = () => {
+    switch (animationType) {
+      case 'spin':
+        return `
+          @keyframes floatSpin {
             0% {
               opacity: 0;
               transform: rotate(var(--start-rotation)) scale(0);
@@ -253,8 +232,68 @@ const FloatingStars = ({
               transform: rotate(var(--end-rotation)) scale(0.5);
             }
           }
+        `;
+      
+      case 'blink':
+        return `
+          @keyframes floatBlink {
+            0% {
+              opacity: 0;
+              transform: scale(0);
+            }
+            5% {
+              opacity: var(--opacity);
+              transform: scale(1);
+            }
+            20%, 40%, 60%, 80% {
+              opacity: var(--opacity);
+            }
+            30%, 50%, 70% {
+              opacity: calc(var(--opacity) * 0.3);
+            }
+            95% {
+              opacity: var(--opacity);
+              transform: scale(1);
+            }
+            100% {
+              opacity: 0;
+              transform: scale(0.5);
+            }
+          }
+        `;
+      
+      case 'pulse':
+        return `
+          @keyframes floatPulse {
+            0% {
+              opacity: 0;
+              transform: scale(0);
+            }
+            10% {
+              opacity: var(--opacity);
+              transform: scale(1);
+            }
+            90% {
+              opacity: var(--opacity);
+              transform: scale(1);
+            }
+            100% {
+              opacity: 0;
+              transform: scale(0.5);
+            }
+          }
+        `;
+      
+      default:
+        return getAnimationKeyframes('blink'); // Fallback to blink
+    }
+  };
 
-          @keyframes pulse {
+  const getSecondaryAnimation = () => {
+    switch (animationType) {
+      case 'spin':
+        return `
+          @keyframes glow {
             0%, 100% {
               filter: brightness(1) drop-shadow(0 0 8px var(--glow-color));
             }
@@ -262,6 +301,63 @@ const FloatingStars = ({
               filter: brightness(1.3) drop-shadow(0 0 16px var(--glow-color));
             }
           }
+        `;
+      case 'blink':
+        return `
+          @keyframes glow {
+            0%, 100% {
+              filter: brightness(1) drop-shadow(0 0 6px var(--glow-color));
+            }
+          }
+        `;
+      case 'pulse':
+        return `
+          @keyframes glow {
+            0%, 100% {
+              filter: brightness(1) drop-shadow(0 0 8px var(--glow-color));
+            }
+            50% {
+              filter: brightness(1.5) drop-shadow(0 0 20px var(--glow-color));
+            }
+          }
+        `;
+      default:
+        return '';
+    }
+  };
+
+  const getAnimationName = () => {
+    switch (animationType) {
+      case 'spin':
+        return 'floatSpin';
+      case 'blink':
+        return 'floatBlink';
+      case 'pulse':
+        return 'floatPulse';
+      default:
+        return 'floatBlink';
+    }
+  };
+
+  const getSecondaryAnimationDuration = () => {
+    switch (animationType) {
+      case 'spin':
+        return '1.5s';
+      case 'blink':
+        return '0.1s'; // Quick blinks
+      case 'pulse':
+        return '2s';
+      default:
+        return '1.5s';
+    }
+  };
+
+  return (
+    <>
+      <style>
+        {`
+          ${!isStatic ? getAnimationKeyframes() : ''}
+          ${!isStatic ? getSecondaryAnimation() : ''}
 
           .floating-star {
             position: absolute;
@@ -272,20 +368,26 @@ const FloatingStars = ({
             background: linear-gradient(135deg, var(--color-1) 0%, var(--color-2) 100%);
             clip-path: polygon(
               0% 50%, 
-              48% 48%, 
+              45% 45%, 
               50% 0%, 
-              52% 48%, 
+              55% 45%, 
               100% 50%, 
-              52% 52%, 
+              55% 55%, 
               50% 100%, 
-              48% 52%
+              45% 55%
             );
+            ${!isStatic ? `
             animation: 
-              float var(--duration) ease-in-out forwards,
-              pulse 1.5s ease-in-out infinite;
+              ${getAnimationName()} var(--duration) ease-in-out forwards,
+              glow ${getSecondaryAnimationDuration()} ease-in-out infinite;
             animation-delay: var(--delay);
-            pointer-events: none;
             will-change: transform, opacity;
+            ` : `
+            opacity: var(--opacity);
+            filter: brightness(1) drop-shadow(0 0 6px var(--glow-color));
+            `}
+            pointer-events: none;
+            contain: layout style paint;
           }
 
           .floating-stars-container {
@@ -293,11 +395,13 @@ const FloatingStars = ({
             width: 100%;
             height: 100%;
             overflow: hidden;
+            contain: layout style paint;
           }
         `}
       </style>
       
       <div 
+        ref={containerRef}
         className="floating-stars-container"
         style={{
           ...containerStyle
@@ -333,8 +437,7 @@ const FloatingStars = ({
 /**
  * Demo component showing various usage patterns
  * @example
- * import FloatingStarsDemo from './FloatingStars';
- * // Or import { FloatingStarsDemo } from './FloatingStars';
+ * import FloatingStars, { FloatingStarsDemo } from './FloatingStars';
  */
 const FloatingStarsDemo = () => {
   return (
@@ -352,6 +455,7 @@ const FloatingStarsDemo = () => {
         count={6}
         duration={4000}
         colorScheme="white"
+        animationType="blink"
         starBaseStyle={{
           opacity: 0.3
         }}
@@ -375,6 +479,7 @@ const FloatingStarsDemo = () => {
           duration={3000}
           respawnDelay={500}
           colorScheme="red"
+          animationType="blink"
           containerStyle={{
             position: 'absolute',
             inset: '-50px',
@@ -403,7 +508,7 @@ const FloatingStarsDemo = () => {
             color: 'rgba(255, 255, 255, 0.7)',
             lineHeight: '1.6'
           }}>
-            A rare drop from the cosmic vault. The stars dance around this prized possession, 
+            A rare drop from the cosmic vault. The stars blink around this prized possession, 
             signaling its extraordinary power and magnificence.
           </p>
           
@@ -427,6 +532,7 @@ const FloatingStarsDemo = () => {
         count={10}
         duration={5000}
         colorScheme="gold"
+        animationType="pulse"
         starBaseStyle={{
           opacity: 0.2
         }}
