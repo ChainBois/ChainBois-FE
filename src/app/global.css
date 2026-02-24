@@ -57,7 +57,7 @@ input:autofill {
 	background: transparent !important;
 	appearance: initial !important;
 	background-image: none !important;
-	color: #ec1b24 !important;
+	color: var(--chain-red) !important;
 }
 
 figure {
@@ -73,9 +73,9 @@ figure {
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #ec1b241a;
+	background: var(--chain-red);
 	cursor: pointer;
-	border-radius: 5px;
+	border-radius: 3px;
 	border: none;
 }
 

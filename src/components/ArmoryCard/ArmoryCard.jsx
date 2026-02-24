@@ -26,6 +26,7 @@ export default function ArmoryCard({ image, name, description, price }) {
 					<FloatingStars
 						count={12}
 						static={true}
+						duration={1500}
 						colorScheme='red'
 						containerStyle={{
 							position: 'absolute',
@@ -55,6 +56,7 @@ export default function ArmoryCard({ image, name, description, price }) {
 					<FloatingStars
 						count={6}
 						static={true}
+						duration={1500}
 						colorScheme='red'
 						containerStyle={{
 							position: 'absolute',
@@ -71,9 +73,7 @@ export default function ArmoryCard({ image, name, description, price }) {
 					<p className={cf(s.wMax, s.tCenter, a.description)}>{description}</p>
 					<p className={cf(s.wMax, s.tCenter, a.price)}>{price} $BATTLE</p>
 				</header>
-				<footer
-					className={cf(s.wMax, s.flex, s.flexCenter, a.footer)}
-				>
+				<footer className={cf(s.wMax, s.flex, s.flexCenter, a.footer)}>
 					<BuyButton />
 				</footer>
 			</div>

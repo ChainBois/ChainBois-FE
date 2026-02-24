@@ -4,9 +4,9 @@
 	overflow: hidden;
 }
 
-.topContainer {
+/* .topContainer {
 	padding: 0 245px;
-}
+} */
 
 .contactUs,
 .newsLetter {
@@ -128,11 +128,52 @@
 	object-position: center;
 }
 
+/* Medium device */
+@media only screen and (max-width: 1024px) {
+	.contactUs,
+	.newsLetter {
+		width: 400px;
+	}
+
+	.contactUsTitle,
+	.newsLetterTitle {
+		font-size: 55px;
+		line-height: 55px;
+	}
+
+	.contactUsLink {
+		font-size: 18px;
+	}
+
+	.newsLetterLink {
+		width: 180px;
+		height: 45px;
+		font-size: 15px;
+	}
+
+	.separator {
+		height: 200px;
+	}
+
+	.bottomContainer {
+		padding: 150px 150px 60px;
+		gap: 50px;
+	}
+
+	.footerNavTitle {
+		font-size: 11px;
+	}
+
+	.navLink {
+		font-size: 11px;
+	}
+}
+
 /* Small device */
 @media only screen and (max-width: 834px) {
-	.topContainer {
+	/* .topContainer {
 		padding: 0 115px;
-	}
+	} */
 
 	.contactUs, .newsLetter {
 		width: unset;
@@ -179,9 +220,9 @@
 
 /* Tiny device */
 @media only screen and (max-width: 480px) {
-	.topContainer {
+	/* .topContainer {
 		padding: 0 48px;
-	}
+	} */
 
 	.contactUsTitle {
 		font-size: 24px;

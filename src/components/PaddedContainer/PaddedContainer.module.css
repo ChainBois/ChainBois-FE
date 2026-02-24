@@ -1,0 +1,23 @@
+.paddedContainer {
+	padding: 0 170px;
+}
+
+/* --------------------------- Media Queries ------------------------- */
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+    .paddedContainer {
+	padding: 0 90px;
+}
+}
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.paddedContainer {
+		padding: 0 64px;
+	}
+}
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.paddedContainer {
+		padding: 0 24px;
+	}
+}

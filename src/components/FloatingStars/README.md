@@ -8,6 +8,7 @@ An animated React component that renders floating, rotating stars with glowing e
 🎨 **5 Color Schemes** - Red, blue, gold, purple, and white  
 🎭 **3 Animation Types** - Spin (rotate), Blink (flicker like real stars), Pulse (gentle glow)  
 📐 **Percentage-based Clip-path** - Stars scale perfectly at any size  
+📱 **Fully Responsive** - Stars scale with viewport using vw units - perfect on mobile, tablet, and desktop  
 ⚡ **Performance Optimized** - Intersection Observer pauses animations when off-screen  
 🎯 **Layerable** - Stack multiple star layers for depth effects  
 🚀 **Scroll-Friendly** - No lag in grids/lists thanks to viewport detection  
@@ -47,7 +48,8 @@ function MyComponent() {
 | `respawnDelay` | number | `500` | Delay between star cycles (ms) |
 | `colorScheme` | string | `'red'` | Color scheme: `'red'`, `'blue'`, `'gold'`, `'purple'`, `'white'` |
 | `animationType` | string | `'blink'` | Animation style: `'spin'`, `'blink'`, `'pulse'` |
-| `static` | boolean | `false` | **NEW**: Display stars statically without animation |
+| `static` | boolean | `false` | Display stars statically without animation |
+| `size` | string | `'auto'` | **NEW**: Star size preset: `'small'`, `'medium'`, `'large'`, `'auto'` (responsive) |
 | `containerStyle` | object | `{}` | Custom CSS styles for container div |
 | `starBaseStyle` | object | `{}` | Custom CSS styles for each star |
 
@@ -96,9 +98,10 @@ Choose the animation style that best fits your use case:
 | `'pulse'` | Gentle glow without rotation | **Good** 👍 | Balanced visuals and performance |
 | `'spin'` | Stars rotate while appearing | **Okay** 🔄 | Single elements, hero sections |
 
-### When to use each type:
+### When to use each type
 
 **Use `'blink'` (recommended):**
+
 - ✅ Grid of cards with stars
 - ✅ List items with floating stars
 - ✅ Multiple star instances on one page
@@ -106,15 +109,87 @@ Choose the animation style that best fits your use case:
 - ✅ When you want authentic star-like behavior
 
 **Use `'pulse'`:**
+
 - ✅ When you want subtle animation
 - ✅ Background decorative stars
 - ✅ Ambient effects
 
 **Use `'spin'`:**
+
 - ✅ Single hero element
 - ✅ Main reward/achievement screen
 - ✅ Desktop-only experiences
 - ⚠️ **Avoid** in grids or lists (can cause scroll lag)
+
+## Responsive Sizing 📱
+
+Stars now automatically scale with viewport size using `vw` units! This means they'll appear proportionally sized on all devices.
+
+### Size Presets
+
+| Size | Range | Best For |
+|------|-------|----------|
+| `'small'` | 0.6vw - 1.2vw | Mobile devices, dense layouts |
+| `'medium'` | 0.8vw - 1.6vw | Tablets, balanced displays |
+| `'large'` | 1.2vw - 2.4vw | Desktop, hero sections |
+| `'auto'` | 0.8vw - 1.8vw | **Default** - works everywhere |
+
+### Examples
+
+```jsx
+// Mobile-optimized
+<FloatingStars 
+  size="small"
+  count={8}
+  colorScheme="gold"
+/>
+
+// Desktop hero section
+<FloatingStars 
+  size="large"
+  count={12}
+  animationType="pulse"
+/>
+
+// Auto (recommended) - scales to any device
+<FloatingStars 
+  size="auto" // or just omit, it's the default
+  count={10}
+/>
+```
+
+### Responsive Breakpoint Strategy
+
+Use CSS media queries in `containerStyle` for fine-tuned control:
+
+```jsx
+<FloatingStars 
+  size="auto"
+  containerStyle={{
+    position: 'absolute',
+    inset: '-30px',
+    // Adjust container on mobile
+    '@media (max-width: 768px)': {
+      inset: '-15px' // Less extension on mobile
+    }
+  }}
+/>
+```
+
+Or use different size presets for different screens in your component:
+
+```jsx
+const StarEffect = () => {
+  const isMobile = window.innerWidth < 768;
+  
+  return (
+    <FloatingStars 
+      size={isMobile ? 'small' : 'medium'}
+      count={isMobile ? 6 : 10}
+    />
+  );
+};
+```
 
 ## Common Patterns
 
@@ -386,6 +461,7 @@ Available color schemes with their hex values:
 ## Tips & Best Practices
 
 ✅ **DO:**
+
 - Set parent to `position: relative`
 - Use `pointerEvents: 'none'` if stars shouldn't block clicks
 - Use `animationType="blink"` for grids/lists
@@ -395,6 +471,7 @@ Available color schemes with their hex values:
 - Control stacking with `zIndex` in containerStyle
 
 ❌ **DON'T:**
+
 - Forget to set parent positioning
 - Use `animationType="spin"` in grids (causes scroll lag)
 - Use too many stars per element (>12)
@@ -403,6 +480,7 @@ Available color schemes with their hex values:
 ### Quick Decision Guide
 
 **"Should I use blink or spin?"**
+
 - Multiple cards/items on page? → **blink**
 - Single hero element? → **spin** or **pulse**
 - Mobile device? → **blink**
@@ -426,6 +504,7 @@ The component automatically optimizes performance:
 ### Manual Optimization Tips
 
 **For Best Performance:**
+
 ```jsx
 // ✅ Good: Blink animation in grid
 <FloatingStars 
@@ -453,6 +532,7 @@ The component automatically optimizes performance:
 ### Performance Comparison
 
 On a grid of 20 cards:
+
 - `animationType="blink"`: **Smooth 60fps** ✅
 - `animationType="pulse"`: **55-60fps** 👍
 - `animationType="spin"`: **40-50fps** (may drop frames) ⚠️

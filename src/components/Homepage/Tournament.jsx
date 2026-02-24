@@ -8,7 +8,7 @@ import TournamentCard from '../TournamentCard'
 import Container from './Container'
 import './Tournament.module.css'
 import t from './Tournament.module.css'
-import { MOBILE_QUERY, TABLET_QUERY } from '@/constants';
+import { MOBILE_QUERY, TABLET_QUERY } from '@/constants'
 
 export default function Tournament() {
 	const slidingCardsRef = useRef()
@@ -18,10 +18,11 @@ export default function Tournament() {
 
 	// Define and use the new breakpoints
 	// isMobile: (max-width: 480px)
-	const isMobile = useMediaQuery(MOBILE_QUERY || '(max-width: 480px)',)
+	const isMobile = useMediaQuery(MOBILE_QUERY || '(max-width: 480px)')
 	// isTablet: (max-width: 834px) OR (width >= 600px and width <= 960px and orientation: landscape)
 	const isTablet = useMediaQuery(
-		TABLET_QUERY || '(max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape)',
+		TABLET_QUERY ||
+			'(max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape)',
 	)
 	// isDesktop: Everything else (implied)
 

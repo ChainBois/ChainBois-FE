@@ -11,6 +11,8 @@
 	background: transparent;
 	color: rgba(255, 255, 255, 1);
 	transition: all 0.3s ease;
+	white-space: nowrap;
+	flex-shrink: 0;
 }
 
 .menuOption::before,
@@ -46,65 +48,179 @@
 	width: 100%;
 }
 
-/* Query specifically for touchscreen devices */
-/* @media only screen and (hover: none) {
-	.menuOption::before,
-	.menuOption::after {
-		width: 100%;
-	}
-} */
-
+/* ── Parent ── */
 .parent {
+	position: relative; /* anchor for absolute buttons */
 	overflow: visible;
 	margin-bottom: 76px;
+	padding: 0 170px;
 }
 
+/* ── Scrollable wrapper — scrollbar always hidden ── */
 .wrapper {
 	overflow: auto;
 	scroll-snap-type: x mandatory;
 	scroll-behavior: smooth;
-	-ms-overflow-style: none; /* IE and Edge */
+	-ms-overflow-style: none;
 	scrollbar-width: none; /* Firefox */
+}
+
+.wrapper::-webkit-scrollbar {
+	display: none; /* Chromium */
 }
 
 .menu {
 	gap: 0 48px;
-	height: 45px;
+	height: 40px;
 }
 
-/* iPad Pro */
+/* ── Scroll button edge wrappers (absolute, vertically centered) ── */
+.scrollBtnEdge {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	align-items: center;
+	z-index: 2;
+	/* Fade gradient so text doesn't hard-clip behind the button */
+	padding: 6px 10px;
+}
+
+.scrollBtnEdgeLeft {
+	left: 114px;
+	background: url('../../assets/img/bgBox.png') #000000;
+}
+
+.scrollBtnEdgeRight {
+	right: 114px; /* matches .parent padding-right */
+	background: url('../../assets/img/bgBox.png') #000000;
+}
+
+/* ── Scroll buttons ── */
+.scrollBtn {
+	display: flex;
+	width: 40px;
+	height: 40px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	border: 1px solid #ec1b24;
+	background: rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+	transition: all 0.3s ease;
+	color: #fff;
+}
+
+.scrollBtn:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.scrollBtn:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.scrollBtn:disabled:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.scrollBtnRight {
+	background: #ec1b24;
+}
+
+.scrollBtnRight:hover {
+	background: #d91821;
+}
+
+.scrollBtnRight:disabled {
+	background: #ec1b24;
+}
+
+.scrollBtnIcon {
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+}
+
+/* ── iPad Pro ── */
 @media only screen and (max-width: 1024px) {
 }
 
-/* Small device */
+/* ── Small device ── */
 @media only screen and (max-width: 834px) {
 	.menuOption {
 		font-size: 18px;
 	}
 
+	.menuOption::before,
+	.menuOption::after {
+		height: 1px;
+	}
+
 	.menu {
 		gap: 0 38px;
-		height: 40px;
+		height: 26px;
 	}
 
 	.parent {
-		padding-left: 17.5px;
+		padding: 0 64px;
 		margin-bottom: 20px;
+	}
+
+	.scrollBtnEdgeRight {
+		right: 16px;
+	}
+
+	.scrollBtnEdgeLeft {
+		left: 16px;
+	}
+
+	.scrollBtn {
+		width: 26px;
+		height: 26px;
+	}
+
+	.scrollBtnIcon {
+		width: 13px;
+		height: 13px;
 	}
 }
 
-/* Tiny device */
+/* ── Tiny device ── */
 @media only screen and (max-width: 480px) {
 	.menuOption {
 		font-size: 12.5px;
 	}
 
+	.menuOption::before,
+	.menuOption::after {
+		height: 0.5px;
+	}
+
 	.menu {
 		gap: 0 13px;
-		height: 20px;
+		height: 18px;
 	}
 
 	.parent {
-		padding-left: 12.5px;
+		padding: 0 24px;
+	}
+
+	.scrollBtnEdgeRight {
+		right: 24px;
+	}
+
+	.scrollBtnEdgeLeft {
+		right: 24px;
+	}
+
+	.scrollBtn {
+		width: 18px;
+		height: 18px;
+	}
+
+	.scrollBtnIcon {
+		width: 10px;
+		height: 10px;
 	}
 }

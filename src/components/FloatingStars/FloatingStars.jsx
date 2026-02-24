@@ -21,6 +21,7 @@ import React, { useState, useEffect, useRef } from 'react';
  * @param {('red'|'blue'|'gold'|'purple'|'white')} [props.colorScheme='red'] - Predefined color scheme for stars
  * @param {('spin'|'blink'|'pulse')} [props.animationType='blink'] - Animation style: 'spin' (rotate), 'blink' (opacity flicker), 'pulse' (gentle glow)
  * @param {boolean} [props.static=false] - If true, stars are displayed statically without animation
+ * @param {('small'|'medium'|'large'|'auto')} [props.size='auto'] - Star size preset: 'small' (mobile-friendly), 'medium', 'large', 'auto' (responsive)
  * @param {Object} [props.containerStyle={}] - Custom CSS styles for the container div
  * @param {Object} [props.starBaseStyle={}] - Custom CSS styles applied to each individual star
  * 
@@ -63,16 +64,25 @@ import React, { useState, useEffect, useRef } from 'react';
  *   </div>
  * ))}
  * 
+ * @example
+ * // Responsive sizes for different use cases
+ * <FloatingStars size="small" />  // Mobile-friendly, smaller stars
+ * <FloatingStars size="medium" /> // Balanced size
+ * <FloatingStars size="large" />  // Prominent stars
+ * <FloatingStars size="auto" />   // Default, adapts to viewport (recommended)
+ * 
  * @notes
  * - Parent container must have `position: relative` or `position: absolute`
  * - Use `pointerEvents: 'none'` in containerStyle if stars shouldn't block interactions
  * - `animationType="blink"` is recommended for grids/lists for better scroll performance
  * - Component automatically pauses when scrolled out of view
  * - Stars use CSS clip-path with percentage coordinates, so they scale perfectly
+ * - Star sizes are now responsive using vw units - they scale with viewport width
+ * - Use size="small" for mobile-optimized displays
  * 
  * @colorSchemes
  * Available color schemes:
- * - 'red': Vibrant red/pink (#ff3366, #ff6b9d)
+ * - 'red': Vibrant red/lighter red (#d91821, #d8242d)
  * - 'blue': Bright blue (#3366ff, #6b9dff)
  * - 'gold': Golden yellow (#ffd700, #ffed4e)
  * - 'purple': Deep purple (#9d4edd, #c77dff)
@@ -92,7 +102,8 @@ const FloatingStars = ({
   respawnDelay = 500,
   colorScheme = 'red',
   animationType = 'blink', // Default to blink for better performance
-  static: isStatic = false // New prop for static stars
+  static: isStatic = false, // New prop for static stars
+  size = 'auto' // New prop for responsive sizing
 }) => {
   const [stars, setStars] = useState([]);
   const [isVisible, setIsVisible] = useState(true);
@@ -104,7 +115,7 @@ const FloatingStars = ({
     red: {
       primary: '#d91821',
       secondary: '#d8242d',
-      glow: 'rgba(217, 24, 33, 0.8)'
+      glow: 'rgba(255, 51, 102, 0.8)'
     },
     blue: {
       primary: '#3366ff',
@@ -130,12 +141,31 @@ const FloatingStars = ({
 
   const currentScheme = colorSchemes[colorScheme] || colorSchemes.red;
 
+  // Get responsive size range based on preset
+  const getSizeRange = () => {
+    switch (size) {
+      case 'small':
+        return { min: 0.6, max: 1.2 }; // vw units: 0.6vw to 1.2vw
+      case 'medium':
+        return { min: 0.8, max: 1.6 }; // vw units: 0.8vw to 1.6vw
+      case 'large':
+        return { min: 1.2, max: 2.4 }; // vw units: 1.2vw to 2.4vw
+      case 'auto':
+      default:
+        // Auto scales based on viewport with reasonable bounds
+        return { min: 0.8, max: 1.8 }; // vw units: 0.8vw to 1.8vw
+    }
+  };
+
+  const sizeRange = getSizeRange();
+
   // Generate a random star configuration
   const generateStar = (id) => ({
     id,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    size: 12 + Math.random() * 16,
+    // Responsive size using vw units with min/max bounds
+    size: sizeRange.min + Math.random() * (sizeRange.max - sizeRange.min),
     rotation: Math.random() * 360,
     endRotation: Math.random() * 360 + 360,
     opacity: 0.7 + Math.random() * 0.3,
@@ -241,23 +271,13 @@ const FloatingStars = ({
               opacity: 0;
               transform: scale(0);
             }
-            5% {
-              opacity: var(--opacity);
-              transform: scale(1);
-            }
-            20%, 40%, 60%, 80% {
-              opacity: var(--opacity);
-            }
-            30%, 50%, 70% {
-              opacity: calc(var(--opacity) * 0.3);
-            }
-            95% {
+            50% {
               opacity: var(--opacity);
               transform: scale(1);
             }
             100% {
               opacity: 0;
-              transform: scale(0.5);
+              transform: scale(0);
             }
           }
         `;
@@ -368,13 +388,13 @@ const FloatingStars = ({
             background: linear-gradient(135deg, var(--color-1) 0%, var(--color-2) 100%);
             clip-path: polygon(
               0% 50%, 
-              45% 45%, 
+              48% 48%, 
               50% 0%, 
-              55% 45%, 
+              52% 48%, 
               100% 50%, 
-              55% 55%, 
+              52% 52%, 
               50% 100%, 
-              45% 55%
+              48% 52%
             );
             ${!isStatic ? `
             animation: 
@@ -414,7 +434,7 @@ const FloatingStars = ({
             style={{
               '--start-x': `${star.x}%`,
               '--start-y': `${star.y}%`,
-              '--size': `${star.size}px`,
+              '--size': `${star.size}vw`, // Changed from px to vw for responsiveness
               '--start-rotation': `${star.rotation}deg`,
               '--end-rotation': `${star.endRotation}deg`,
               '--opacity': star.opacity,
@@ -423,8 +443,8 @@ const FloatingStars = ({
               '--color-1': star.colorIndex === 0 ? currentScheme.primary : currentScheme.secondary,
               '--color-2': star.colorIndex === 0 ? currentScheme.secondary : currentScheme.primary,
               '--glow-color': currentScheme.glow,
-              marginLeft: `-${star.size / 2}px`,
-              marginTop: `-${star.size / 2}px`,
+              marginLeft: `calc(var(--size) / -2)`, // Responsive centering
+              marginTop: `calc(var(--size) / -2)`, // Responsive centering
               ...starBaseStyle
             }}
           />

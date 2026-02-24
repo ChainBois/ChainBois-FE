@@ -13,12 +13,12 @@ export default function MaxWidth({
 	const { query } = useMain()
 
 	const maxWidthValue = useMemo(() => {
-		if (query.isDesktop) {
-			return maxWidth.max
+		if (query.isMobile) {
+			return maxWidth.mobile
 		} else if (query.isTablet) {
 			return maxWidth.tablet
 		} else {
-			return maxWidth.mobile
+			return maxWidth.max
 		}
 	}, [query, maxWidth])
 

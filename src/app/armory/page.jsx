@@ -16,6 +16,7 @@ import { PaginationLocal } from '@/components/Pagination'
 import LootBox from '@/components/LootBox'
 import LootBoxes from '@/components/LootBoxes'
 import MaxWidth from '@/components/MaxWidth'
+import PaddedContainer from '@/components/PaddedContainer'
 
 const cards = [
 	{
@@ -117,12 +118,7 @@ export default function Page() {
 				tag={'Weapons'}
 				cusClass={cf(p.container)}
 			>
-				<MaxWidth
-					maxWidth={{ max: '1562px', tablet: '770px', mobile: '330px' }}
-					position={'right'}
-				>
-					<ScrollMenu />
-				</MaxWidth>
+				<ScrollMenu />
 				<MaxWidth
 					maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
 				>

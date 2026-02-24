@@ -3,7 +3,7 @@
 import s from '@/styles'
 import { cf } from '@/utils'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'
+import { LuArrowLeft, LuArrowRight } from 'react-icons/lu'
 import p from './Pagination.module.css'
 import { useMain } from '@/hooks'
 
@@ -100,19 +100,6 @@ export default function Pagination({
 			aria-label='Pagination Navigation'
 			onKeyDown={handleKeyDown}
 		>
-			{/* <div className={cf(s.flex, s.flexLeft, s.flexOne, p.stepsCon)}>
-						<span className={cf(s.wMax, s.dInlineBlock, p.showingWrapper)}>
-							{currentPortion?.length > 0 && (
-								<span
-									className={cf(s.dInlineBlock, s.tCenter, p.showing)}
-									role="status"
-									aria-live="polite"
-								>
-									{`Showing - ${pos} of ${totalSteps}`}
-								</span>
-							)}
-						</span>
-					</div> */}
 			<div
 				className={cf(
 					s.flex,
@@ -125,36 +112,22 @@ export default function Pagination({
 				aria-label='Page navigation'
 			>
 				<button
-					className={cf(
-						s.flex,
-						s.flexCenter,
-						p.navigationBtn,
-						p.nav1,
-						isPremium ? p.isPremium : '',
-					)}
+					className={cf(p.pagination_btn, p.prev)}
 					onClick={moveLeft}
 					disabled={currentPortion?.length === 0 || pos <= 1}
 					type='button'
 					aria-label='Previous page'
 				>
-					<BsArrowLeft className={cf(p.pageIcon)} />
-					<span className={cf(p.hide)}>Previous</span>
+					<LuArrowLeft className={cf(p.icon)} />
 				</button>
 				<button
-					className={cf(
-						s.flex,
-						s.flexCenter,
-						p.navigationBtn,
-						p.nav2,
-						isPremium ? p.isPremium : '',
-					)}
+					className={cf(p.pagination_btn, p.next)}
 					onClick={moveRight}
 					disabled={currentPortion?.length === 0 || pos >= totalSteps}
 					type='button'
 					aria-label='Next page'
 				>
-					<BsArrowRight className={cf(p.pageIcon)} />
-					<span className={cf(p.hide)}>Next</span>
+					<LuArrowRight className={cf(p.icon)} />
 				</button>
 			</div>
 		</div>
