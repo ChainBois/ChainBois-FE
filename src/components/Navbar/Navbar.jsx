@@ -7,9 +7,9 @@ import s from '@/styles'
 import { cf } from '@/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import { memo, useMemo, useState } from 'react'
+import { memo, useMemo, useState, useRef, useEffect, useCallback } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { MdArrowOutward } from 'react-icons/md'
+import { MdArrowOutward, MdClose, MdKeyboardArrowUp } from 'react-icons/md'
 import n from './Navbar.module.css'
 import { TABLET_QUERY } from '@/constants'
 
@@ -120,6 +120,150 @@ function PlayButton() {
 }
 
 /**
+ * Full-screen mobile navigation drawer with scroll-to-top support.
+ */
+function MobileMenu({ isOpen, onClose }) {
+	const menuRef = useRef(null)
+	const [showScrollTop, setShowScrollTop] = useState(false)
+
+	const handleScroll = useCallback(() => {
+		if (menuRef.current) {
+			setShowScrollTop(menuRef.current.scrollTop > 80)
+		}
+	}, [])
+
+	useEffect(() => {
+		const el = menuRef.current
+		if (!el) return
+		el.addEventListener('scroll', handleScroll, { passive: true })
+		return () => el.removeEventListener('scroll', handleScroll)
+	}, [handleScroll])
+
+	// Lock body scroll when open
+	useEffect(() => {
+		document.body.style.overflow = isOpen ? 'hidden' : ''
+		return () => {
+			document.body.style.overflow = ''
+		}
+	}, [isOpen])
+
+	const scrollToTop = () => {
+		menuRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+	}
+
+	const mobileLinks = [
+		{ tag: 'Battleground', action: null, showTooltip: true },
+		{ tag: 'Armory', action: '/armory', showTooltip: false },
+		{ tag: 'Training Room', action: '/training-room', showTooltip: false },
+		{
+			tag: 'Marketplace',
+			action: null,
+			showTooltip: true,
+			tooltipText: 'Coming Soon',
+		},
+		{
+			tag: 'Merch',
+			action: null,
+			showTooltip: true,
+			tooltipText: 'Coming Soon',
+		},
+	]
+
+	return (
+		<div className={cf(n.mobileMenu, isOpen && n.mobileMenuOpen)}>
+			<div
+				ref={menuRef}
+				className={n.mobileMenuInner}
+			>
+				{/* Close row */}
+				<div
+					className={cf(
+						s.flex,
+						s.spaceXBetween,
+						s.spaceYCenter,
+						n.mobileMenuHeader,
+					)}
+				>
+					<Link
+						href='/'
+						className={cf(s.flex, s.flexCenter, n.logoContainer)}
+						onClick={onClose}
+					>
+						<Image
+							src={CBBranding}
+							alt='CBBranding Logo'
+							width={160}
+							height={21.9}
+							className={n.logo}
+						/>
+					</Link>
+					<button
+						className={cf(s.flex, s.flexCenter, n.mobileCloseBtn)}
+						onClick={onClose}
+						aria-label='Close menu'
+					>
+						<MdClose className={n.mobileCloseIcon} />
+					</button>
+				</div>
+
+				{/* Nav links */}
+				<ul className={cf(n.mobileNavLinks)}>
+					{mobileLinks.map(({ tag, action, showTooltip, tooltipText }) => (
+						<li
+							key={tag}
+							className={n.mobileNavItem}
+						>
+							{action ? (
+								<Link
+									href={action}
+									className={n.mobileNavLink}
+									onClick={onClose}
+								>
+									<span>{tag}</span>
+									<MdArrowOutward className={n.mobileNavArrow} />
+								</Link>
+							) : (
+								<span className={cf(n.mobileNavLink, n.mobileNavLinkDisabled)}>
+									<span>{tag}</span>
+									<span className={n.mobileNavBadge}>
+										{tooltipText ?? 'Coming Soon'}
+									</span>
+								</span>
+							)}
+						</li>
+					))}
+				</ul>
+
+				{/* Play button */}
+				<div className={n.mobilePlayWrapper}>
+					<button
+						className={cf(
+							s.flex,
+							s.flexCenter,
+							s.g10,
+							n.playButton,
+							n.mobilePlayButton,
+						)}
+					>
+						<span className={s.dInlineBlock}>Play Now</span>
+						<MdArrowOutward className={cf(s.dInlineBlock, n.playIcon)} />
+					</button>
+				</div>
+			</div>
+
+			{/* Scroll-to-top */}
+			<button
+				className={cf(n.scrollTopBtn, showScrollTop && n.scrollTopBtnVisible)}
+				onClick={scrollToTop}
+				aria-label='Scroll to top'
+			>
+				<MdKeyboardArrowUp className={n.scrollTopIcon} />
+			</button>
+		</div>
+	)
+}
+
+/**
  * Render the site header containing branding, primary navigation links, a play button, and a hamburger menu.
  *
  * Chooses a compact branding asset when the layout is small and arranges navigation items (some with tooltips),
@@ -129,64 +273,78 @@ function PlayButton() {
  */
 export default function Navbar() {
 	const isTablet = useMediaQuery(TABLET_QUERY)
-	const branding = useMemo(() => (true ? CBBranding : isTablet ? CB : CBBranding), [isTablet])
+	const [isMenuOpen, setIsMenuOpen] = useState(false)
+	const branding = useMemo(
+		() => (true ? CBBranding : isTablet ? CB : CBBranding),
+		[isTablet],
+	)
 	return (
-		<header className={cf(s.wMax, s.flex, s.flexCenter, n.nav)}>
-			<nav
-				className={cf(
-					s.wMax,
-					s.flex,
-					s.spaceXBetween,
-					s.spaceYCenter,
-					n.navItems,
-				)}
-			>
-				<Link
-					href={'/'}
-					className={cf(s.flex, s.flexCenter, n.logoContainer)}
+		<>
+			<header className={cf(s.wMax, s.flex, s.flexCenter, n.nav)}>
+				<nav
+					className={cf(
+						s.wMax,
+						s.flex,
+						s.spaceXBetween,
+						s.spaceYCenter,
+						n.navItems,
+					)}
 				>
-					<Image
-						src={branding}
-						alt='CBBranding Logo'
-						width={240}
-						height={32.8}
-						className={n.logo}
-					/>
-				</Link>
+					<Link
+						href={'/'}
+						className={cf(s.flex, s.flexCenter, n.logoContainer)}
+					>
+						<Image
+							src={branding}
+							alt='CBBranding Logo'
+							width={240}
+							height={32.8}
+							className={n.logo}
+						/>
+					</Link>
 
-				<div className={cf(s.flex, s.flexCenter, n.navLinksWrapper)}>
-					<ul className={cf(s.flex, s.flexCenter, n.navLinks)}>
-						<NavItem
-							tag='Battleground'
-							action={'/battleground'}
-							showTooltip={false}
-						/>
-						<NavItem
-							tag='Armory'
-							action={'/armory'}
-							showTooltip={false}
-						/>
-						<NavItem
-							tag='Training Room'
-							showTooltip={true}
-						/>
-						<NavItem
-							tag='Marketplace'
-							showTooltip={true}
-						/>
-						<NavItem
-							tag='Merch'
-							showTooltip={true}
-						/>
-					</ul>
+					<div className={cf(s.flex, s.flexCenter, n.navLinksWrapper)}>
+						<ul className={cf(s.flex, s.flexCenter, n.navLinks)}>
+							<NavItem
+								tag='Battleground'
+								showTooltip={true}
+							/>
+							<NavItem
+								tag='Armory'
+								action={'/armory'}
+								showTooltip={false}
+							/>
+							<NavItem
+								tag='Training Room'
+								action={'/training-room'}
+								showTooltip={false}
+							/>
+							<NavItem
+								tag='Marketplace'
+								showTooltip={true}
+							/>
+							<NavItem
+								tag='Merch'
+								showTooltip={true}
+							/>
+						</ul>
 
-					<PlayButton />
-				</div>
+						<PlayButton />
+					</div>
 
-				<button className={cf(s.flex, s.flexCenter, n.hamburgerWrapper)}>
-					<GiHamburgerMenu className={n.hamburger} />
-				</button>
-			</nav>
-		</header>
+					<button
+						className={cf(s.flex, s.flexCenter, n.hamburgerWrapper)}
+						onClick={() => setIsMenuOpen(true)}
+						aria-label='Open menu'
+					>
+						<GiHamburgerMenu className={n.hamburger} />
+					</button>
+				</nav>
+			</header>
+			<MobileMenu
+				isOpen={isMenuOpen}
+				onClose={() => setIsMenuOpen(false)}
+			/>
+		</>
 	)
 }

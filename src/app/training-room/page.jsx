@@ -36,8 +36,8 @@ export default function Page() {
 				subText={
 					<>
 						Upgrade your ChainBois. Boost your stats.
-						<br className={cf(h.lgHidden)} />
-						Prepare for the <br className={cf(h.mdHidden)} /> next battle.
+						<br className={cf(h.lgHidden)} />{' '}
+						Prepare for the next battle.
 					</>
 				}
 				links={

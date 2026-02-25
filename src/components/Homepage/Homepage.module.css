@@ -34,6 +34,18 @@
 	aspect-ratio: auto 1017 / 101;
 }
 
+.lgHidden {
+	display: none;
+}
+
+.mdHidden {
+	display: initial;
+}
+
+.smHidden {
+	display: initial;
+}
+
 /* --------------------------- Media Queries ------------------------- */
 /* iPad Air landscape */
 @media only screen and (max-width: 1180px) and (orientation: landscape) {
@@ -77,6 +89,14 @@
 	.brands {
 		height: 52px;
 	}
+
+	.lgHidden {
+		display: initial;
+	}
+
+	.mdHidden {
+		display: none;
+	}
 }
 
 /* Tiny device */
@@ -100,6 +120,14 @@
 
 	.brands {
 		height: 23px;
+	}
+
+	.mdHidden {
+		display: initial;
+	}
+
+	.smHidden {
+		display: none;
 	}
 }
 

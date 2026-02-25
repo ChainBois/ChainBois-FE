@@ -79,8 +79,9 @@ figure {
 	border: none;
 }
 
-::-webkit-scrollbar-thumb:hover {
-	background: #038af1;
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+	color: rgba(236, 27, 36, 1);
 }
 
 .toolTip:not(.toolTip:disabled):hover::after {

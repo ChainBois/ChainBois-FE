@@ -4,9 +4,11 @@
 	z-index: 2;
 }
 
-/* .logoContainer{
-
-} */
+.navItems .logoContainer {
+	padding: 0 10px;
+	height: 36px;
+	border-radius: 6px;
+}
 
 .navItems {
 	gap: 10px 0;
@@ -134,16 +136,18 @@
 
 .hamburgerWrapper {
 	display: none;
-	padding: 9.8px 6.5px;
+	padding: 6px;
 	border: none;
 	border-radius: 3px;
 	background: #fff;
 	cursor: pointer;
+	height: 36px;
+    width: 36px;
 }
 
 .hamburger {
-	width: 20px;
-	height: 20px;
+	width: 18px;
+	height: 18px;
 	color: #000;
 }
 
@@ -190,7 +194,7 @@
 /* Tiny device */
 @media only screen and (max-width: 480px) {
 	.nav {
-		padding: 54px 32px 10px;
+		padding: 28px 32px 10px;
 	}
 
 	.navLinksWrapper {
@@ -212,4 +216,209 @@
 
 /* Query specifically for touchscreen devices */
 @media only screen and (hover: none) {
+}
+
+/* ─── Mobile Menu ─────────────────────────────────────────── */
+
+.mobileMenu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	/* Slides from above: start offscreen, animate to natural height */
+	max-height: 0;
+	overflow: hidden;
+	z-index: 100;
+	background: #fff;
+	transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	/* Shadow so it sits clearly above page content */
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.mobileMenuOpen {
+	/* Large enough to fit any content; the inner div controls actual height */
+	max-height: 100dvh;
+}
+
+.mobileMenuInner {
+	/* Takes only as much space as content needs, but scrolls if it overflows the viewport */
+	max-height: 100dvh;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: 28px 32px 40px;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	scrollbar-width: thin;
+	scrollbar-color: #12121230 transparent;
+}
+
+.mobileMenuInner::-webkit-scrollbar {
+	width: 4px;
+}
+.mobileMenuInner::-webkit-scrollbar-track {
+	background: transparent;
+}
+.mobileMenuInner::-webkit-scrollbar-thumb {
+	background: #12121240;
+	border-radius: 4px;
+}
+
+.mobileMenuHeader {
+	padding-bottom: 24px;
+	border-bottom: 1px solid #e5e5e5;
+	margin-bottom: 8px;
+}
+
+.mobileMenuHeader .logoContainer {
+	padding: 0 10px;
+	height: 36px;
+	background: #000;
+	border-radius: 6px;
+}
+
+.mobileCloseBtn {
+	width: 36px;
+	height: 36px;
+	border: 2px solid #e5e5e5;
+	border-radius: 6px;
+	background: transparent;
+	cursor: pointer;
+	transition:
+		background 0.2s,
+		border-color 0.2s;
+	flex-shrink: 0;
+}
+
+.mobileCloseBtn:hover {
+	background: #f5f5f5;
+	border-color: #ccc;
+}
+
+.mobileCloseIcon {
+	width: 18px;
+	height: 18px;
+	color: #121212;
+}
+
+/* Link list */
+.mobileNavLinks {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.mobileNavItem {
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.mobileNavItem:last-child {
+	border-bottom: none;
+}
+
+.mobileNavLink {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 4px;
+	color: #121212;
+	font-family: var(--font-inter);
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.2;
+	text-decoration: none;
+	transition:
+		color 0.2s,
+		padding-left 0.2s;
+}
+
+.mobileNavLink:hover {
+	color: #444;
+	padding-left: 8px;
+}
+
+.mobileNavLinkDisabled {
+	cursor: default;
+	color: #999;
+}
+
+.mobileNavLinkDisabled:hover {
+	color: #999;
+	padding-left: 4px;
+}
+
+.mobileNavArrow {
+	width: 16px;
+	height: 16px;
+	opacity: 0.4;
+	transition: opacity 0.2s;
+}
+
+.mobileNavLink:hover .mobileNavArrow {
+	opacity: 1;
+}
+
+.mobileNavBadge {
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: #999;
+	border: 1px solid #ddd;
+	border-radius: 20px;
+	padding: 2px 8px;
+}
+
+/* Play button block */
+.mobilePlayWrapper {
+	margin-top: 28px;
+}
+
+.mobilePlayButton {
+	width: 100%;
+	justify-content: center;
+	padding: 15px 18px;
+	font-size: 15px;
+}
+
+/* Scroll-to-top button — positioned inside the menu area, fixed to bottom-right */
+.scrollTopBtn {
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: #121212;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 101;
+	opacity: 0;
+	transform: translateY(12px) scale(0.85);
+	pointer-events: none;
+	transition:
+		opacity 0.25s ease,
+		transform 0.25s ease;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.scrollTopBtnVisible {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	pointer-events: auto;
+}
+
+.scrollTopBtn:hover {
+	background: #333;
+}
+
+.scrollTopIcon {
+	width: 22px;
+	height: 22px;
 }
