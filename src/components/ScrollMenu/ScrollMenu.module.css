@@ -4,7 +4,7 @@
 	font-weight: 700;
 	font-style: Bold;
 	font-size: 28px;
-	line-height: 140%;
+	line-height: normal;
 	letter-spacing: 0%;
 	border: none;
 	position: relative;
@@ -13,6 +13,7 @@
 	transition: all 0.3s ease;
 	white-space: nowrap;
 	flex-shrink: 0;
+	height: 100%;
 }
 
 .menuOption::before,
@@ -29,7 +30,7 @@
 }
 
 .menuOption::before {
-	top: 0;
+	top: 2px;
 }
 
 .menuOption::after {
@@ -71,7 +72,7 @@
 
 .menu {
 	gap: 0 48px;
-	height: 40px;
+	height: 45px;
 }
 
 /* ── Scroll button edge wrappers (absolute, vertically centered) ── */
@@ -150,6 +151,7 @@
 @media only screen and (max-width: 834px) {
 	.menuOption {
 		font-size: 18px;
+		/* height: 30px; */
 	}
 
 	.menuOption::before,
@@ -157,9 +159,17 @@
 		height: 1px;
 	}
 
+	.menuOption::before {
+		top: 1px;
+	}
+
+	/* .menuOption::after {
+		bottom: 1px;
+	} */
+
 	.menu {
 		gap: 0 38px;
-		height: 26px;
+		height: 32px;
 	}
 
 	.parent {
@@ -190,6 +200,7 @@
 @media only screen and (max-width: 480px) {
 	.menuOption {
 		font-size: 12.5px;
+		/* height: 25px; */
 	}
 
 	.menuOption::before,
@@ -197,21 +208,29 @@
 		height: 0.5px;
 	}
 
+	.menuOption::before {
+		top: 0.5px;
+	}
+
+	/* .menuOption::after {
+		bottom: 0.5px;
+	} */
+
 	.menu {
 		gap: 0 13px;
-		height: 18px;
+		height: 28px;
 	}
 
 	.parent {
-		padding: 0 24px;
+		padding: 0 38px;
 	}
 
 	.scrollBtnEdgeRight {
-		right: 24px;
+		right: 0;
 	}
 
 	.scrollBtnEdgeLeft {
-		left: 24px;
+		left: 0;
 	}
 
 	.scrollBtn {
