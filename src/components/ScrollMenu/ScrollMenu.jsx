@@ -7,12 +7,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { LuArrowLeft, LuArrowRight } from 'react-icons/lu'
 
 const DEFAULT_OPTIONS = [
-	{ tag: 'Home' },
-	{ tag: 'Gameplay' },
-	{ tag: 'Tournament' },
-	{ tag: 'Roadmap' },
-	{ tag: 'Team' },
-	{ tag: 'Partnership' },
+	{ tag: 'Assault Rifles' },
+	{ tag: 'SMGs' },
+	{ tag: 'LMGs' },
+	{ tag: 'Marksman Rifles' },
+	{ tag: 'Handguns' },
+	{ tag: 'Launchers' },
+	{ tag: 'Melee' },
 ]
 
 const MenuOption = ({ tag, action, isActive, itemRef }) => {
