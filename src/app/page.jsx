@@ -3,7 +3,6 @@
 import {
 	Gameplay,
 	HomePageHero,
-	Partnership,
 	Roadmap,
 	Socials,
 	Team,
@@ -21,8 +20,7 @@ export default function Page() {
 			<Tournament />
 			<Roadmap />
 			<Team />
-			<Socials />
-			<Partnership />
+			<Socials />			
 		</div>
 	)
 }

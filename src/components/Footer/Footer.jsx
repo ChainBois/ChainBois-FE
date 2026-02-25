@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import chainbois from '@/assets/svg/chainboisFooter.svg'
 import MaxWidth from '../MaxWidth'
+import { Partnership } from '../Homepage'
 
 const FooterNav = ({ tag, links }) => {
 	return (
@@ -91,78 +92,88 @@ export default function Footer() {
 		},
 	]
 	return (
-		<footer className={cf(s.wMax, s.flex, s.flexCenter, f.footer)}>
-			<MaxWidth maxWidth={{ max: '1280px', tablet: '540px', mobile: '265px' }}>
-				<section
-					className={cf(s.wMax, s.flex, s.spaceXBetween, f.topContainer)}
+		<>
+			<Partnership />
+			<footer className={cf(s.wMax, s.flex, s.flexCenter, f.footer)}>
+				<MaxWidth
+					maxWidth={{ max: '1280px', tablet: '540px', mobile: '265px' }}
 				>
-					<article
-						className={cf(s.flex, s.spaceXBetween, s.flex_dColumn, f.contactUs)}
+					<section
+						className={cf(s.wMax, s.flex, s.spaceXBetween, f.topContainer)}
 					>
-						<h2 className={cf(f.contactUsTitle)}>Contact Us</h2>
-						<Link
-							href={`mailto:contact@chainbois.com`}
-							target={'_top'}
-							className={cf(f.contactUsLink)}
+						<article
+							className={cf(
+								s.flex,
+								s.spaceXBetween,
+								s.flex_dColumn,
+								f.contactUs,
+							)}
 						>
-							contact@chainbois.com
-						</Link>
-					</article>
-					<div className={cf(f.separator)}></div>
-					<article
-						className={cf(
-							s.flex,
-							s.spaceXBetween,
-							s.flex_dColumn,
-							f.newsLetter,
-						)}
-					>
-						<h2 className={cf(f.newsLetterTitle)}>
-							Sign up
-							<br />
-							for Updates
-						</h2>
-						<Link
-							href={`https://chainbois.com`}
-							target={'_blank'}
-							className={cf(f.newsLetterLink)}
+							<h2 className={cf(f.contactUsTitle)}>Contact Us</h2>
+							<Link
+								href={`mailto:contact@chainbois.com`}
+								target={'_top'}
+								className={cf(f.contactUsLink)}
+							>
+								contact@chainbois.com
+							</Link>
+						</article>
+						<div className={cf(f.separator)}></div>
+						<article
+							className={cf(
+								s.flex,
+								s.spaceXBetween,
+								s.flex_dColumn,
+								f.newsLetter,
+							)}
 						>
-							Submit
-						</Link>
-					</article>
-				</section>
-			</MaxWidth>
-			<nav
-				className={cf(
-					s.wMax,
-					s.flex,
-					s.spaceXEnd,
-					s.spaceYStart,
-					f.bottomContainer,
-				)}
-			>
-				<FooterNav
-					tag='Ecosystem'
-					links={ecosystem}
-				/>
-				<FooterNav
-					tag='Account'
-					links={account}
-				/>
-				<FooterNav
-					tag='Community'
-					links={ecosystem}
-				/>
-			</nav>
-			<figure
-				className={cf(s.wMax, s.flex, s.flexCenter, f.chainboisContainer)}
-			>
-				<Image
-					src={chainbois}
-					alt={'chainbois footer text'}
-					className={cf(f.chainbois)}
-				/>
-			</figure>
-		</footer>
+							<h2 className={cf(f.newsLetterTitle)}>
+								Sign up
+								<br />
+								for Updates
+							</h2>
+							<Link
+								href={`https://chainbois.com`}
+								target={'_blank'}
+								className={cf(f.newsLetterLink)}
+							>
+								Submit
+							</Link>
+						</article>
+					</section>
+				</MaxWidth>
+				<nav
+					className={cf(
+						s.wMax,
+						s.flex,
+						s.spaceXEnd,
+						s.spaceYStart,
+						f.bottomContainer,
+					)}
+				>
+					<FooterNav
+						tag='Ecosystem'
+						links={ecosystem}
+					/>
+					<FooterNav
+						tag='Account'
+						links={account}
+					/>
+					<FooterNav
+						tag='Community'
+						links={ecosystem}
+					/>
+				</nav>
+				<figure
+					className={cf(s.wMax, s.flex, s.flexCenter, f.chainboisContainer)}
+				>
+					<Image
+						src={chainbois}
+						alt={'chainbois footer text'}
+						className={cf(f.chainbois)}
+					/>
+				</figure>
+			</footer>
+		</>
 	)
 }
