@@ -71,8 +71,8 @@ export default function TrainingCard({ pseudoIndex }) {
 						s.wMax,
 						s.hMax,
 						s.flex,
-                        s.flexCenter,
-                        s.p_absolute,
+						s.flexCenter,
+						s.p_absolute,
 						t.trainingCardImageContainer,
 					)}
 				>
@@ -82,8 +82,8 @@ export default function TrainingCard({ pseudoIndex }) {
 						className={cf(s.wMax, s.hMax, t.trainingCardImage)}
 					/>
 				</figure>
-				<h3 className={cf(s.flex, s.flexCenter, s.p_relative, t.trainingLevel)}>
-					Level {currentStep}
+				<h3 className={cf(s.flex, s.flexCenter, s.p_absolute, t.trainingLevel)}>
+					<span className={cf(s.dInlineBlock)}>Level {currentStep}</span>
 				</h3>
 			</header>
 			<footer className={cf(s.wMax, s.flex, s.flexEnd, t.trainingCardFooter)}>
@@ -93,7 +93,7 @@ export default function TrainingCard({ pseudoIndex }) {
 							{progress}% to Level {currentStep + 1}
 						</span>
 						<span className={cf(s.flex, s.flexRight, t.upgradeCost)}>
-							Upgrade Cost: 15 AVAX
+							Upgrade Cost: {currentStep * 15 + 15} AVAX
 						</span>
 					</p>
 					<div className={cf(s.wMax, s.flex, s.flexLeft, t.progressBar)}>
@@ -108,13 +108,15 @@ export default function TrainingCard({ pseudoIndex }) {
 				>
 					<PolyButton
 						tag='Level Up'
-                        side='right'
-                        polyButton={t.polyButton}
+						side='right'
+						polyButton={t.polyButton}
+						polyButtonText={t.polyButtonText}
 					/>
 					<PolyButton
 						tag='Details'
 						side='left'
-                        polyButton={t.polyButton}
+						polyButton={t.polyButton}
+						polyButtonText={t.polyButtonText}
 					/>
 				</nav>
 			</footer>

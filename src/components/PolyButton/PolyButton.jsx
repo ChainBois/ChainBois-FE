@@ -3,9 +3,9 @@
 import { cf } from '@/utils'
 import s from '@/styles'
 import b from './PolyButton.module.css'
-import { memo, useMemo } from 'react'
+import { memo, useMemo, useRef } from 'react'
 import Link from 'next/link'
-import { isEqual } from '@/hooks';
+import { isEqual, useResizeEffect } from '@/hooks'
 
 /**
  * PolyButton is a customizable button or link component with optional icon and styling.
@@ -20,89 +20,107 @@ import { isEqual } from '@/hooks';
  * @param {string} [polyButtonText=''] - Additional class names for the button text.
  * @returns {JSX.Element} The rendered button or link component.
  */
-const PolyButton  = memo(({
-	tag,
-	action,
-	isLink = false,
-	side = 'right',
-	polyButton = '',
-	polyButtonContainer = '',
-	polyButtonContent = '',
-	polyButtonText = '',
-	...props
-}) => {
-	const Responder = memo(
-		({ action, style, children }) =>
-			isLink ? (
-				<Link
-					href={action}
-					className={style}
-					{...props}
-				>
-					{children}
-				</Link>
-			) : (
-				<button
-					onClick={action}
-					className={style}
-					{...props}
-				>
-					{children}
-				</button>
-			),
-		(prev, next) => isEqual(prev, next),
-	)
+const PolyButton = memo(
+	({
+		tag,
+		action,
+		isLink = false,
+		side = 'right',
+		polyButton = '',
+		polyButtonContainer = '',
+		polyButtonContent = '',
+		polyButtonText = '',
+		...props
+	}) => {
+		const Responder = memo(
+			({ action, style, children }) =>
+				isLink ? (
+					<Link
+						href={action}
+						className={style}
+						{...props}
+					>
+						{children}
+					</Link>
+				) : (
+					<button
+						onClick={action}
+						className={style}
+						{...props}
+					>
+						{children}
+					</button>
+				),
+			(prev, next) => isEqual(prev, next),
+		)
 
-	const sideClass = useMemo(() => {
-		switch (side) {
-			case 'right':
-				return b.right
-			case 'left':
-				return b.left
-			default:
-				return ''
-		}
-	}, [side])
-	
-	return (
-		<Responder
-			action={action}
-			tag={tag}
-			style={cf(
-				s.flex,
-				s.flexCenter,
-				b.polyButton,
-				sideClass,
-				polyButton,
-			)}
-		>
-			<div
-				className={cf(
-					s.flex,
-					s.flexCenter,
-					b.polyButtonContainer,
-					sideClass,
-					polyButtonContainer,
-				)}
+		const sideClass = useMemo(() => {
+			switch (side) {
+				case 'right':
+					return b.right
+				case 'left':
+					return b.left
+				default:
+					return ''
+			}
+		}, [side])
+
+		const polyButtonContainerRef = useRef()
+		const polyButtonContentRef = useRef()
+
+		useResizeEffect(
+			() => {
+				const width = polyButtonContainerRef.current.offsetWidth
+				const basePadding = 3.5
+				const multiplier = basePadding / 170
+				const newPadding = multiplier * width
+				polyButtonContainerRef.current.style.padding = `${newPadding}px`
+				polyButtonContentRef.current.style.clipPath =
+					side === 'right'
+						? `polygon(0 0, calc(100% - 15%) 0, 100% calc(60% + ${newPadding}px), 100% 100%, 0 100%, 0 0)`
+						: `polygon(0 100%, 0 calc(60% + ${newPadding}px), 15% 0, 100% 0, 100% 100%, 0 100%)`
+			},
+			[polyButtonContainerRef],
+			500,
+		)
+
+		return (
+			<Responder
+				action={action}
+				tag={tag}
+				style={cf(s.flex, s.flexCenter, b.polyButton, sideClass, polyButton)}
 			>
 				<div
 					className={cf(
 						s.flex,
 						s.flexCenter,
-						b.polyButtonContent,
+						b.polyButtonContainer,
 						sideClass,
-						polyButtonContent,
+						polyButtonContainer,
 					)}
+					ref={polyButtonContainerRef}
 				>
-					<span
-						className={cf(s.dInlineBlock, b.polyButtonText, polyButtonText)}
+					<div
+						className={cf(
+							s.flex,
+							s.flexCenter,
+							b.polyButtonContent,
+							sideClass,
+							polyButtonContent,
+						)}
+						ref={polyButtonContentRef}
 					>
-						{tag}
-					</span>
+						<span
+							className={cf(s.dInlineBlock, b.polyButtonText, polyButtonText)}
+						>
+							{tag}
+						</span>
+					</div>
 				</div>
-			</div>
-		</Responder>
-	)
-}, (prev, next) => isEqual(prev, next))
+			</Responder>
+		)
+	},
+	(prev, next) => isEqual(prev, next),
+)
 
 export default PolyButton

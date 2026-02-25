@@ -26,7 +26,7 @@
 	} */
 
 	.cards {
-		gap: 33px 10px;
+		gap: 33px 20px;
 		margin-bottom: 75px;
 	}
 }
@@ -42,7 +42,7 @@
 	} */
 
 	.cards {
-		gap: 32px 15px;
+		gap: 20px 16px;
 		margin-bottom: 0px;
 	}
 }

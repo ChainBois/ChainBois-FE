@@ -1,6 +1,6 @@
 .trainingCard {
 	border: 1px solid var(--chain-red);
-    width: 327px
+	width: 327px;
 }
 
 .trainingCardHeader {
@@ -50,13 +50,17 @@
 	background: #000000;
 	color: #fff;
 	border: none;
-	clip-path: polygon(0 100%, 28.5px 0,100% 0, 100% 100%, 0 100%);
- z-index: 3;
+	clip-path: polygon(0 100%, 28.5px 0, 100% 0, 100% 100%, 0 100%);
+	z-index: 3;
+	right: 0;
+	bottom: -1px;
 }
 
 .trainingCardFooter {
 	gap: 16px 0;
 	padding: 7.5px 6.5px 23px;
+	overflow: hidden;
+	background: #000;
 }
 
 .progressContainer {
@@ -75,18 +79,123 @@
 	height: 8.5px;
 	border: none;
 	border-radius: 48.47px;
-    background: rgba(217, 217, 217, .2);
+	background: rgba(217, 217, 217, 0.2);
 }
 
 .progress {
-    opacity: 1;
-    border: none;
-    border-radius: 48.47px;
-    background: var(--chain-red);
+	opacity: 1;
+	border: none;
+	border-radius: 48.47px;
+	background: var(--chain-red);
 }
 
 /* .trainingCardActions {} */
 
 .polyButton {
-    width: 145px !important;
+	width: 145px !important;
+}
+
+/* --Media Queries-- */
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.trainingCard {
+		width: 222px;
+	}
+
+	.battleIndicator {
+		height: 27px;
+		width: 27px;
+		top: 9.5px;
+		left: 9.5px;
+	}
+
+	.chainSwords {
+		height: 16.28px;
+		width: 16.28px;
+	}
+
+	.trainingLevel {
+		padding: 6px 26px;
+		clip-path: polygon(0 100%, 13px 0, 100% 0, 100% 100%, 0 100%);
+		font-size: 10.5px;
+	}
+
+	.trainingCardFooter {
+		padding: 7px 6px 18px;
+		gap: 12px 0;
+	}
+
+	.progressContainer {
+		gap: 8px 0;
+	}
+
+	.progressDetails {
+		font-size: 8px;
+	}
+
+	.polyButton {
+		width: 98px !important;
+	}
+
+	.polyButtonText {
+		font-size: 10px !important;
+	}
+
+	.progressBar {
+		height: 5.75px;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.trainingCard {
+		width: 155px;
+	}
+
+	.battleIndicator {
+		height: 19px;
+		width: 19px;
+		top: 6.6px;
+		left: 6.6px;
+	}
+
+	.chainSwords {
+		height: 11.37px;
+		width: 11.37px;
+	}
+
+	.trainingLevel {
+		padding: 4.3px 18.2px;
+		clip-path: polygon(0 100%, 9px 0, 100% 0, 100% 100%, 0 100%);
+		font-size: 7.35px;
+	}
+
+	.trainingCardFooter {
+		padding: 6px 5px 15px;
+		gap: 10px 0;
+	}
+
+	.progressContainer {
+		gap: 6px 0;
+	}
+
+	.progressDetails {
+		font-size: 7px;
+	}
+
+	.polyButton {
+		width: 69px !important;
+	}
+
+	.polyButtonText {
+		font-size: 8px !important;
+	}
+
+	.progressBar {
+		height: 4px;
+	}
 }
