@@ -1,0 +1,48 @@
+.container {
+	padding-bottom: 110px;
+	gap: none !important;
+}
+
+.content {
+	/* padding: 0 170px; */
+}
+
+.cards {
+	gap: 28px 18px;
+	margin-bottom: 100px;
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+/* Small device */
+@media only screen and (max-width: 834px) {
+	.container {
+		padding-bottom: 64px;
+	}
+
+	/* .content {
+		padding: 0 64px;
+	} */
+
+	.cards {
+		gap: 33px 10px;
+		margin-bottom: 75px;
+	}
+}
+
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.container {
+		padding-bottom: 45px;
+	}
+
+	/* .content {
+		padding: 0 24px;
+	} */
+
+	.cards {
+		gap: 32px 15px;
+		margin-bottom: 0px;
+	}
+}
