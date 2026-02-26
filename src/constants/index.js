@@ -6,4 +6,4 @@ export const DEFAULT_SIZE = process.env.NEXT_PUBLIC_DEFAULT_SIZE
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
 export const WEBSOCKET_URL = process.env.NEXT_PUBLIC_WEBSOCKET_URL
 export const MOBILE_QUERY = '(max-width: 480px)'
-export const TABLET_QUERY = '(max-width: 834px), (max-width: 950px) and (orientation: landscape)'
+export const TABLET_QUERY = '(max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape)'
