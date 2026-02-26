@@ -31,11 +31,11 @@ export default function MarketCard({ pseudoIndex }) {
         const index = (pseudoIndex + 1) % 3
 		switch (index) {
 			case 0:
-				return 'Katana'
-			case 1:
-				return 'Assault Rifle'
-			case 2:
 				return 'Demo Kit'
+			case 1:
+				return 'Katana'
+			case 2:
+				return 'Assault Rifle'
 		}
     }, [pseudoIndex])
 
