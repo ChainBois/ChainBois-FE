@@ -1,0 +1,163 @@
+.marketCard {
+	width: 432px;
+	background: var(--chain-red);
+	padding: 2px;
+}
+
+.cardWrapper {
+	clip-path: polygon(
+		0 0,
+		80% 0,
+		85% 15px,
+		100% 15px,
+		100% 100%,
+		20% 100%,
+		15% calc(100% - 15px),
+		0 calc(100% - 15px)
+	);
+}
+
+.showcase {
+	aspect-ratio: 432 / 264;
+	height: auto;
+	background: url(../../assets/img/bgBox.png) #000000;
+}
+
+.img {
+	object-position: center;
+	object-fit: cover;
+}
+
+.content {
+	padding: 12px 23px 23px;
+	gap: 10px 0;
+	background: #000;
+}
+
+.header {
+	gap: 8px 0;
+}
+
+.title {
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-size: 40.89px;
+	letter-spacing: 0%;
+}
+
+.description {
+	font-family: var(--font-space-g);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 140%;
+	letter-spacing: 0%;
+}
+
+.footer {
+	gap: 10px 0;
+}
+
+.price {
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 140%;
+	letter-spacing: 0%;
+	color: var(--chain-red);
+	margin-right: auto;
+}
+
+.buyButton {
+	margin-left: auto;
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+/* Small device */
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+	.marketCard {
+		width: 222px;
+	}
+
+	.cardWrapper {
+		clip-path: polygon(
+			0 0,
+			80% 0,
+			85% 8px,
+			100% 8px,
+			100% 100%,
+			20% 100%,
+			15% calc(100% - 8px),
+			0 calc(100% - 8px)
+		);
+	}
+
+	.content {
+		padding: 6.5px 12px 8px;
+		gap: 5px 0;
+	}
+
+	.header {
+		gap: 6px 0;
+	}
+
+	.title {
+		font-size: 21px;
+	}
+
+	.footer {
+		gap: 8px 0;
+	}
+
+	.description,
+	.price {
+		font-size: 10px;
+	}
+
+	.price {
+		width: 100% !important;
+	}
+}
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.marketCard {
+		width: 155px;
+	}
+
+    .cardWrapper {
+		clip-path: polygon(
+			0 0,
+			80% 0,
+			85% 5px,
+			100% 5px,
+			100% 100%,
+			20% 100%,
+			15% calc(100% - 5px),
+			0 calc(100% - 5px)
+		);
+	}
+
+	.content {
+		padding: 4px 8px 7px;
+		gap: 3px 0;
+	}
+
+	.header {
+		gap: 4px 0;
+	}
+
+	.title {
+		font-size: 16px;
+	}
+
+	.footer {
+		gap: 4px 0;
+	}
+
+	.description,
+	.price {
+		font-size: 8px;
+	}
+}

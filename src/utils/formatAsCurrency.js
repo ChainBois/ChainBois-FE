@@ -56,16 +56,20 @@ function reduceNumber(num, options = {}) {
 }
 
 /**
- * Format a number as currency with support for:
- * - Abbreviation (K, M, B)
- * - Scientific fallback
- * - RTL locale awareness (e.g. Arabic)
- * - Locale + currencyCode
- * - Tiny number visual precision
- * - asObject + scientific mode
- *
- * @param {Object} options
- * @returns {String|Object|any}
+ * Formats a number as currency with options for abbreviation, decimal places, currency code, and more.
+ * @param {object} options - Formatting options
+ * @param {number} [options.value=0] - The input number to be formatted
+ * @param {number} [options.depth=1e6] - The smallest value for abbreviation
+ * @param {number} [options.dp=2] - Decimal places
+ * @param {boolean} [options.includeBlankDecimals=false] - Include blank decimal places if true
+ * @param {boolean} [options.trim=false] - Trim trailing zeros if true
+ * @param {boolean} [options.abbreviate=true] - Abbreviate the value if true
+ * @param {boolean} [options.scientific=false] - Return in scientific notation if true
+ * @param {boolean} [options.asObject=false] - Return the result as an object with {value, display} if true
+ * @param {string} [options.currencySymbol=''] - Currency symbol prefix
+ * @param {string} [options.currencyCode] - Currency code
+ * @param {string} [options.locale] - Locale for number formatting
+ * @returns {object|string} Result based on format option
  */
 export function formatAsCurrency({
 	value = 0,

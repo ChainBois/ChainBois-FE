@@ -273,7 +273,7 @@
 .mobileMenuHeader .logoContainer {
 	padding: 0 10px;
 	height: 36px;
-	background: #000;
+	background: url('../../assets/img/bgBox.png') #000000;;
 	border-radius: 6px;
 }
 

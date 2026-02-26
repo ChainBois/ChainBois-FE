@@ -157,9 +157,8 @@ function MobileMenu({ isOpen, onClose }) {
 		{ tag: 'Training Room', action: '/training-room', showTooltip: false },
 		{
 			tag: 'Marketplace',
-			action: null,
-			showTooltip: true,
-			tooltipText: 'Coming Soon',
+			action: '/marketplace',
+			showTooltip: false,
 		},
 		{
 			tag: 'Merch',
@@ -321,7 +320,8 @@ export default function Navbar() {
 							/>
 							<NavItem
 								tag='Marketplace'
-								showTooltip={true}
+								action={'/marketplace'}
+								showTooltip={false}
 							/>
 							<NavItem
 								tag='Merch'
