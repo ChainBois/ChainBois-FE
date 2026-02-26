@@ -22,7 +22,7 @@ export default function Tournament() {
 	// isTablet: (max-width: 834px) OR (width >= 600px and width <= 960px and orientation: landscape)
 	const isTablet = useMediaQuery(
 		TABLET_QUERY ||
-			'(max-width: 834px)',
+			'(max-width: 834px), (max-width: 950px) and (orientation: landscape)',
 	)
 	// isDesktop: Everything else (implied)
 

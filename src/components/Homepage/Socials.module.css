@@ -34,7 +34,7 @@
 	background: rgb(10, 10, 10);
 }
 
-@media only screen and (max-width: 834px) {
+@media only screen and (max-width: 834px), (max-width: 950px) and (orientation: landscape) {
 	.socials {
 		gap: 70px 0;
 		margin: 0 0 60px;

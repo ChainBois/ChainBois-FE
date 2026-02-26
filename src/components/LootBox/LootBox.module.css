@@ -192,7 +192,7 @@
 }
 
 /* Small device */
-@media only screen and (max-width: 834px) {
+@media only screen and (max-width: 834px), (max-width: 950px) and (orientation: landscape) {
 	.container {
 		width: 524px;
 		height: 160px;

@@ -207,7 +207,7 @@
 }
 
 /* Small device */
-@media only screen and (max-width: 834px) {
+@media only screen and (max-width: 834px), (max-width: 950px) and (orientation: landscape) {
 	.labelContainer {
 		height: 115px;
 	}

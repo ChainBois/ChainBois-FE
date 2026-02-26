@@ -164,7 +164,7 @@
 }
 
 /* Small device */
-@media only screen and (max-width: 834px) {
+@media only screen and (max-width: 834px), (max-width: 950px) and (orientation: landscape) {
 	.nav {
 		padding: 61px 64px 10px;
 	}
