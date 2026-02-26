@@ -161,10 +161,9 @@ function MobileMenu({ isOpen, onClose }) {
 			showTooltip: false,
 		},
 		{
-			tag: 'Merch',
-			action: null,
-			showTooltip: true,
-			tooltipText: 'Coming Soon',
+			tag: 'Inventory',
+			action: '/inventory',
+			showTooltip: false,
 		},
 	]
 
@@ -324,8 +323,9 @@ export default function Navbar() {
 								showTooltip={false}
 							/>
 							<NavItem
-								tag='Merch'
-								showTooltip={true}
+								tag='Inventory'
+								action={'/inventory'}
+								showTooltip={false}
 							/>
 						</ul>
 

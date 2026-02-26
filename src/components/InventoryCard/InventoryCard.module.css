@@ -1,0 +1,189 @@
+.inventoryCard {
+	width: 323px;
+	background: var(--chain-red);
+	clip-path: polygon(
+		0 0,
+		calc(100% - 3px) 0,
+		100% 3px,
+		100% 40px,
+		100% 100%,
+		40px 100%,
+		0 calc(100% - 25px),
+		0 0
+	);
+}
+
+.cardWrapper {
+	clip-path: polygon(
+		0 0,
+		calc(100% - 3px) 0,
+		calc(100% - 3px) 100%,
+		calc(100% - 3px) calc(100% - 3px),
+		45px calc(100% - 3px),
+		10px calc(100% - 25px),
+		0 calc(100% - 25px)
+	);
+}
+
+.showcase {
+	aspect-ratio: 323 / 255;
+	height: auto;
+	background: url(../../assets/img/bgBox.png) #000000;
+}
+
+.img {
+	object-position: center;
+	object-fit: cover;
+}
+
+.content {
+	padding: 20px 14px 15px;
+	gap: 10px 0;
+	background: #000;
+}
+
+.header {
+	gap: 8px 0;
+}
+
+.title {
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-size: 32px;
+	letter-spacing: 0%;
+}
+
+.description {
+	font-family: var(--font-space-g);
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 140%;
+	letter-spacing: 0%;
+}
+
+.footer {
+	gap: 10px 0;
+}
+
+.price {
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 140%;
+	letter-spacing: 0%;
+	color: var(--chain-red);
+	margin-right: auto;
+}
+
+.buyButton {
+	margin-left: auto;
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+/* Small device */
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+	.inventoryCard {
+		width: 222px;
+		clip-path: polygon(
+			0 0,
+			calc(100% - 2.5px) 0,
+			100% 2.5px,
+			100% 40px,
+			100% 100%,
+			30px 100%,
+			0 calc(100% - 20px),
+			0 0
+		);
+	}
+
+	.cardWrapper {
+		clip-path: polygon(
+			0 0,
+			calc(100% - 2.5px) 0,
+			calc(100% - 2.5px) 100%,
+			calc(100% - 2.5px) calc(100% - 2.5px),
+			34px calc(100% - 2.5px),
+			8px calc(100% - 20px),
+			0 calc(100% - 20px)
+		);
+	}
+
+	.content {
+		padding: 6.5px 12px 8px;
+		gap: 5px 0;
+	}
+
+	.header {
+		gap: 6px 0;
+	}
+
+	.title {
+		font-size: 21px;
+	}
+
+	.footer {
+		gap: 8px 0;
+	}
+
+	.description,
+	.price {
+		font-size: 10px;
+	}
+
+	.price {
+		width: 100% !important;
+	}
+}
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+	.inventoryCard {
+		width: 155px;
+		clip-path: polygon(
+			0 0,
+			calc(100% - 3px) 0,
+			100% 3px,
+			100% 40px,
+			100% 100%,
+			20px 100%,
+			0 calc(100% - 10px),
+			0 0
+		);
+	}
+
+	.cardWrapper {
+		clip-path: polygon(
+			0 0,
+			calc(100% - 2px) 0,
+			calc(100% - 2px) 100%,
+			calc(100% - 2px) calc(100% - 2px),
+			22px calc(100% - 2px),
+			6px calc(100% - 10px),
+			0 calc(100% - 10px)
+		);
+	}
+
+	.content {
+		padding: 4px 8px 9px;
+		gap: 3px 0;
+	}
+
+	.header {
+		gap: 4px 0;
+	}
+
+	.title {
+		font-size: 16px;
+	}
+
+	.footer {
+		gap: 4px 0;
+	}
+
+	.description,
+	.price {
+		font-size: 8px;
+	}
+}

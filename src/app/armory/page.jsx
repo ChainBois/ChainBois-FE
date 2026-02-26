@@ -99,9 +99,9 @@ export default function Page() {
 					<>
 						Gear up. Upgrade. Dominate the battlefield.
 						<br />
-						Purchase weapons, armor, loot boxes,{' '}
+						Purchase weapons, armor, loot boxes, and{' '}
 						<br className={cf(h.lgHidden)} />
-						and convert points.
+						convert points.
 					</>
 				}
 				links={
