@@ -27,6 +27,18 @@ export default function MarketCard({ pseudoIndex }) {
 		}
 	}, [pseudoIndex])
 
+    const title = useMemo(() => {
+        const index = (pseudoIndex + 1) % 3
+		switch (index) {
+			case 0:
+				return 'Katana'
+			case 1:
+				return 'Assault Rifle'
+			case 2:
+				return 'Demo Kit'
+		}
+    }, [pseudoIndex])
+
 	const price = useMemo(() => {
 		const value = currentStep * 300 + 300
 		return formatAsCurrency({
@@ -49,7 +61,7 @@ export default function MarketCard({ pseudoIndex }) {
 				</figure>
 				<div className={cf(s.wMax, s.flex, s.flexCenter, m.content)}>
 					<header className={cf(s.wMax, s.flex, s.flexCenter, m.header)}>
-						<h3 className={cf(s.wMax, s.tLeft, m.title)}>Katana</h3>
+						<h3 className={cf(s.wMax, s.tLeft, m.title)}>{title}</h3>
 						<p className={cf(s.wMax, s.tLeft, m.description)}>
 							Swift melee weapon with deadly precision and quick strikes.
 						</p>
