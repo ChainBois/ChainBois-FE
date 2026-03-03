@@ -34,7 +34,7 @@
 		25% 97.5%,
 		0px 92.5%
 	);
-	background: url('../../assets/img/bgBox.png') rgba(255, 255, 255, 0.1);
+	background: url('../../assets/img/bgBox.png') #000000;
 	gap: 10px 0;
 	padding: 15px 15px 30px;
 }
