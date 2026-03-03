@@ -1,0 +1,81 @@
+.titleSection {
+	gap: 8px 0;
+}
+
+.titleTag {
+	font-family: var(--font-space-g);
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 120%;
+	letter-spacing: 0%;
+	color: rgba(236, 27, 36, 1);
+}
+
+.title {
+	font-family: var(--font-space-g);
+	font-weight: 600;
+	font-size: 48px;
+	line-height: 120%;
+	letter-spacing: 0%;
+}
+
+.infoText {
+	font-family: var(--font-space-g);
+	font-weight: 600;
+	font-size: 32px;
+	line-height: 120%;
+	letter-spacing: 0%;
+	color: rgba(236, 27, 36, 1);
+}
+
+.unit {
+	height: 133px;
+	width: 133px;
+	gap: 10px 0;
+	background: rgba(18, 18, 18, 1);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+}
+
+.value {
+	font-family: var(--font-space-g);
+	font-weight: 600;
+	font-size: 48px;
+	line-height: 120%;
+	letter-spacing: 0%;
+	text-align: center;
+	color: rgba(236, 27, 36, 1);
+}
+
+.tag {
+	font-family: var(--font-space-g);
+	font-weight: 600;
+	font-size: 24px;
+	line-height: 120%;
+	letter-spacing: 0%;
+	text-align: center;
+	color: rgba(236, 27, 36, 1);
+}
+
+.countdownSection {
+    gap: 8px;
+}
+
+.description {
+	font-family: var(--font-space-g);
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 130%;
+	letter-spacing: 0%;
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+/* Small device */
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+}
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+}

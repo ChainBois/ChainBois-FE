@@ -1,22 +1,15 @@
 'use client'
 
-import { cf } from '@/utils'
-import s from '@/styles'
-import p from './page.module.css'
-import { Hero } from '@/components/Homepage'
-import h from '../../components/Homepage/Homepage.module.css'
 import BorderedButton from '@/components/BorderedButton'
+import { Hero } from '@/components/Homepage'
 import Container from '@/components/Homepage/Container'
-import ScrollMenu from '@/components/ScrollMenu'
 import MarketCard from '@/components/MarketCard'
-import SMG from '@/assets/img/SMG.png'
-import AR from '@/assets/img/AR.png'
-import MKR from '@/assets/img/MKR.png'
-import { PaginationLocal } from '@/components/Pagination'
-import LootBox from '@/components/LootBox'
-import LootBoxes from '@/components/LootBoxes'
 import MaxWidth from '@/components/MaxWidth'
-import PaddedContainer from '@/components/PaddedContainer'
+import { PaginationLocal } from '@/components/Pagination'
+import s from '@/styles'
+import { cf } from '@/utils'
+import h from '../../components/Homepage/Homepage.module.css'
+import p from './page.module.css'
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -35,7 +28,8 @@ export default function Page() {
 					<>
 						Own powerful ChainBois assets &
 						<br classNam={cf(h.xlHidden, h.lgHidden, h.mdHidden)} /> trade
-						<br className={cf(h.xlHidden, h.lgHidden, h.smHidden)} /> with the community
+						<br className={cf(h.xlHidden, h.lgHidden, h.smHidden)} /> with the
+						community
 					</>
 				}
 				links={

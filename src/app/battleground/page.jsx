@@ -1,9 +1,13 @@
 'use client'
 
+import AR from '@/assets/img/AR.png'
+import MKR from '@/assets/img/MKR.png'
+import SMG from '@/assets/img/SMG.png'
+import ArmoryCard from '@/components/ArmoryCard'
 import BorderedButton from '@/components/BorderedButton'
 import { Hero } from '@/components/Homepage'
 import Container from '@/components/Homepage/Container'
-import InventoryCard from '@/components/InventoryCard'
+import LootBoxes from '@/components/LootBoxes'
 import MaxWidth from '@/components/MaxWidth'
 import { PaginationLocal } from '@/components/Pagination'
 import ScrollMenu from '@/components/ScrollMenu'
@@ -11,10 +15,9 @@ import s from '@/styles'
 import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
+import { ActiveTournament } from '@/components/BattlegroundCards'
 
-const cards = [
-	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-]
+const activeTourneys = [1, 2, 3]
 
 export default function Page() {
 	return (
@@ -22,17 +25,18 @@ export default function Page() {
 			<Hero
 				welcomeText={
 					<>
-						Welcome to the
-						<br />
-						Inventory
+						Welcome to the <br />
+						Battleground
 					</>
 				}
 				subText={
 					<>
-						Your complete collection of weapons,{' '}
-						<br className={cf(h.xlHidden, h.lgHidden)} />
-						armor, and rewards. <br className={cf(h.mdHidden, h.smHidden)} />
-						Sell your weapons
+						Compete in live tournaments and climb the
+						<br className={cf(h.xlHidden, h.lgHidden)} /> leaderboard.{' '}
+						<br className={cf(h.mdHidden, h.smHidden)} />
+						Earn $BATTLE, climb the{' '}
+						<br className={cf(h.xlHidden, h.lgHidden, h.smHidden)} />
+						ranks.
 					</>
 				}
 				links={
@@ -46,32 +50,20 @@ export default function Page() {
 				}
 			/>
 			<Container
-				tag={'Your Weapons'}
+				tag={'Active Tournaments'}
 				cusClass={cf(p.container)}
 			>
-				<ScrollMenu />
 				<MaxWidth
-					maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
+					maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
 				>
-					<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
-						<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
-							{cards.map((card, i) => (
-								<InventoryCard
-									key={`card-${i}`}
-									pseudoIndex={i}
-								/>
-							))}
-							<PaginationLocal
-								array={[]}
-								refArray={cards}
-								step={9}
-								setArray={() => {}}
-								full
-							/>
-						</div>
+					<div className={cf(s.wMax, s.flex, s.flexTop, p.activeCards)}>
+						{activeTourneys.map((tourney, index) => (
+							<ActiveTournament key={`active-tourney-${index}`} />
+						))}
 					</div>
 				</MaxWidth>
 			</Container>
+			<LootBoxes />
 		</div>
 	)
 }

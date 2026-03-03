@@ -1,0 +1,116 @@
+.tournamentCard {
+	border-radius: 20px;
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	background: rgba(24, 24, 24, 1);
+}
+
+.tourneyInfo {
+	padding: 80px 45px 65px 75px;
+	gap: 35px 0;
+	width: 55%;
+	border: none;
+	border-right: 1px solid var(--chain-red);
+}
+
+/* .buttonContainer {} */
+
+.polyButton {
+	width: 265px !important;
+}
+
+.polyButtonText {
+	font-family: var(--font-space-g) !important;
+	font-weight: 500 !important;
+	font-size: 22.19px !important;
+	line-height: 120% !important;
+	letter-spacing: 0% !important;
+}
+
+.leaderboardSection {
+	gap: 7.5px 0;
+	padding: 80px 30px 0;
+}
+
+.leaderboardTitle {
+	font-family: var(--font-space-g);
+	font-weight: 600;
+	font-size: 48px;
+	line-height: 120%;
+	letter-spacing: 0%;
+}
+
+.leaderboardWrapper {
+	height: 575px;
+	overflow: auto;
+	scroll-snap-type: x mandatory;
+	scroll-behavior: smooth;
+	-ms-overflow-style: none;
+	scrollbar-width: none; /* Firefox */
+}
+
+.leaderboardWrapper::-webkit-scrollbar {
+	display: none; /* Chromium */
+}
+
+.leaderboard {
+	gap: 18px 0;
+	padding: 30px;
+	background: #000000;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 20px;
+}
+
+.leaderboardRank {
+	height: 70px;
+	border: 1px solid var(--chain-red);
+	border-radius: 10px;
+	background: rgba(24, 24, 24, 1);
+	padding-right: 25px;
+	overflow: hidden;
+}
+
+.rank {
+	line-height: 70px;
+	font-family: var(--font-space-g);
+	font-weight: 700;
+	font-size: 95px;
+	letter-spacing: 0%;
+	top: 0;
+	left: -18px;
+	z-index: 1;
+}
+
+.username {
+	font-family: var(--font-space-g);
+	font-weight: 600;
+	font-size: 24.01px;
+	line-height: 120%;
+	letter-spacing: 0%;
+	padding: 0 5px;
+	border: none;
+	border-radius: 5px;
+	background: rgba(24, 24, 24, 1);
+	z-index: 2;
+}
+
+.points {
+	font-family: var(--font-space-g);
+	font-weight: 600;
+	font-size: 20px;
+	line-height: 120%;
+	letter-spacing: 0%;
+	width: 150px;
+	z-index: 2;
+	color: rgba(236, 27, 36, 1);
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+/* Small device */
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+}
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+}

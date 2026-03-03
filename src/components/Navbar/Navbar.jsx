@@ -152,7 +152,7 @@ function MobileMenu({ isOpen, onClose }) {
 	}
 
 	const mobileLinks = [
-		{ tag: 'Battleground', action: null, showTooltip: true },
+		{ tag: 'Battleground', action: '/battleground', showTooltip: false },
 		{ tag: 'Armory', action: '/armory', showTooltip: false },
 		{ tag: 'Training Room', action: '/training-room', showTooltip: false },
 		{
@@ -305,7 +305,8 @@ export default function Navbar() {
 						<ul className={cf(s.flex, s.flexCenter, n.navLinks)}>
 							<NavItem
 								tag='Battleground'
-								showTooltip={true}
+								action={'/battleground'}
+								showTooltip={false}
 							/>
 							<NavItem
 								tag='Armory'
