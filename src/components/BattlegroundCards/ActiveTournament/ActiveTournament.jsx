@@ -6,7 +6,8 @@ import a from './ActiveTournament.module.css'
 import { TitleSection, CountdownSection, Description } from '../Common'
 import { Countdown } from '@/components/Countdown'
 import PolyButton from '@/components/PolyButton'
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react'
+import { useResizeEffect } from '@/hooks'
 
 const dummyLeaderboardRanks = [
 	{
@@ -115,9 +116,59 @@ export default function ActiveTournament({}) {
 	const timeReference = useMemo(() => {
 		return timeTillNext('mon')
 	}, [])
+
+	const tournamentCardRef = useRef(null)
+	const tourneyInfoRef = useRef(null)
+	const leaderboardWrapperRef = useRef(null)
+	const baseLeaderboardHeightRef = useRef(null)
+	const appliedLeaderboardHeightRef = useRef(null)
+
+	useResizeEffect(
+		() => {
+			if (
+				!tournamentCardRef.current ||
+				!tourneyInfoRef.current ||
+				!leaderboardWrapperRef.current
+			)
+				return
+
+			const wrapperElement = leaderboardWrapperRef.current
+			if (baseLeaderboardHeightRef.current === null) {
+				const initialHeight = parseFloat(getComputedStyle(wrapperElement).height)
+				baseLeaderboardHeightRef.current = Number.isNaN(initialHeight)
+					? 0
+					: initialHeight
+			}
+
+			const tourneyInfoRect = tourneyInfoRef.current.getBoundingClientRect()
+			const wrapperTop = wrapperElement.getBoundingClientRect().top
+			const baselineWrapperBottom =
+				wrapperTop + baseLeaderboardHeightRef.current
+			const gapFromBottom = Math.max(
+				0,
+				Math.round(tourneyInfoRect.bottom - baselineWrapperBottom),
+			)
+			const nextHeight = baseLeaderboardHeightRef.current + gapFromBottom
+
+			// Prevent write loops by only mutating when the computed height changes.
+			if (appliedLeaderboardHeightRef.current !== nextHeight) {
+				wrapperElement.style.height = `${nextHeight}px`
+				appliedLeaderboardHeightRef.current = nextHeight
+			}
+		},
+		[],
+		150,
+	)
+
 	return (
-		<section className={cf(s.wMax, s.flex, s.spaceXCenter, a.tournamentCard)}>
-			<div className={cf(s.flex, s.flexTop, a.tourneyInfo)}>
+			<section
+			className={cf(s.wMax, s.flex, s.spaceXCenter, a.tournamentCard)}
+			ref={tournamentCardRef}
+		>
+			<div
+				className={cf(s.flex, s.flexTop, a.tourneyInfo)}
+				ref={tourneyInfoRef}
+			>
 				<TitleSection
 					tag='Tournament'
 					title='Active Tournament'
@@ -153,11 +204,14 @@ export default function ActiveTournament({}) {
 					/>
 				</div>
 			</div>
-			<div className={cf(s.flex, s.flexTop, s.flexOne, a.leaderboardSection)}>
+			<div className={cf(s.flex, s.flexLeft, s.flex_dColumn, s.flexOne, a.leaderboardSection)}>
 				<h3 className={cf(s.wMax, s.flex, s.flexLeft, a.leaderboardTitle)}>
 					Leaderboard
 				</h3>
-				<div className={cf(s.wMax, s.flex, s.flexCenter, a.leaderboardWrapper)}>
+				<div
+					className={cf(s.wMax, s.flex, s.flexCenter, a.leaderboardWrapper)}
+					ref={leaderboardWrapperRef}
+				>
 					<div className={cf(s.wMax, s.flex, s.flexTop, a.leaderboard)}>
 						{dummyLeaderboardRanks.map((rank, index) => {
 							return (

@@ -46,7 +46,7 @@ export function Unit({ tag, value }) {
 
 export function CountdownSection({ days, hours, minutes, seconds }) {
 	return (
-		<section className={cf(s.wMax, s.flex, s.flexCenter, c.countdownSection)}>
+		<div className={cf(s.wMax, s.flex, s.flexCenter, c.countdownSection)}>
 			<Unit
 				tag={`Day${days !== 1 ? 's' : ''}`}
 				value={days}
@@ -63,7 +63,7 @@ export function CountdownSection({ days, hours, minutes, seconds }) {
 				tag={`Sec${seconds !== 1 ? 's' : ''}`}
 				value={seconds}
 			/>
-		</section>
+		</div>
 	)
 }
 
