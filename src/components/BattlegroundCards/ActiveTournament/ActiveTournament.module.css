@@ -179,13 +179,12 @@
 		border: none;
 	}
 
-	.tourneyInfo {
+	.tourneyInfo, .leaderboardSection {
 		padding: 30px 15px 0;
 	}
 
 	.leaderboardSection {
-		padding-left: 15px;
-		padding-right: 15px;
+		padding-bottom: 30px;
 	}
 
 	.polyButton {
