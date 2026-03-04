@@ -37,7 +37,7 @@ export default function Page() {
 						<div className={cf(s.wMax, s.flex, s.flexTop, p.activeCards)}>
 							{activeTourneys.map((tourney, index) => (
 								<ActiveTournament
-									pseudoIndex={index}
+									pseudoIndex={tourney}
 									key={`active-tourney-${index}`}
 								/>
 							))}
@@ -74,7 +74,7 @@ export default function Page() {
 					<MaxWidth
 						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
 					>
-						<div className={cf(s.wMax, s.flex, s.spaceXBetween, p.upcomingCards)}>
+						<div className={cf(s.wMax, s.flex, s.spaceXAround, p.upcomingCards)}>
 							{upcomingTourneys.map((tourney, index) => (
 								<UpcomingTournament
 									pseudoIndex={index}

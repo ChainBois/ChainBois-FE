@@ -240,13 +240,13 @@ export default function ActiveTournament({ pseudoIndex = 0 }) {
 						<PolyButton
 							tag={'Leaderboard'}
 							side={'right'}
-							polyButton={a.polyButton}
+							polyButton={cf(s.mRA, a.polyButton)}
 							polyButtonText={a.polyButtonText}
 						/>
 						<PolyButton
 							tag={'Details'}
 							side={'left'}
-							polyButton={a.polyButton}
+							polyButton={cf(s.mLA, a.polyButton)}
 							polyButtonText={a.polyButtonText}
 						/>
 					</div>
