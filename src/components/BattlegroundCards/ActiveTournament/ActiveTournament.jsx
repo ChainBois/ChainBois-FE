@@ -110,7 +110,7 @@ const LeaderboardRank = ({ rank, username, points }) => {
 	)
 }
 
-export default function ActiveTournament({}) {
+export default function ActiveTournament({ pseudoIndex = 0 }) {
 	const { query: { isTablet = null, isDesktop = null, isMobile = null } = {} } =
 		useMain()
 	const timeReference = useMemo(() => {
@@ -185,7 +185,8 @@ export default function ActiveTournament({}) {
 			if (isTabletView || isDesktopView) {
 				const leaderboardSectionHeight =
 					leaderboardSectionRef.current.getBoundingClientRect().height
-				const tourneyInfoHeight = tourneyInfoRef.current.getBoundingClientRect().height
+				const tourneyInfoHeight =
+					tourneyInfoRef.current.getBoundingClientRect().height
 				const overflowDifference = Math.max(
 					0,
 					Math.round(leaderboardSectionHeight - tourneyInfoHeight),
@@ -215,7 +216,7 @@ export default function ActiveTournament({}) {
 				>
 					<TitleSection
 						tag='Tournament'
-						title='Active Tournament'
+						title={`Tournament #${pseudoIndex + 1}`}
 						infoText='200 $somi'
 						position='left'
 					/>

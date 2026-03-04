@@ -22,7 +22,7 @@
 	gap: 24px;
 	align-self: baseline;
 	margin: 0;
-	margin-left: calc(calc(calc(1202px)) - 184px);
+	margin-left: 0 0 0 calc(min(1202px, 100%) - 184px);
 }
 
 .pagination_btn {
@@ -107,7 +107,7 @@
 
 	.carousal_navigation {
 		gap: 10px;
-		margin: 0 0 0 calc(calc(calc(546px)) - 83px);
+		margin: 0 0 0 calc(min(546px, 100%) - 83px);
 	}
 
 	.pagination_btn {
@@ -136,7 +136,7 @@
 
 	.carousal_navigation {
 		gap: 10px;
-		margin: 0 0 0 calc(calc(calc(244px)) - 66px);
+		margin: 0 0 0 calc(min(244px, 100%) - 66px);
 	}
 
 	.pagination_btn {

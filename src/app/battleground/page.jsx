@@ -16,10 +16,55 @@ import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
 import { ActiveTournament } from '@/components/BattlegroundCards'
+import { useState } from 'react'
+import { useMain } from '@/hooks'
+import { useMemo } from 'react'
 
 const activeTourneys = [1, 2, 3]
 
 export default function Page() {
+	const { query: { isMobile = false } = {} } = useMain()
+	const [displayTourneys, setDisplayTourneys] = useState([])
+	const ActiveTourneys = useMemo(() => {
+		return (
+			<>
+				{!isMobile ? (
+					<MaxWidth
+						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
+					>
+						<div className={cf(s.wMax, s.flex, s.flexTop, p.activeCards)}>
+							{activeTourneys.map((tourney, index) => (
+								<ActiveTournament
+									pseudoIndex={index}
+									key={`active-tourney-${index}`}
+								/>
+							))}
+						</div>
+					</MaxWidth>
+				) : (
+					<MaxWidth
+						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
+					>
+						<div className={cf(s.wMax, s.flex, s.flexTop, p.activeCards)}>
+							{displayTourneys.map((tourney) => (
+								<ActiveTournament
+									pseudoIndex={tourney}
+									key={`display-tourney-${tourney}`}
+								/>
+							))}
+						</div>
+						<PaginationLocal
+							array={displayTourneys}
+							refArray={activeTourneys}
+							step={1}
+							setArray={setDisplayTourneys}
+							full
+						/>
+					</MaxWidth>
+				)}
+			</>
+		)
+	}, [isMobile, displayTourneys])
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
 			<Hero
@@ -53,17 +98,8 @@ export default function Page() {
 				tag={'Active Tournaments'}
 				cusClass={cf(p.container)}
 			>
-				<MaxWidth
-					maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
-				>
-					<div className={cf(s.wMax, s.flex, s.flexTop, p.activeCards)}>
-						{activeTourneys.map((tourney, index) => (
-							<ActiveTournament key={`active-tourney-${index}`} />
-						))}
-					</div>
-				</MaxWidth>
+				{ActiveTourneys}
 			</Container>
-			<LootBoxes />
 		</div>
 	)
 }

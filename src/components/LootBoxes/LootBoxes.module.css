@@ -22,7 +22,7 @@
 	gap: 24px;
 	align-self: baseline;
 	margin: 0;
-	margin-left: calc(calc(calc(1133px)) - 184px);
+	margin-left: calc(min(1133px, 100%) - 184px);
 }
 
 .pagination_btn {
@@ -94,7 +94,8 @@
 }
 
 /* Small device */
-@media only screen and (max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
 	.cards {
 		height: 225px; /* Fixed height matching lootbox card height */
 		gap: 0 45px; /* Horizontal gap between lootbox cards */
@@ -107,7 +108,7 @@
 
 	.carousal_navigation {
 		gap: 10px;
-		margin: 0 0 0 calc(calc(calc(524px)) - 83px);
+		margin: 0 0 0 calc(min(524px, 100%) - 83px);
 	}
 
 	.pagination_btn {
@@ -136,7 +137,7 @@
 
 	.carousal_navigation {
 		gap: 10px;
-		margin: 0 0 0 calc(calc(calc(240px)) - 66px);
+		margin: 0 0 0 calc(min(240px, 100%) - 66px);
 	}
 
 	.pagination_btn {

@@ -106,6 +106,10 @@
 	.tag {
 		font-size: 12.5px;
 	}
+
+	.countdownSection {
+		gap: 4px;
+	}
 }
 /* Tiny device */
 @media only screen and (max-width: 480px) {

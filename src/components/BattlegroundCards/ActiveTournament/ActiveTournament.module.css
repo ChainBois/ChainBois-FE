@@ -15,7 +15,9 @@
 	gap: 35px 0;
 }
 
-/* .buttonContainer {} */
+.buttonContainer {
+	gap: 10px 0;
+}
 
 .polyButton {
 	width: 265px !important;
@@ -49,6 +51,7 @@
 	scroll-behavior: smooth;
 	-ms-overflow-style: none;
 	scrollbar-width: none; /* Firefox */
+	border-radius: 10px 10px 0 0;
 }
 
 .leaderboardWrapper::-webkit-scrollbar {
@@ -177,25 +180,30 @@
 	.tournamentCard {
 		border-width: 1px;
 	}
-	
+
 	.tourneyWrapper {
 		width: 100%;
 		border: none;
 	}
 
-	.tourneyInfo, .leaderboardSection {
-		padding: 30px 15px 0;
+	.tourneyInfo,
+	.leaderboardSection {
+		padding: 30px 20px 0;
 	}
 
 	.leaderboardSection {
 		padding-bottom: 30px;
 	}
 
+	.leaderboardWrapper {
+		border-radius: 10px;
+	}
+
 	.polyButton {
-		width: 120px !important;
+		width: 130px !important;
 	}
 
 	.polyButtonText {
-		font-size: 10px !important;
+		font-size: 12px !important;
 	}
 }
