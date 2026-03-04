@@ -34,7 +34,7 @@
 	gap: 10px 0;
 	background: rgba(18, 18, 18, 1);
 	border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 10px;
+	border-radius: 10px;
 }
 
 .value {
@@ -58,7 +58,7 @@
 }
 
 .countdownSection {
-    gap: 8px;
+	gap: 8px;
 }
 
 .description {
@@ -75,7 +75,57 @@
 /* Small device */
 @media only screen and (max-width: 834px),
 	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+	.titleSection {
+		gap: 4px 0;
+	}
+
+	.titleTag,
+	.description {
+		font-size: 8px;
+	}
+
+	.title {
+		font-size: 24px;
+	}
+
+	.infoText {
+		font-size: 16px;
+	}
+
+	.unit {
+		height: 68.5px;
+		width: 68.5px;
+		gap: 5px 0;
+		border-radius: 5px;
+	}
+
+	.value {
+		font-size: 24.5px;
+	}
+
+	.tag {
+		font-size: 12.5px;
+	}
 }
 /* Tiny device */
 @media only screen and (max-width: 480px) {
+	.titleSection {
+		gap: 4.5px 0;
+	}
+
+	.titleTag {
+		font-size: 10px;
+	}
+
+	.title {
+		font-size: 28px;
+	}
+
+	.infoText {
+		font-size: 18px;
+	}
+
+	.description {
+		font-size: 12px;
+	}
 }
