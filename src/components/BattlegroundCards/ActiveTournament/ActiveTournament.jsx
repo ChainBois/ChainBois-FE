@@ -216,7 +216,7 @@ export default function ActiveTournament({ pseudoIndex = 0 }) {
 				>
 					<TitleSection
 						tag='Tournament'
-						title={`Tournament #${pseudoIndex + 1}`}
+						title={`Tournament #${String(pseudoIndex + 1).padStart(3, '0')}`}
 						infoText='200 $somi'
 						position='left'
 					/>

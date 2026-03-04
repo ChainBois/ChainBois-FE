@@ -15,16 +15,18 @@ import s from '@/styles'
 import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
-import { ActiveTournament } from '@/components/BattlegroundCards'
+import { ActiveTournament, UpcomingTournament } from '@/components/BattlegroundCards'
 import { useState } from 'react'
 import { useMain } from '@/hooks'
 import { useMemo } from 'react'
 
 const activeTourneys = [1, 2, 3]
+const upcomingTourneys = [1, 2, 3, 4]
 
 export default function Page() {
 	const { query: { isMobile = false } = {} } = useMain()
 	const [displayTourneys, setDisplayTourneys] = useState([])
+	const [upcoming_dTourneys, setUpcoming_dTourneys] = useState([])
 	const ActiveTourneys = useMemo(() => {
 		return (
 			<>
@@ -65,6 +67,46 @@ export default function Page() {
 			</>
 		)
 	}, [isMobile, displayTourneys])
+	const UpcomingTourneys = useMemo(() => {
+		return (
+			<>
+				{!isMobile ? (
+					<MaxWidth
+						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
+					>
+						<div className={cf(s.wMax, s.flex, s.spaceXBetween, p.upcomingCards)}>
+							{upcomingTourneys.map((tourney, index) => (
+								<UpcomingTournament
+									pseudoIndex={index}
+									key={`upcoming-tourney-${index}`}
+								/>
+							))}
+						</div>
+					</MaxWidth>
+				) : (
+					<MaxWidth
+						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
+					>
+						<div className={cf(s.wMax, s.flex, s.flexTop, p.upcomingCards)}>
+							{upcoming_dTourneys.map((tourney) => (
+								<UpcomingTournament
+									pseudoIndex={tourney}
+									key={`display-tourney-${tourney}`}
+								/>
+							))}
+						</div>
+						<PaginationLocal
+							array={upcoming_dTourneys}
+							refArray={upcomingTourneys}
+							step={1}
+							setArray={setUpcoming_dTourneys}
+							full
+						/>
+					</MaxWidth>
+				)}
+			</>
+		)
+	}, [isMobile, upcoming_dTourneys])
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
 			<Hero
@@ -99,6 +141,12 @@ export default function Page() {
 				cusClass={cf(p.container)}
 			>
 				{ActiveTourneys}
+			</Container>
+			<Container
+				tag={'Upcoming Tournaments'}
+				cusClass={cf(p.container)}
+			>
+				{UpcomingTourneys}
 			</Container>
 		</div>
 	)

@@ -1,0 +1,28 @@
+.tournamentCard {
+    width: 672px;
+    padding: 80px 45px 70px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 30px;
+    background: rgba(24, 24, 24, 1);
+    gap: 32px 0;
+    box-shadow: 0px 0px 60px 0px rgba(236, 27, 36, 0.75) inset;
+}
+
+/* iPad Pro */
+@media only screen and (max-width: 1024px) {
+}
+/* Small device */
+@media only screen and (max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+    .tournamentCard {
+    width: 340px;
+    padding: 40px 25px 35px;
+    border-width: 1px;
+    border-radius: 15px;
+    gap: 16px 0;
+    box-shadow: 0px 0px 31.06px 0px rgba(236, 27, 36, 0.75) inset;
+
+}
+}
+/* Tiny device */
+@media only screen and (max-width: 480px) {
+}
