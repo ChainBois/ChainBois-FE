@@ -18,7 +18,7 @@ export default function UpcomingTournament({pseudoIndex}) {
 		<section className={cf(s.wMax, s.flex, s.spaceXCenter, u.tournamentCard)}>
 			<TitleSection
 				tag='Tournament'
-				title={`Tournament #${String(pseudoIndex + 1).padStart(3, '0')}`}
+				title={`Tournament #${String(pseudoIndex).padStart(3, '0')}`}
 				infoText='200 $somi'
 				position='center'
 			/>
