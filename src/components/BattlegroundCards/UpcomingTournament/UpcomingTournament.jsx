@@ -40,13 +40,13 @@ export default function UpcomingTournament({pseudoIndex}) {
 				<PolyButton
 					tag={'Join Now'}
 					side={'right'}
-					polyButton={a.polyButton}
+					polyButton={cf(s.mRA, a.polyButton)}
 					polyButtonText={a.polyButtonText}
 				/>
 				<PolyButton
 					tag={'Details'}
 					side={'left'}
-					polyButton={a.polyButton}
+					polyButton={cf(s.mLA, a.polyButton)}
 					polyButtonText={a.polyButtonText}
 				/>
 			</div>
