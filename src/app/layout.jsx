@@ -1,4 +1,4 @@
-import { inter, manrope, spaceGrotesk, otomanopeeOne, anton } from '@/fonts'
+import { inter, manrope, spaceGrotesk, otomanopeeOne, anton, polyB } from '@/fonts'
 import { cf } from '@/utils'
 import 'react-loading-skeleton/dist/skeleton.css'
 import './global.css'
@@ -85,11 +85,13 @@ export default function RootLayout({ children }) {
 					manrope.className,
 					otomanopeeOne.className,
 					anton.className,
+					polyB.className,
 					inter.variable,
 					spaceGrotesk.variable,
 					manrope.variable,
 					otomanopeeOne.variable,
-					anton.variable
+					anton.variable,
+					polyB.variable
 				)}
 			>
 				<ContextWrapper>

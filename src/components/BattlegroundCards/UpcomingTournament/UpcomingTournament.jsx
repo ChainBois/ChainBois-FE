@@ -9,7 +9,7 @@ import { Countdown } from '@/components/Countdown'
 import { useMemo } from 'react'
 import u from './UpcomingTournament.module.css'
 
-export default function UpcomingTournament({pseudoIndex}) {
+export default function UpcomingTournament({ pseudoIndex }) {
 	const timeReference = useMemo(() => {
 		return timeTillNext('mon')
 	}, [])
@@ -42,12 +42,14 @@ export default function UpcomingTournament({pseudoIndex}) {
 					side={'right'}
 					polyButton={cf(s.mRA, a.polyButton)}
 					polyButtonText={a.polyButtonText}
+					polyButtonContainerBg={'#181818'}
 				/>
 				<PolyButton
 					tag={'Details'}
 					side={'left'}
 					polyButton={cf(s.mLA, a.polyButton)}
 					polyButtonText={a.polyButtonText}
+					polyButtonContainerBg={'#181818'}
 				/>
 			</div>
 		</section>

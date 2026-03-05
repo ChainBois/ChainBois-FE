@@ -15,25 +15,38 @@ import s from '@/styles'
 import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
-import { ActiveTournament, UpcomingTournament } from '@/components/BattlegroundCards'
+import {
+	ActiveTournament,
+	UpcomingTournament,
+	CompletedTournament,
+} from '@/components/BattlegroundCards'
 import { useState } from 'react'
 import { useMain } from '@/hooks'
 import { useMemo } from 'react'
 
 const activeTourneys = [1, 2, 3]
 const upcomingTourneys = [1, 2, 3, 4]
+const completedTourneys = [
+	{
+		id: 1,
+		hasReward: true,
+	},
+	{
+		id: 2,
+		hasReward: false,
+	},
+]
 
 export default function Page() {
 	const { query: { isMobile = false } = {} } = useMain()
 	const [displayTourneys, setDisplayTourneys] = useState([])
 	const [upcoming_dTourneys, setUpcoming_dTourneys] = useState([])
+
 	const ActiveTourneys = useMemo(() => {
 		return (
-			<>
+			<MaxWidth maxWidth={{ max: '1360px', tablet: '710px', mobile: '330px' }}>
 				{!isMobile ? (
-					<MaxWidth
-						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
-					>
+					<>
 						<div className={cf(s.wMax, s.flex, s.flexTop, p.activeCards)}>
 							{activeTourneys.map((tourney, index) => (
 								<ActiveTournament
@@ -42,11 +55,9 @@ export default function Page() {
 								/>
 							))}
 						</div>
-					</MaxWidth>
+					</>
 				) : (
-					<MaxWidth
-						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
-					>
+					<>
 						<div className={cf(s.wMax, s.flex, s.flexTop, p.activeCards)}>
 							{displayTourneys.map((tourney) => (
 								<ActiveTournament
@@ -62,31 +73,26 @@ export default function Page() {
 							setArray={setDisplayTourneys}
 							full
 						/>
-					</MaxWidth>
+					</>
 				)}
-			</>
+			</MaxWidth>
 		)
 	}, [isMobile, displayTourneys])
+
 	const UpcomingTourneys = useMemo(() => {
 		return (
-			<>
+			<MaxWidth maxWidth={{ max: '1360px', tablet: '710px', mobile: '330px' }}>
 				{!isMobile ? (
-					<MaxWidth
-						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
-					>
-						<div className={cf(s.wMax, s.flex, s.spaceXAround, p.upcomingCards)}>
-							{upcomingTourneys.map((tourney, index) => (
-								<UpcomingTournament
-									pseudoIndex={index}
-									key={`upcoming-tourney-${index}`}
-								/>
-							))}
-						</div>
-					</MaxWidth>
+					<div className={cf(s.wMax, s.flex, s.spaceXAround, p.upcomingCards)}>
+						{upcomingTourneys.map((tourney, index) => (
+							<UpcomingTournament
+								pseudoIndex={index}
+								key={`upcoming-tourney-${index}`}
+							/>
+						))}
+					</div>
 				) : (
-					<MaxWidth
-						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
-					>
+					<>
 						<div className={cf(s.wMax, s.flex, s.flexTop, p.upcomingCards)}>
 							{upcoming_dTourneys.map((tourney) => (
 								<UpcomingTournament
@@ -102,11 +108,28 @@ export default function Page() {
 							setArray={setUpcoming_dTourneys}
 							full
 						/>
-					</MaxWidth>
+					</>
 				)}
-			</>
+			</MaxWidth>
 		)
 	}, [isMobile, upcoming_dTourneys])
+
+	const CompletedTournaments = useMemo(() => {
+		return (
+			<MaxWidth maxWidth={{ max: '1360px', tablet: '710px', mobile: '330px' }}>
+				<div className={cf(s.wMax, s.flex, s.spaceXAround, p.completedCards)}>
+					{completedTourneys.map((tourney, index) => (
+						<CompletedTournament
+							pseudoIndex={tourney?.id ?? index}
+							hasReward={tourney?.hasReward ?? true}
+							key={`completed-tourney-${index}`}
+						/>
+					))}
+				</div>
+			</MaxWidth>
+		)
+	}, [])
+
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
 			<Hero
@@ -147,6 +170,12 @@ export default function Page() {
 				cusClass={cf(p.container)}
 			>
 				{UpcomingTourneys}
+			</Container>
+			<Container
+				tag={'Completed Tournaments'}
+				cusClass={cf(p.container)}
+			>
+				{CompletedTournaments}
 			</Container>
 		</div>
 	)

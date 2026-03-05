@@ -29,4 +29,9 @@ const anton = Anton({
 	weight: ['400'],
 })
 
-export { inter, spaceGrotesk, manrope, otomanopeeOne, anton }
+const polyB = localFont({
+	src: './polysanstrial-bulky.otf', // Path to your font file
+	variable: '--font-poly-b',
+})
+
+export { inter, spaceGrotesk, manrope, otomanopeeOne, anton, polyB }

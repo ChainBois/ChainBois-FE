@@ -3,7 +3,7 @@
 import { cf } from '@/utils'
 import s from '@/styles'
 import b from './PolyButton.module.css'
-import { memo, useMemo, useRef } from 'react'
+import { memo, useEffect, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { isEqual, useResizeEffect } from '@/hooks'
 
@@ -28,6 +28,7 @@ const PolyButton = memo(
 		side = 'right',
 		polyButton = '',
 		polyButtonContainer = '',
+		polyButtonContainerBg = '',
 		polyButtonContent = '',
 		polyButtonText = '',
 		...props
@@ -84,6 +85,12 @@ const PolyButton = memo(
 			500,
 		)
 
+		useEffect(() => {
+			if (polyButtonContainerBg) {
+				polyButtonContainerRef.current.style.background = polyButtonContainerBg
+			}
+		}, [polyButtonContainerBg])
+
 		return (
 			<Responder
 				action={action}
@@ -111,7 +118,7 @@ const PolyButton = memo(
 						ref={polyButtonContentRef}
 					>
 						<span
-							className={cf(s.dInlineBlock, b.polyButtonText, polyButtonText)}
+							className={cf(s.dInlineBlock, polyButtonText ?? b.polyButtonText)}
 						>
 							{tag}
 						</span>

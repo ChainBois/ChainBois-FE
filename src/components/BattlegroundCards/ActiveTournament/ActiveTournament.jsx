@@ -242,12 +242,14 @@ export default function ActiveTournament({ pseudoIndex = 0 }) {
 							side={'right'}
 							polyButton={cf(s.mRA, a.polyButton)}
 							polyButtonText={a.polyButtonText}
+							polyButtonContainerBg={'#181818'}
 						/>
 						<PolyButton
 							tag={'Details'}
 							side={'left'}
 							polyButton={cf(s.mLA, a.polyButton)}
 							polyButtonText={a.polyButtonText}
+							polyButtonContainerBg={'#181818'}
 						/>
 					</div>
 				</div>

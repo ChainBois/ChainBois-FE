@@ -1,7 +1,7 @@
 .tournamentCard {
 	border-radius: 20px;
 	border: 2px solid rgba(255, 255, 255, 0.5);
-	background: rgba(24, 24, 24, 1);
+	background: #181818;
 }
 
 .tourneyWrapper {
@@ -70,7 +70,7 @@
 	height: 70px;
 	border: 1px solid var(--chain-red);
 	border-radius: 10px;
-	background: rgba(24, 24, 24, 1);
+	background: #181818;
 	padding-right: 25px;
 	overflow: hidden;
 }
@@ -96,7 +96,7 @@
 	padding: 0 5px;
 	border: none;
 	border-radius: 5px;
-	background: rgba(24, 24, 24, 1);
+	background: #181818;
 	z-index: 2;
 }
 
