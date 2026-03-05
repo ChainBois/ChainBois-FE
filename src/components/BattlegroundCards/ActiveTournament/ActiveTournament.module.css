@@ -24,7 +24,7 @@
 }
 
 .polyButtonText {
-	font-family: var(--font-space-g) !important;
+	font-family: var(--font-inter) !important;
 	font-weight: 500 !important;
 	font-size: 22.19px !important;
 	line-height: 120% !important;
