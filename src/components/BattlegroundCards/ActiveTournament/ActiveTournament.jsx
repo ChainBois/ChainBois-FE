@@ -74,6 +74,7 @@ const dummyLeaderboardRanks = [
 
 const LeaderboardRank = ({ rank, username, points }) => {
 	const rankValue = useMemo(() => {
+		return Math.round(rank)
 		return formatAsCurrency({
 			value: rank,
 			depth: 1e6,
@@ -82,7 +83,6 @@ const LeaderboardRank = ({ rank, username, points }) => {
 		})
 	}, [rank])
 	const pointsValue = useMemo(() => {
-		return Math.round(points)
 		return formatAsCurrency({
 			value: points,
 			depth: 1e9,
