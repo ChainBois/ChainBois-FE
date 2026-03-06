@@ -1,11 +1,13 @@
 'use client'
 
-import s from '@/styles';
-import { cf } from '@/utils';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { MdArrowBack, MdHome, MdRefresh } from 'react-icons/md';
-import styles from './error.module.css';
+import BorderedButton from '@/components/BorderedButton'
+import ClippedButton from '@/components/ClippedButton'
+import PolyButton from '@/components/PolyButton'
+import s from '@/styles'
+import { cf } from '@/utils'
+import { useRouter } from 'next/navigation'
+import { MdHome, MdRefresh } from 'react-icons/md'
+import styles from './error.module.css'
 
 export default function ErrorPage({
 	errorCode = 500,
@@ -25,7 +27,6 @@ export default function ErrorPage({
 
 	return (
 		<div className={cf(s.flex, s.flex_dColumn, styles.errorPage)}>
-			{/* Main Content */}
 			<section
 				className={cf(
 					s.flexOne,
@@ -33,7 +34,7 @@ export default function ErrorPage({
 					s.flexCenter,
 					s.flex_dColumn,
 					s.tCenter,
-					s.pX10
+					s.pX10,
 				)}
 			>
 				<div
@@ -42,81 +43,61 @@ export default function ErrorPage({
 						s.flex_dColumn,
 						s.flexCenter,
 						s.g34,
-						styles.errorContainer
+						styles.errorContainer,
 					)}
 				>
-					{/* Error Icon/Code */}
 					<div className={cf(s.flex, s.flex_dColumn, s.flexCenter, s.g20)}>
 						<div className={styles.errorCode}>{errorCode}</div>
-						<div className={styles.glitchEffect}>SYSTEM ERROR</div>
+						<div className={styles.statusText}>SYSTEM ERROR</div>
 					</div>
 
-					{/* Error Content */}
 					<div
 						className={cf(
 							s.flex,
 							s.flex_dColumn,
 							s.flexCenter,
 							s.g20,
-							styles.errorContent
+							styles.errorContent,
 						)}
 					>
 						<h1 className={styles.errorTitle}>{title}</h1>
 						<p className={styles.errorMessage}>{message}</p>
 					</div>
 
-					{/* Action Buttons */}
-					<div
-						className={cf(s.flex, s.flexCenter, s.g20, styles.actionButtons)}
-					>
+					<div className={cf(s.flex, s.flexCenter, s.g20, styles.actionButtons)}>
 						{showRetry && (
-							<button
-								onClick={handleRetry}
-								className={cf(
-									s.flex,
-									s.flexCenter,
-									s.g10,
-									styles.primaryButton
-								)}
-							>
-								<MdRefresh className={styles.buttonIcon} />
-								<span>Retry Mission</span>
-							</button>
+							<ClippedButton
+								tag='Retry Mission'
+								action={handleRetry}
+								icon={<MdRefresh className={styles.buttonIcon} />}
+								clippedButton={styles.clippedButton}
+								clippedButtonContent={styles.clippedButtonContent}
+								clippedButtonText={styles.clippedButtonText}
+								clippedButtonIcon={styles.clippedButtonIcon}
+							/>
 						)}
 
-						<button
-							onClick={handleGoBack}
-							className={cf(
-								s.flex,
-								s.flexCenter,
-								s.g10,
-								styles.secondaryButton
-							)}
-						>
-							<MdArrowBack className={styles.buttonIcon} />
-							<span>Go Back</span>
-						</button>
+						<PolyButton
+							tag='Go Back'
+							action={handleGoBack}
+							side='left'
+							polyButton={styles.polyButton}
+							polyButtonText={styles.polyButtonText}
+						/>
 
-						<Link
-							href='/'
-							className={cf(
-								s.flex,
-								s.flexCenter,
-								s.g10,
-								styles.secondaryButton
-							)}
-						>
-							<MdHome className={styles.buttonIcon} />
-							<span>Home Base</span>
-						</Link>
+						<BorderedButton
+							tag='Home Base'
+							action='/'
+							isLink
+							icon={<MdHome className={styles.buttonIcon} />}
+							borderButton={styles.borderButton}
+							borderButtonContent={styles.borderButtonContent}
+							borderButtonText={styles.borderButtonText}
+						/>
 					</div>
 
-					{/* Additional Info */}
 					<div className={styles.errorInfo}>
-						<p>
-							If this problem persists, contact our support team at the base
-							camp.
-						</p>
+						<p>If this problem persists, contact the support team at base camp.</p>
 						<code className={styles.errorId}>
 							Error ID: {Date.now().toString(36).toUpperCase()}
 						</code>

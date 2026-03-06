@@ -13,6 +13,16 @@ const axiosCall = axios.create({
 	timeout: 180000,
 })
 
+axiosCall.interceptors.request.use(async (config) => {
+	const user = auth.currentUser
+
+	if (user) {
+		const token = await user.getIdToken()
+		config.headers.Authorization = `Bearer ${token}`
+	}
+	return config
+})
+
 /**
  * Makes an HTTP request using axios with configurable options
  * @param {Object} options - The request configuration options
@@ -33,12 +43,13 @@ const axiosCall = axios.create({
 export const request = async ({
 	path = '',
 	method = 'get',
-	accessToken = '',
+	// accessToken = '',
 	body = {},
 	prop = 'data',
 	includeClientID = false,
 	cancelToken,
 } = {}) => {
+	const accessToken = null
 	const flags = {
 		headers: {},
 		cancelToken,
@@ -137,7 +148,7 @@ export const requestUpload = async ({
 					: 0
 
 			onProgress(
-				progress
+				progress,
 				// {
 				// 	loaded: progressEvent.loaded,
 				// 	total: progressEvent.total,
@@ -158,7 +169,7 @@ export const requestUpload = async ({
 		// Validate file is actually a File/Blob object
 		if (!(file instanceof File) && !(file instanceof Blob)) {
 			throw new Error(
-				`Invalid file type: expected File or Blob, got ${typeof file}`
+				`Invalid file type: expected File or Blob, got ${typeof file}`,
 			)
 		}
 
@@ -337,7 +348,7 @@ export const refreshRequest = async (accessToken, address) => {
 			{
 				address: address,
 			},
-			flags
+			flags,
 		)
 		return { ...res.data, success: true }
 	} catch (err) {

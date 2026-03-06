@@ -1,12 +1,12 @@
 'use client'
 
 import { ThirdwebProvider, ChainProvider } from 'thirdweb/react'
-import { avalanche } from 'thirdweb/chains'
+import { avalanche, avalancheFuji } from 'thirdweb/chains'
 
 export default function Providers({ children }) {
-	return (
+	return ( 
 		<ThirdwebProvider>
-			<ChainProvider chain={avalanche}>{children}</ChainProvider>
+			<ChainProvider chain={avalancheFuji}>{children}</ChainProvider>
 		</ThirdwebProvider>
 	)
 }
