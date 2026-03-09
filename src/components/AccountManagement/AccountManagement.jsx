@@ -136,8 +136,9 @@ export default function AccountManagement() {
 			if (simulatedRes.success) {
 				res = await login({
 					address: activeAccount?.address,
-					accessToken: simulatedRes?.data?.credentials?.idToken ?? '',
+					accessToken: simulatedRes?.data?.data?.credentials?.idToken ?? '',
 				})
+				console.log({ res })
 				if (
 					!(
 						res?.error?.statusCode === 401 ||

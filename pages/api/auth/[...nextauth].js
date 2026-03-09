@@ -20,7 +20,7 @@ export const authProviders = {
 					const userCredential = await signInWithEmailAndPassword(
 						auth,
 						credentials.email,
-						credentials.password
+						credentials.password,
 					)
 
 					if (!userCredential.user) {
@@ -36,10 +36,10 @@ export const authProviders = {
 						accessToken: userCredential.user.accessToken,
 					})
 
-					if (response.success && response.data.user) {
+					if (response.success && response?.data?.data.user) {
 						return {
-							...response.data.user,
-							assets: response.data?.assets ?? [],
+							...response?.data?.data.user,
+							assets: response?.data?.data?.assets ?? [],
 							accessToken: userCredential.user.accessToken,
 						}
 					}

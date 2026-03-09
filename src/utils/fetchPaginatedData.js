@@ -88,7 +88,7 @@ export async function fetchPaginatedData({
 				cancelToken,
 			})
 
-			if (!res?.success || !extractData(res?.data, dataPath)?.length) {
+			if (!res?.success || !extractData(res?.data?.data, dataPath)?.length) {
 				break // Stop when no more data
 			}
 
@@ -156,7 +156,7 @@ export async function fetchPaginatedData({
 		})
 
 		if (res.success) {
-			const responseData = res?.data ?? {}
+			const responseData = res?.data?.data ?? {}
 			const itemData = extractData(responseData, dataPath)
 			const { total = 0 } = responseData
 

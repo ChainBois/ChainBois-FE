@@ -164,7 +164,7 @@ const AuthContextProvider = ({ children }) => {
 			const {
 				user: { accessToken = null, ...user },
 				assets,
-			} = res?.data ?? {}
+			} = res?.data?.data ?? {}
 			setUser(() => ({ ...user, assets }))
 		}
 		return res

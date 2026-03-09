@@ -93,7 +93,7 @@ const MainContextProvider = ({ children }) => {
 			path: `auth/check-user/${email}`,
 			method: 'post',
 		})
-		setUserExists(res?.data?.exists)
+		setUserExists(res?.data?.data?.exists)
 	}
 
 	const ContextValue = useMemo(
@@ -102,7 +102,7 @@ const MainContextProvider = ({ children }) => {
 			query: matches,
 			retrievePlatformData,
 		}),
-		[dimensions, matches],
+		[dimensions, matches, retrievePlatformData],
 	)
 
 	useEffect(() => {
