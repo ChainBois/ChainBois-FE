@@ -23,9 +23,18 @@ const wallets = [
 	createWallet('com.trustwallet.app'),
 ]
 
-const StandIn = () => {
+const StandIn = ({ center = false }) => {
 	return (
-		<span className={cf(s.wMax, s.flex, s.flexCenter, s.p_absolute, c.standIn)}>
+		<span
+			className={cf(
+				s.wMax,
+				s.flex,
+				s.flexCenter,
+				s.p_absolute,
+				c.standIn,
+				center ? c.center : '',
+			)}
+		>
 			<span className={cf(s.flex, c.standInDot, c.notConnected)}></span>
 
 			<span className={cf(s.wMax, s.tLeft, c.standInTitle)}>
@@ -74,7 +83,10 @@ const DetailsStandIn = () => {
  * @param {boolean} props.isLanding - Whether the button should be displayed in a landing page or not.
  * @returns {JSX.Element} - The Connect Wallet button.
  */
-export default function ConnectWalletButton({ isLanding = false }) {
+export default function ConnectWalletButton({
+	isLanding = false,
+	center = false,
+}) {
 	return true ? (
 		<ConnectButton
 			client={thirdwebClient}
@@ -84,7 +96,8 @@ export default function ConnectWalletButton({ isLanding = false }) {
 				colors: {},
 			})}
 			connectButton={{
-				label: <StandIn />,
+				label: <StandIn center={ center } />,
+				className: c.connectButton,
 			}}
 			detailsButton={{
 				className: c.detailsButton,

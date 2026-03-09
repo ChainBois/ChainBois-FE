@@ -6,8 +6,17 @@
 	gap: 7px;
 	border-radius: 6px;
 	background: #121212;
+}
+
+.standIn:not(.center) {
 	right: 0;
 	bottom: 0;
+}
+
+.standIn.center {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .standInDot {
@@ -81,6 +90,10 @@
 	padding: 20px 25px !important;
 	height: unset !important;
 	width: unset !important;
+}
+
+.connectButton {
+	position: relative !important;
 }
 
 .detailsButton > div:last-of-type > span:first-of-type {

@@ -373,7 +373,7 @@ export default function AccountManagement() {
 					</div>
 				</form>
 			) : (
-				<ConnectWalletButton isLanding={true} />
+				<ConnectWalletButton isLanding={true} center />
 			)}
 		</div>
 	)
