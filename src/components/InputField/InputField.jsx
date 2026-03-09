@@ -1,6 +1,6 @@
 'use client'
 
-import { Shared as s } from '@/styles';
+import s from '@/styles';
 import { cf } from '@/utils';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';

@@ -30,6 +30,21 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig)
 const analytics = isSupported().then((yes) => (yes ? getAnalytics(app) : null))
+<<<<<<< HEAD
 const auth = getAuth()
 
 export { app, analytics, auth }
+=======
+const auth = getAuth(app)
+
+if (process.env.NODE_ENV !== 'production') {
+	console.log('[Firebase] Auth initialized', {
+		appName: auth.app.name,
+		projectId: auth.app.options.projectId,
+		authDomain: auth.app.options.authDomain,
+		hasApiKey: Boolean(auth.app.options.apiKey),
+	})
+}
+
+export { app, analytics, auth };
+>>>>>>> last-milestone

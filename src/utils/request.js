@@ -1,5 +1,6 @@
 // import { PUBLIC_ENV } from '@/constants'
 import axios from 'axios'
+import { auth } from '@/config/firebase'
 
 const serverURI = process.env.NEXT_PUBLIC_BACKEND_BASE_URI
 const clientID = process.env.NEXT_PUBLIC_CLIENT_ID
@@ -49,7 +50,7 @@ export const request = async ({
 	includeClientID = false,
 	cancelToken,
 } = {}) => {
-	const accessToken = null
+	// const accessToken = null
 	const flags = {
 		headers: {},
 		cancelToken,

@@ -1,11 +1,29 @@
 'use client'
 
-import { ThirdwebProviders, MainContextProvider } from '@/context'
+import {
+	ThirdwebProviders,
+	MainContextProvider,
+	NotificationSystemContextProvider,
+	ToastContextProvider,
+	ParamsContextProvider,
+	AuthContextProvider,
+	SessionContextProvider,
+} from '@/context'
 
 export default function ContextWrapper({ children }) {
 	return (
-		<ThirdwebProviders>
-			<MainContextProvider>{children}</MainContextProvider>
-		</ThirdwebProviders>
+		<ToastContextProvider>
+			<NotificationSystemContextProvider>
+				<ThirdwebProviders>
+					<SessionContextProvider>
+						<AuthContextProvider>
+							<MainContextProvider>
+								<ParamsContextProvider>{children}</ParamsContextProvider>
+							</MainContextProvider>
+						</AuthContextProvider>
+					</SessionContextProvider>
+				</ThirdwebProviders>
+			</NotificationSystemContextProvider>
+		</ToastContextProvider>
 	)
 }

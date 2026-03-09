@@ -55,7 +55,7 @@ export default function CompletedTournament({ pseudoIndex, hasReward = true }) {
 			<TitleSection
 				tag='Tournament'
 				title={`Tournament #${String(pseudoIndex).padStart(3, '0')}`}
-				infoText={hasReward ? 'Your reward: 2,000 $Somi' : 'No reward'}
+				infoText={hasReward ? 'Your reward: 2,000 $AVAX' : 'No reward'}
 				position='center'
 			/>
 			<div className={cf(s.wMax, s.flex, s.flexCenter, a.buttonContainer)}>

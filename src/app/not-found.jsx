@@ -54,7 +54,8 @@ export default function NotFoundPage() {
 						<h1 className={styles.title}>You&apos;ve Wandered Into The Void</h1>
 						<p className={styles.message}>
 							This battleground doesn&apos;t exist in our realm. The coordinates
-							you&apos;re looking for may have been lost after the last battle.
+							you&apos;re looking for might have been destroyed in the last battle,
+							or perhaps it never existed at all.
 						</p>
 					</div>
 

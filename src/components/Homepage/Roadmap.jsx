@@ -29,8 +29,8 @@ function RoadmapCard({ title, isRed = false }) {
 				</header>
 				<p className={cf(r.text, isRed ? r.red : '')}>
 					The point of using Lorem Ipsum is that it has a more-or-less normal
-					distribution of letters, as opposed to using 'Content here, content
-					here', making it look like readable English. Many desktop publishing
+					distribution of letters, as opposed to using &apos;Content here, content
+					here&apos;, making it look like readable English. Many desktop publishing
 					packages and web page editors
 				</p>
 			</article>

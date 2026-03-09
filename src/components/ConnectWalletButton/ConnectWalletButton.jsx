@@ -3,7 +3,7 @@
 import { thirdwebClient } from '@/lib'
 import s from '@/styles'
 import { cf } from '@/utils'
-import { somniaTestnet } from 'thirdweb/chains'
+import { avalancheFuji } from 'thirdweb/chains'
 import {
 	ConnectButton,
 	darkTheme,
@@ -12,6 +12,7 @@ import {
 } from 'thirdweb/react'
 import { createWallet } from 'thirdweb/wallets'
 import c from './ConnectWalletButton.module.css'
+import { BATTLE_TOKEN } from '@/constants'
 
 const wallets = [
 	// inAppWallet(), // email/social login (optional)
@@ -43,9 +44,10 @@ const StandIn = () => {
 const DetailsStandIn = () => {
 	const activeAccount = useActiveAccount()
 	const { data, isLoading, isError } = useWalletBalance({
-		chain: somniaTestnet,
+		chain: avalancheFuji,
 		address: activeAccount?.address,
 		client: thirdwebClient,
+		tokenAddress: BATTLE_TOKEN,
 	})
 
 	return (
@@ -59,9 +61,9 @@ const DetailsStandIn = () => {
 				Your wallet balance
 			</span>
 
-			<span className={cf(s.wMax, s.tLeft, c.standInFooterText)}>
+			<button className={cf(s.wMax, s.tLeft, c.standInFooterText)}>
 				View Details
-			</span>
+			</button>
 		</span>
 	)
 }
@@ -73,11 +75,11 @@ const DetailsStandIn = () => {
  * @returns {JSX.Element} - The Connect Wallet button.
  */
 export default function ConnectWalletButton({ isLanding = false }) {
-	return isLanding ? (
+	return true ? (
 		<ConnectButton
 			client={thirdwebClient}
 			wallets={wallets}
-			chain={somniaTestnet} // explicit, in addition to ChainProvider default
+			chain={avalancheFuji} // explicit, in addition to ChainProvider default
 			theme={darkTheme({
 				colors: {},
 			})}
@@ -86,6 +88,9 @@ export default function ConnectWalletButton({ isLanding = false }) {
 			}}
 			detailsButton={{
 				className: c.detailsButton,
+				displayBalanceToken: {
+					[avalancheFuji.id]: BATTLE_TOKEN,
+				},
 			}}
 			connectModal={{
 				title: 'Sign in to Chainbois',

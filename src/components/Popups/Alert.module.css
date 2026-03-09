@@ -1,0 +1,13 @@
+.popup {}
+
+.content {
+	align-items: stretch;
+}
+
+.popupTitle {
+	color: #ffffff;
+}
+
+.popupMessage {
+	color: #c0c0c0;
+}

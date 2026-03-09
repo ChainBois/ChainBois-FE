@@ -1,11 +1,35 @@
 .errorPage {
 	min-height: 100vh;
-	padding: 120px 50px 90px;
-	color: #fff;
-	background:
-		radial-gradient(circle at 12% 18%, rgba(236, 27, 36, 0.24), transparent 40%),
-		radial-gradient(circle at 84% 84%, rgba(236, 27, 36, 0.1), transparent 46%),
-		transparent;
+	position: relative;
+	overflow: hidden;
+	padding: 100px 50px;
+}
+
+/* .errorPage::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-image:
+		radial-gradient(
+			circle at 25% 25%,
+			rgba(220, 38, 38, 0.1) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 75% 75%,
+			rgba(220, 38, 38, 0.05) 0%,
+			transparent 50%
+		);
+	pointer-events: none;
+	z-index: 0;
+} */
+
+.logo {
+	object-fit: contain;
+	filter: brightness(1.1);
 }
 
 .errorContainer {
@@ -19,12 +43,15 @@
 }
 
 .errorCode {
-	margin: 0;
-	font-family: var(--font-poly-b);
-	font-size: clamp(4rem, 12vw, 8.5rem);
-	line-height: 0.88;
-	letter-spacing: 0.02em;
-	color: rgba(236, 27, 36, 0.96);
+	font-size: clamp(4rem, 12vw, 10rem);
+	font-weight: 900;
+	color: #dc2626;
+	text-shadow:
+		0 0 20px rgba(220, 38, 38, 0.5),
+		0 0 40px rgba(220, 38, 38, 0.3);
+	line-height: 0.8;
+	font-family: 'Orbitron', monospace;
+	letter-spacing: -0.02em;
 }
 
 .statusText {
@@ -33,7 +60,43 @@
 	font-weight: 600;
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
-	color: rgba(255, 255, 255, 0.75);
+	letter-spacing: 0.2em;
+	position: relative;
+	animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+	0%,
+	100% {
+		text-shadow:
+			0.05em 0 0 #dc2626,
+			-0.05em -0.025em 0 #3b82f6,
+			0.025em 0.05em 0 #10b981;
+	}
+	15% {
+		text-shadow:
+			0.05em 0 0 #dc2626,
+			-0.05em -0.025em 0 #3b82f6,
+			0.025em 0.05em 0 #10b981;
+	}
+	16% {
+		text-shadow: none;
+	}
+	17% {
+		text-shadow:
+			0.05em 0 0 #dc2626,
+			-0.05em -0.025em 0 #3b82f6,
+			0.025em 0.05em 0 #10b981;
+	}
+	50% {
+		text-shadow: none;
+	}
+	51% {
+		text-shadow:
+			0.05em 0 0 #dc2626,
+			-0.05em -0.025em 0 #3b82f6,
+			0.025em 0.05em 0 #10b981;
+	}
 }
 
 .errorContent {
@@ -43,9 +106,7 @@
 .errorTitle {
 	margin: 0;
 	font-family: var(--font-space-g);
-	font-weight: 700;
-	font-size: clamp(1.8rem, 3.8vw, 2.7rem);
-	line-height: 1.15;
+	line-height: 1.1;
 }
 
 .errorMessage {
@@ -55,7 +116,9 @@
 	font-size: 1.03rem;
 	font-weight: 500;
 	line-height: 1.6;
-	color: rgba(255, 255, 255, 0.72);
+	margin: 0;
+	max-width: 500px;
+	font-family: var(--font-space-g);
 }
 
 .actionButtons {
@@ -63,47 +126,45 @@
 	justify-content: center;
 }
 
-.clippedButton {
-	width: fit-content;
-}
-
-.clippedButtonContent {
-	padding: 13px 24px 13px 18px;
-}
-
-.clippedButtonText {
-	font-family: var(--font-inter);
-	font-size: 0.9rem;
-	font-weight: 700;
-}
-
-.clippedButtonIcon {
-	width: 16px;
-	height: 16px;
-}
-
-.polyButton {
-	width: 170px;
-}
-
-.polyButtonText {
-	font-family: var(--font-inter);
-	font-size: 0.9rem;
-	font-weight: 700;
-}
-
-.borderButton {
-	width: fit-content;
-}
-
-.borderButtonContent {
-	padding: 12px 18px;
-}
-
-.borderButtonText {
-	font-family: var(--font-inter);
-	font-size: 0.88rem;
+.primaryButton {
+	padding: 14px 24px;
+	background: #dc2626;
+	color: #ffffff;
+	border: none;
+	border-radius: 0px;
+	font-family: var(--font-space-g);
+	font-size: 14px;
 	font-weight: 600;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	cursor: pointer;
+	box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+}
+
+.primaryButton:hover {
+	background: #b91c1c;
+	transform: translateY(-2px);
+	box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+}
+
+.secondaryButton {
+	padding: 14px 24px;
+	background: transparent;
+	color: #ffffff;
+	border: 1px solid rgba(55, 65, 81, 0.5);
+	border-radius: 0px;
+	font-family: var(--font-space-g);
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.secondaryButton:hover {
+	background: rgba(133, 133, 133, 1);
+	border-color: rgba(133, 133, 133, 1);
+	transform: translateY(-2px);
 }
 
 .buttonIcon {
@@ -121,15 +182,22 @@
 }
 
 .errorId {
-	display: inline-block;
+	background: #000000;
+	color: #dc2626;
+	padding: 8px 12px;
+	border-radius: 0px;
+	font-family: 'Courier New', monospace;
+	font-size: 12px;
 	margin-top: 8px;
-	padding: 7px 10px;
-	border: 1px solid rgba(236, 27, 36, 0.35);
-	border-radius: 6px;
-	background: rgba(236, 27, 36, 0.08);
-	font-family: var(--font-inter);
-	font-size: 0.72rem;
-	color: rgba(255, 255, 255, 0.88);
+	display: inline-block;
+	border: 1px solid rgba(55, 65, 81, 0.5);
+}
+
+.footerText {
+	color: #71717a;
+	font-size: 14px;
+	margin: 0;
+	text-align: center;
 }
 
 @media only screen and (max-width: 834px) {

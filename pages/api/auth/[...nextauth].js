@@ -28,7 +28,7 @@ export const authProviders = {
 					}
 
 					const response = await request({
-						path: `login`,
+						path: `auth/login`,
 						method: 'post',
 						body: {
 							address: credentials.address || '',
@@ -53,7 +53,7 @@ export const authProviders = {
 		}),
 	],
 	pages: {
-		signIn: '/?success=true&modal=connectWallet',
+		signIn: '/request-access',
 	},
 	callbacks: {
 		async jwt({ token, user }) {

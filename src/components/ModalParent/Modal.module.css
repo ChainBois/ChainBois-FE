@@ -1,0 +1,25 @@
+.modal {
+	position: fixed;
+	top: 0;
+	/* z-index: 100; */
+	margin: 0 auto;
+	max-width: 1600px;
+	overflow-y: auto;
+}
+
+.modalWrapper {
+	overflow-y: auto;
+	min-height: 100%;
+	padding: 50px 0;
+}
+
+.modalMask {
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 1;
+}
+
+.modalMask+div {
+	z-index: 2;
+}
