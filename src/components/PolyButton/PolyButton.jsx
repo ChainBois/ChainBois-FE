@@ -33,27 +33,24 @@ const PolyButton = memo(
 		polyButtonText = '',
 		...props
 	}) => {
-		const Responder = memo(
-			({ action, style, children }) =>
-				isLink ? (
-					<Link
-						href={action}
-						className={style}
-						{...props}
-					>
-						{children}
-					</Link>
-				) : (
-					<button
-						onClick={action}
-						className={style}
-						{...props}
-					>
-						{children}
-					</button>
-				),
-			(prev, next) => isEqual(prev, next),
-		)
+		const Responder = ({ action, style, children }) =>
+			isLink ? (
+				<Link
+					href={action}
+					className={style}
+					{...props}
+				>
+					{children}
+				</Link>
+			) : (
+				<button
+					onClick={action}
+					className={style}
+					{...props}
+				>
+					{children}
+				</button>
+			)
 
 		const sideClass = useMemo(() => {
 			switch (side) {
@@ -129,5 +126,7 @@ const PolyButton = memo(
 	},
 	(prev, next) => isEqual(prev, next),
 )
+
+PolyButton.displayName = 'PolyButton'
 
 export default PolyButton

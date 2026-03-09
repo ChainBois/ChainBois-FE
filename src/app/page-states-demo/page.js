@@ -220,7 +220,7 @@ export default function PageStatesDemo() {
 									Error pages include retry functionality and navigation options
 								</li>
 								<li>
-									All pages are fully responsive and match your game's theme
+									All pages are fully responsive and match your game&apos;s theme
 								</li>
 								<li>
 									You can customize messages, colors, and animations via props

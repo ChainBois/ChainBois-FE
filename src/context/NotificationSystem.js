@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useCallback } from 'react'
 import { useToastIntegration } from '@/hooks'
+import { estimateReadingTimeMs } from '@/utils'
 
 export const NotificationSystemContext = React.createContext()
 
@@ -53,6 +54,19 @@ const NotificationSystemContextProvider = ({ children }) => {
 		},
 	})
 	const [promiseOfConfirmation, setPromiseOfConfirmation] = useState({})
+	const [loadingInfo, setLoadingInfo] = useState({
+		title: 'Processing Request',
+		message: 'Please wait while we process this action.',
+		successMessage: 'Done. Finalizing...',
+	})
+	const [errorInfo, setErrorInfo] = useState({
+		title: 'Action Failed',
+		message: 'Something went wrong.',
+		details: '',
+		code: null,
+		actionTag: 'Retry',
+		action: null,
+	})
 
 	const [forCreation, setForCreation] = useState(true)
 	const [complete, setComplete] = useState(false)
@@ -97,13 +111,79 @@ const NotificationSystemContextProvider = ({ children }) => {
 		return await new Promise((resolve, reject) => {
 			setPromiseOfConfirmation({ resolve, reject })
 		})
-			.then((e) => {
-				return e
-			})
-			.catch((e) => {
-				return e
-			})
+			.then((e) => e)
+			.catch((e) => e)
 	}
+
+	const showLoading = useCallback(
+		({
+			title = 'Processing Request',
+			message = 'Please wait while we process this action.',
+			successMessage = 'Done. Finalizing...',
+			canClose = false,
+		} = {}) => {
+			setLoadingInfo(() => ({ title, message, successMessage }))
+			setCanCloseModal(() => canClose)
+			setModal(() => 'loading')
+			setShowModal(() => true)
+		},
+		[],
+	)
+
+	const showCreationProgress = useCallback(
+		({
+			title = 'Processing Request',
+			message = 'Please wait while we process this action.',
+			successMessage = 'Done. Finalizing...',
+			canClose = false,
+		} = {}) => {
+			setLoadingInfo(() => ({ title, message, successMessage }))
+			setCanCloseModal(() => canClose)
+			setModal(() => 'creationProgress')
+			setShowModal(() => true)
+		},
+		[],
+	)
+
+	const hideLoading = useCallback(() => {
+		setCanCloseModal(() => true)
+		setShowModal(() => false)
+	}, [])
+
+	const hideCreationProgress = useCallback(() => {
+		setCanCloseModal(() => true)
+		setShowModal(() => false)
+	}, [])
+
+	const showError = useCallback(
+		({
+			title = 'Action Failed',
+			message = 'Something went wrong.',
+			details = '',
+			code = null,
+			actionTag = 'Retry',
+			action = null,
+			canClose = true,
+		} = {}) => {
+			setErrorInfo(() => ({
+				title,
+				message,
+				details,
+				code,
+				actionTag,
+				action,
+			}))
+			setCanCloseModal(() => canClose)
+			setModal(() => 'error')
+			setShowModal(() => true)
+		},
+		[],
+	)
+
+	const hideError = useCallback(() => {
+		setCanCloseModal(() => true)
+		setShowModal(() => false)
+	}, [])
 
 	const { isAvailable, showToast } = useToastIntegration()
 
@@ -138,7 +218,7 @@ const NotificationSystemContextProvider = ({ children }) => {
 								defaultDurations[type],
 							),
 						...options,
-					})
+				  })
 				: showAlert({ title, message, ...options })
 		},
 		[showAlert, isClient, setShowModal, isAvailable, showToast],
@@ -172,10 +252,20 @@ const NotificationSystemContextProvider = ({ children }) => {
 			setForCreation,
 			complete,
 			setComplete,
+			loadingInfo,
+			setLoadingInfo,
+			errorInfo,
+			setErrorInfo,
+			showLoading,
+			showCreationProgress,
+			hideLoading,
+			hideCreationProgress,
+			showError,
+			hideError,
+			showAlert,
 			displayAlert,
 		}),
-        [
-            // States
+		[
 			modal,
 			showModal,
 			modalParent,
@@ -188,8 +278,16 @@ const NotificationSystemContextProvider = ({ children }) => {
 			alertInfo,
 			promiseOfConfirmation,
 			forCreation,
-            complete,
-            // Callback
+			complete,
+			loadingInfo,
+			errorInfo,
+			showLoading,
+			showCreationProgress,
+			hideLoading,
+			hideCreationProgress,
+			showError,
+			hideError,
+			showAlert,
 			displayAlert,
 		],
 	)

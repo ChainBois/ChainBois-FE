@@ -5,6 +5,8 @@ import {
 	useResponsiveLayout,
 	useNotifications,
 	usePlatformDataFetcher,
+	useAuth,
+	useDebouncedEffect,
 } from '@/hooks'
 import React, { useEffect, useMemo, useState } from 'react'
 import {
@@ -68,24 +70,37 @@ const MainContextProvider = ({ children }) => {
 		displayAlert,
 	} = useNotifications()
 
-	const { activeAccount } = useActiveAccount()
+	const activeAccount = useActiveAccount()
 	const activeWallet = useActiveWallet()
 	const isConnected = useActiveWalletConnectionStatus() === 'connected'
 
 	const [platformDataIsLoading, setPlatformDataIsLoading] = useState(false)
 	const [tempAddress, setTempAddress] = useState('')
+	const [triggerCounter, setTriggerCounter] = useState(0)
+
+	const updateTriggerCounter = () => setTriggerCounter((x) => x + 1)
 
 	const { retrievePlatformData } = usePlatformDataFetcher({
 		user,
 		activeAddress: activeAccount?.address,
 		platformDataIsLoading,
 		setPlatformDataIsLoading,
+		updateTriggerCounter,
 	})
+
+	const checkIfUserExists = async (email) => {
+		const res = await request({
+			path: `auth/check-user/${email}`,
+			method: 'post',
+		})
+		setUserExists(res?.data?.exists)
+	}
 
 	const ContextValue = useMemo(
 		() => ({
 			dimensions,
 			query: matches,
+			retrievePlatformData,
 		}),
 		[dimensions, matches],
 	)
@@ -97,7 +112,11 @@ const MainContextProvider = ({ children }) => {
 					user: { accessToken, ...user },
 				} = session
 				if (accessToken && (activeAccount?.address ?? '')) {
-					await login(activeAccount?.address ?? '', accessToken, showLoading)
+					await login({
+						address: activeAccount?.address ?? '',
+						accessToken,
+						showLoading,
+					})
 				} else {
 					showAlert({
 						title: 'Dear Gamer',
@@ -137,20 +156,21 @@ const MainContextProvider = ({ children }) => {
 				const walletIsConnectedAndActive = isActive && isConnected
 				if (activeAddress && walletIsConnectedAndActive) {
 					if (tempAddress !== activeAddress || requestingLogin) {
-						const res = await checkIfUserExists(
-							async () => await login(roleIsAdmin === '', requestingLogin),
-						)
-						if (res) {
-							if (requestingLogin && hasResolve && loginRequest?.resolve) {
-								loginRequest.resolve(res) // Current closure reference
-							}
-							setTempAddress(() => activeAddress)
-						} else {
-							if (requestingLogin && hasReject && loginRequest?.reject) {
-								loginRequest.reject() // Current closure reference
-							}
-							logout(false)
-						}
+						// const res = await checkIfUserExists(
+						// 	async () => await login({ address: activeAddress, accessToken: undefined }), // TODO: showLoading?
+						// )
+						// if (res) {
+						// 	if (requestingLogin && hasResolve && loginRequest?.resolve) {
+						// 		loginRequest.resolve(res) // Current closure reference
+						// 	}
+						// 	setTempAddress(() => activeAddress)
+						// } else {
+						// 	if (requestingLogin && hasReject && loginRequest?.reject) {
+						// 		loginRequest.reject() // Current closure reference
+						// 	}
+						// 	logout(false)
+						// }
+						logout(false)
 					}
 				}
 			}

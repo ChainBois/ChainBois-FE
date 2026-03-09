@@ -30,7 +30,6 @@ const Alert = ({ children }) => {
 				>
 					<h3
 						className={cf(
-							s.wMax,
 							s.flex,
 							s.flexOne,
 							s.tLeft,

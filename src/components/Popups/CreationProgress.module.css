@@ -1,0 +1,72 @@
+.popup {
+	width: min(100%, 520px);
+}
+
+.content {
+	align-items: stretch;
+	gap: 14px;
+}
+
+.header {
+	gap: 10px;
+}
+
+.popupTitle {
+	text-align: center;
+}
+
+.popupMessage {
+	text-align: center;
+}
+
+.progressTrack {
+	position: relative;
+	width: 100%;
+	height: 6px;
+	border-radius: 2px;
+	background: #222;
+	overflow: hidden;
+	border: 1px solid #2f2f2f;
+}
+
+.progressBar {
+	position: absolute;
+	top: 0;
+	left: -40%;
+	width: 40%;
+	height: 100%;
+	background: linear-gradient(90deg, #7f1216 0%, #ec1b24 55%, #ff6d74 100%);
+	animation: loading-slide 1.1s ease-in-out infinite;
+}
+
+.actions {
+	justify-content: center;
+}
+
+.closeButton {
+	min-width: 140px;
+	height: 44px;
+	padding: 0 14px;
+	border: 1px solid #4b4b4b;
+	border-radius: 2px;
+	background: #131313;
+	color: #fff;
+	font-family: var(--font-space-g);
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.closeButton:hover {
+	border-color: #ec1b24;
+}
+
+@keyframes loading-slide {
+	0% {
+		left: -40%;
+	}
+	100% {
+		left: 100%;
+	}
+}

@@ -4,12 +4,13 @@ import { refreshRequest, request, requestUpload } from '@/utils'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { signOut, getSession } from 'next-auth/react'
+import { useActiveAccount } from 'thirdweb/react'
 import { useNotifications } from '@/hooks'
 
 export const AuthContext = React.createContext()
 
 const AuthContextProvider = ({ children }) => {
-	const { activeAccount } = useActiveAccount()
+	const activeAccount = useActiveAccount()
 	const { displayAlert } = useNotifications()
 	const showAlert = ({ ...opts }) =>
 		displayAlert({
@@ -128,9 +129,9 @@ const AuthContextProvider = ({ children }) => {
 		return response
 	}
 
-	const login = async (address, accessToken, showLoading) => {
+	const login = async ({ address, accessToken, showLoading }) => {
 		const res = await request({
-			path: `login`,
+			path: `auth/login`,
 			method: 'post',
 			body: {
 				address: address || '',
@@ -144,13 +145,13 @@ const AuthContextProvider = ({ children }) => {
 		) {
 			showLoading?.()
 			const x = await signOut({
-				callbackUrl: '/?modal=connectWallet&relink=true',
+				callbackUrl: '/request-access',
 				redirect: false,
 			})
 			const session = await getSession()
 
 			await request({
-				path: 'logout',
+				path: 'auth/logout',
 				method: 'post',
 				body: {
 					address: activeAccount?.address ?? '',
@@ -169,23 +170,30 @@ const AuthContextProvider = ({ children }) => {
 		return res
 	}
 
-    const logout = async (showAlert_ = true, callbacks) => {
+	const logout = async (showAlert_ = true, callbacks) => {
 		if (showAlert_)
 			displayAlert({
 				title: 'Alert',
 				message: 'Login aborted!',
 				type: 'error',
 			})
+		const x = await signOut({
+			callbackUrl: '/',
+			redirect: false,
+		})
+		const session = await getSession()
+
 		setUser(() => ({}))
 		callbacks?.map((cb) => cb?.())
 		await request({
-			path: 'logout',
+			path: 'auth/logout',
 			method: 'post',
 			body: {
 				address: activeAccount?.address ?? '',
 			},
 			// includeClientID: true,
 		})
+		// router.push(x.url)
 	}
 
 	const ContextValue = {
@@ -198,7 +206,7 @@ const AuthContextProvider = ({ children }) => {
 		setLoginRequest,
 		refresh,
 		login,
-        logout,
+		logout,
 	}
 
 	return (

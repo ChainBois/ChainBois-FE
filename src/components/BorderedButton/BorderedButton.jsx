@@ -33,27 +33,24 @@ const BorderedButton = memo(({
 	borderButtonIcon = '',
 	...props
 }) => {
-	const Responder = memo(
-		({ action, style, children }) =>
-			isLink ? (
-				<Link
-					href={action}
-					className={style}
-					{...props}
-				>
-					{children}
-				</Link>
-			) : (
-				<button
-					onClick={action}
-					className={style}
-					{...props}
-				>
-					{children}
-				</button>
-			),
-		(prev, next) => isEqual(prev, next),
-	)
+	const Responder = ({ action, style, children }) =>
+		isLink ? (
+			<Link
+				href={action}
+				className={style}
+				{...props}
+			>
+				{children}
+			</Link>
+		) : (
+			<button
+				onClick={action}
+				className={style}
+				{...props}
+			>
+				{children}
+			</button>
+		)
 	return (
 		<Responder
 			action={action}
@@ -90,5 +87,7 @@ const BorderedButton = memo(({
 		</Responder>
 	)
 }, (prev, next) => isEqual(prev, next))
+
+BorderedButton.displayName = 'BorderedButton'
 
 export default BorderedButton

@@ -1,98 +1,104 @@
 .standIn {
-  width: 353px;
-  padding: 9px 10px 20px 25px;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 7px;
-  border-radius: 6px;
-  background: #121212;
-  right: 0;
-  bottom: 0;
+	width: 353px;
+	padding: 9px 10px 20px 25px;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 7px;
+	border-radius: 6px;
+	background: #121212;
+	right: 0;
+	bottom: 0;
 }
 
 .standInDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 3px;
-  border: none;
-  animation: pulse 2s infinite;
-  margin: 0 0 7px auto;
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+	border: none;
+	animation: pulse 2s infinite;
+	margin: 0 0 7px auto;
 }
 
 .notConnected {
-  background: #ec1b24;
+	background: #ec1b24;
 }
 
 .connected {
-  background: #098505;
+	background: #098505;
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 .standInTitle {
-  color: #fff;
-  font-family: var(--font-inter);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%; /* 19.2px */
-  margin: 0 0 5px;
+	color: #fff;
+	font-family: var(--font-inter);
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 120%; /* 19.2px */
+	margin: 0 0 5px;
 }
 
 .standInText {
-  color: #6e6e6e;
-  font-family: var(--font-inter);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 120%; /* 16.8px */
-  margin: 0 0 28px;
+	color: #6e6e6e;
+	font-family: var(--font-inter);
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 120%; /* 16.8px */
+	margin: 0 0 28px;
 }
 
 .standInFooterText {
-  color: #b2b2b2;
-  font-family: var(--font-inter);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%; /* 16.8px */
+	color: #b2b2b2;
+	font-family: var(--font-inter);
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 120%; /* 16.8px */
+	border: none;
+	background: transparent;
+}
+
+.standInFooterText:hover {
+	text-decoration: underline;
 }
 
 .detailsButton {
-  background: #121212 !important;
-  border: none !important;
-  border-radius: 6px !important;
-  padding: 20px 25px !important;
-  height: unset !important;
-  width: unset !important;
+	background: #121212 !important;
+	border: none !important;
+	border-radius: 6px !important;
+	padding: 20px 25px !important;
+	height: unset !important;
+	width: unset !important;
 }
 
 .detailsButton > div:last-of-type > span:first-of-type {
-  color: #fff !important;
-  font-family: var(--font-inter) !important;
-  font-size: 16px !important;
-  font-style: normal !important;
-  font-weight: 500 !important;
-  line-height: 120% !important;
+	color: #fff !important;
+	font-family: var(--font-inter) !important;
+	font-size: 16px !important;
+	font-style: normal !important;
+	font-weight: 500 !important;
+	line-height: 120% !important;
 }
 
 .detailsButton > div:last-of-type > span:last-of-type {
-  color: #6e6e6e !important;
-  font-family: var(--font-inter) !important;
-  font-size: 14px !important;
-  font-style: normal !important;
-  font-weight: 400 !important;
-  line-height: 120% !important;
+	color: #6e6e6e !important;
+	font-family: var(--font-inter) !important;
+	font-size: 14px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	line-height: 120% !important;
 }
 
 /* --------------------------- Media Queries ------------------------- */
@@ -117,59 +123,60 @@
 }
 
 /* Small device */
-@media only screen and (max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
-  .standIn {
-    padding: 6px 7px 14px 17.5px;
-    width: 250px;
-    gap: 0px;
-  }
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+	.standIn {
+		padding: 6px 7px 14px 17.5px;
+		width: 250px;
+		gap: 0px;
+	}
 
-  .standInDot {
-    margin: 0 0 4.5px auto;
-    width: 4.2px;
-    height: 4.2px;
-  }
+	.standInDot {
+		margin: 0 0 4.5px auto;
+		width: 4.2px;
+		height: 4.2px;
+	}
 
-  .standInTitle {
-    font-size: 11px;
-    margin: 0 0 3.5px auto;
-  }
+	.standInTitle {
+		font-size: 11px;
+		margin: 0 0 3.5px auto;
+	}
 
-  .standInText,
-  .standInFooterText {
-    font-size: 9px;
-  }
+	.standInText,
+	.standInFooterText {
+		font-size: 9px;
+	}
 
-  .standInText {
-    margin: 0 0 19px;
-  }
+	.standInText {
+		margin: 0 0 19px;
+	}
 }
 
 /* Tiny device */
 @media only screen and (max-width: 480px) {
-  .standIn {
-    padding: 5.5px 6.5px 12.5px 16px;
-  }
+	.standIn {
+		padding: 5.5px 6.5px 12.5px 16px;
+	}
 
-  .standInDot {
-    margin: 0 0 4.5px auto;
-    width: 3.89px;
-    height: 3.89px;
-  }
+	.standInDot {
+		margin: 0 0 4.5px auto;
+		width: 3.89px;
+		height: 3.89px;
+	}
 
-  .standInTitle {
-    font-size: 10px;
-    margin: 0 0 3px auto;
-  }
+	.standInTitle {
+		font-size: 10px;
+		margin: 0 0 3px auto;
+	}
 
-  .standInText,
-  .standInFooterText {
-    font-size: 9px;
-  }
+	.standInText,
+	.standInFooterText {
+		font-size: 9px;
+	}
 
-  .standInText {
-    margin: 0 0 18px;
-  }
+	.standInText {
+		margin: 0 0 18px;
+	}
 }
 
 /* iPhone 12 */

@@ -1,11 +1,13 @@
+.popup {}
 
+.content {
+	align-items: stretch;
+}
 
-/* iPad Pro */
-@media only screen and (max-width: 1024px) {
+.popupTitle {
+	color: #ffffff;
 }
-/* Small device */
-@media only screen and (max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
-}
-/* Tiny device */
-@media only screen and (max-width: 480px) {
+
+.popupMessage {
+	color: #c0c0c0;
 }

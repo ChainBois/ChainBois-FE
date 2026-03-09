@@ -23,9 +23,9 @@
 	min-height: 60px;
 	height: 60px;
 	flex-shrink: 0;
-	border-radius: 5px;
-	border: 1px solid #ccc;
-	background: #151515 !important;
+	border-radius: 2px;
+	border: 1px solid #2f2f2f;
+	/* background: #111 !important; */
 	padding: 12px 23px 12px 28px;
 	outline: none;
 }
@@ -36,7 +36,7 @@
 
 .innerLabel {
 	color: #fff;
-	font-family: var(--font-inter) !important;
+	font-family: var(--font-space-g) !important;
 	font-size: 16px !important;
 	font-style: normal !important;
 	font-weight: 500 !important;
@@ -58,7 +58,7 @@
 
 .requiredMark {
 	color: #e41d1d;
-	font-family: var(--font-inter);
+	font-family: var(--font-space-g);
 	font-size: 12px;
 	font-style: normal;
 	font-weight: 600;
@@ -74,12 +74,12 @@
 .label_ .countryInput {
 	width: 100%;
 	color: #fff;
-	font-family: var(--font-inter);
+	font-family: var(--font-space-g);
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 500;
-	border-radius: 5px;
-	border: 1px solid #ccc;
+	border-radius: 2px;
+	border: 1px solid #2f2f2f;
 	background-color: #151515;
 	border: none;
 	outline: none;
@@ -96,11 +96,11 @@
 	padding: 16px;
 	align-items: flex-start;
 	gap: 10px;
-	border-radius: 10px !important;
-	border: 1px solid #262626 !important;
-	background: #080808 !important;
+	border-radius: 2px !important;
+	border: 1px solid #2f2f2f !important;
+	background: #0b0b0b !important;
 	color: #fff !important;
-	font-family: var(--font-inter);
+	font-family: var(--font-space-g);
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 400;
@@ -127,9 +127,10 @@
 }
 
 /* Focus States */
-.label_:focus-within {
+/* .label_:focus-within {
 	background-color: #000 !important;
-}
+	border-color: #ec1b24;
+} */
 
 .label_:focus-within .input,
 .label_:focus-within input,
@@ -145,7 +146,7 @@
 	align-self: stretch;
 	border: none !important;
 	color: #fff !important;
-	font-family: var(--font-inter);
+	font-family: var(--font-space-g);
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 400;
@@ -157,11 +158,11 @@
 	padding: 16px;
 	align-items: flex-start;
 	gap: 10px;
-	border-radius: 10px !important;
-	border: 1px solid #262626 !important;
-	background: #080808 !important;
+	border-radius: 2px !important;
+	border: 1px solid #2f2f2f !important;
+	background: #0b0b0b !important;
 	color: #fff !important;
-	font-family: var(--font-inter);
+	font-family: var(--font-space-g);
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 400;
@@ -220,7 +221,7 @@
 .multiValue {
 	background: #000 !important;
 	border: 1px solid var(--yellow) !important;
-	border-radius: 5px !important;
+	border-radius: 2px !important;
 	overflow: hidden !important;
 }
 
@@ -260,7 +261,7 @@
 }
 
 .selectionOption {
-	font-family: var(--font-inter) !important;
+	font-family: var(--font-space-g) !important;
 	font-size: 16px !important;
 	font-style: normal !important;
 	font-weight: 400 !important;
@@ -268,12 +269,12 @@
 	border: 1px solid #fff !important;
 	background-color: rgba(255, 255, 255, 0.2) !important;
 	color: #fff;
-	border-radius: 10px;
+	border-radius: 2px;
 	padding: 10px;
 }
 
 .selectionOptionCus {
-	font-family: var(--font-inter) !important;
+	font-family: var(--font-space-g) !important;
 	font-size: 16px !important;
 	font-style: normal !important;
 	font-weight: 400 !important;
@@ -281,7 +282,7 @@
 	border: 1px solid #262626 !important;
 	background-color: #151515 !important;
 	color: #666;
-	border-radius: 10px;
+	border-radius: 2px;
 	padding: 10px;
 	cursor: pointer;
 	transition: border-color 0.2s ease;
@@ -313,7 +314,7 @@
 	background: #000;
 	position: absolute;
 	border: none;
-	border-radius: 5px;
+	border-radius: 2px;
 	right: 5px;
 	color: #fff !important;
 	cursor: pointer;
@@ -333,7 +334,7 @@
 }
 
 .inputLittleNotice {
-	font-family: var(--font-inter);
+	font-family: var(--font-space-g);
 	font-size: 13px;
 	font-style: normal;
 	font-weight: 400;
@@ -359,13 +360,13 @@
 .floatingText {
 	background: #262626;
 	color: var(--yellow);
-	font-family: var(--font-inter);
+	font-family: var(--font-space-g);
 	font-size: 13px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: 150%;
 	border: none;
-	border-radius: 15px;
+	border-radius: 2px;
 	top: 0;
 	right: 0;
 	padding: 0 5px;

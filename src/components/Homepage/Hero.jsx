@@ -1,11 +1,9 @@
 'use client'
 
-import lockOpened from '@/assets/svg/lockOpened.svg'
 import s from '@/styles'
 import { cf } from '@/utils'
-import Image from 'next/image'
-import Link from 'next/link'
-import { MdInfoOutline } from 'react-icons/md'
+import { DESKTOP_BUILD_URL, MOBILE_BUILD_URL } from '@/constants'
+import { MdDesktopWindows, MdPhoneIphone } from 'react-icons/md'
 import ConnectWalletButton from '../ConnectWalletButton'
 import BorderedButton from './../BorderedButton'
 import h from './Hero.module.css'
@@ -46,8 +44,8 @@ export default function Hero({
 					{links}
 				</nav>
 			</div>
-      <div className={ cf(s.flex, s.flexEnd, s.p_relative, h.heroCTA) }>
-        {/* TODO implement dynamic isLanding state switch */}
+			<div className={cf(s.flex, s.flexEnd, s.p_relative, h.heroCTA)}>
+				{/* TODO implement dynamic isLanding state switch */}
 				<ConnectWalletButton isLanding={isLanding} />
 			</div>
 		</section>
@@ -55,6 +53,9 @@ export default function Hero({
 }
 
 export const HomePageHero = () => {
+	const desktopBuildUrl = DESKTOP_BUILD_URL ?? '#'
+	const mobileBuildUrl = MOBILE_BUILD_URL ?? '#'
+
 	return (
 		<Hero
 			welcomeText={
@@ -74,26 +75,19 @@ export const HomePageHero = () => {
 			links={
 				<>
 					<BorderedButton
-						tag={'Request Access'}
-						action={() => {}}
+						tag={'Download Desktop Build'}
+						action={desktopBuildUrl}
+						isLink={true}
 						borderButtonText={h.heroActionText}
-						icon={
-							<Image
-								src={lockOpened}
-								alt='lock'
-								className={h.heroActionIcon}
-							/>
-						}
+						icon={<MdDesktopWindows className={h.heroActionIcon} />}
 					/>
-					<Link
-						href={'/docs'}
-						className={cf(s.flex, s.flexCenter, h.heroAction)}
-					>
-						<MdInfoOutline className={cf(s.dInlineBlock, h.heroActionIcon)} />
-						<span className={cf(s.dInlineBlock, h.heroActionText)}>
-							Read Docs
-						</span>
-					</Link>
+					<BorderedButton
+						tag={'Download Mobile Build'}
+						action={mobileBuildUrl}
+						isLink={true}
+						borderButtonText={h.heroActionText}
+						icon={<MdPhoneIphone className={h.heroActionIcon} />}
+					/>
 				</>
 			}
 			isLanding={true}

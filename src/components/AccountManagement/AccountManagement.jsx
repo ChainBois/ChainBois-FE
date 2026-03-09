@@ -3,18 +3,31 @@
 import { getSession, signIn, signOut, useSession } from 'next-auth/react'
 import s from '@/styles'
 import a from './AccountManagement.module.css'
-import { useDebouncedEffect, useQueryParams } from '@/hooks'
+import { useAuth, useDebouncedEffect, useQueryParams } from '@/hooks'
 import { usePathname, useRouter } from 'next/navigation'
-import { useActiveAccount } from 'thirdweb/react'
+import {
+	useActiveAccount,
+	useActiveWalletConnectionStatus,
+} from 'thirdweb/react'
 import { getActualInputValues, InputField } from '../InputField'
 import { cf, request } from '@/utils'
 import { useMain, useNotifications } from '@/hooks'
 import BorderedButton from '../BorderedButton'
+import { useEffect, useMemo, useState } from 'react'
+import ConnectWalletButton from '../ConnectWalletButton'
+import { BsArrowRight } from 'react-icons/bs'
 
 export default function AccountManagement() {
-	const { retrievePlatformData, showLoading, login, showRewardPoolSelection } =
-		useMain()
-	const { displayAlert } = useNotifications()
+	const { retrievePlatformData } = useMain()
+	const { login } = useAuth()
+	const {
+		displayAlert,
+		showLoading,
+		showError,
+		hideLoading,
+		hideError,
+		setShowModal,
+	} = useNotifications()
 	const showAlert = ({ ...opts }) =>
 		displayAlert({
 			useShowAlert: true,
@@ -22,30 +35,43 @@ export default function AccountManagement() {
 		})
 	const { user, setUser } = useAuth()
 	const { status, data: session } = useSession()
-	const { activeAccount } = useActiveAccount()
+	const activeAccount = useActiveAccount()
 	const { relink, useSimulation } = useQueryParams()
 	const [loggedIn, setLoggedIn] = useState(null)
 	const [requestBody, setRequestBody] = useState({})
 	const [userMediaData, setUserMediaData] = useState({})
 	const [userExists, setUserExists] = useState(null)
 
-	
+	const activeWalletConnectionStatus = useActiveWalletConnectionStatus()
+	const isActive = useMemo(
+		() => activeWalletConnectionStatus === 'connected',
+		[activeWalletConnectionStatus],
+	)
 
 	const checkIfUserExists = async (email) => {
 		const res = await request({
 			path: `auth/check-user/${email}`,
-			method: 'post',
 		})
-		setUserExists(res?.data?.exists)
+		console.log('check user', res)
+		setUserExists(res?.data?.data?.exists)
 	}
 
 	useEffect(() => {
 		setUserExists(() => null)
 	}, [requestBody?.email])
 
+	function validateEmail(email) {
+		if (typeof email !== 'string') return false
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+		return emailPattern.test(email.trim())
+	}
+
 	useDebouncedEffect(
-		() => {
-			checkIfUserExists(requestBody?.email)
+		(deps) => {
+			const [email] = deps
+			console.log('email', email)
+			console.log('email check', validateEmail(email))
+			if (email && validateEmail(email)) checkIfUserExists(email)
 		},
 		[requestBody?.email],
 		2000,
@@ -65,7 +91,17 @@ export default function AccountManagement() {
 		}
 
 		switch (name) {
-			case '':
+			case 'email':
+				setRequestBody((x) => ({
+					...x,
+					[name]: String(value).trim(),
+				}))
+				break
+			case 'username':
+				setRequestBody((x) => ({
+					...x,
+					[name]: String(value).trim(),
+				}))
 				break
 			default:
 				if (validators[name]) {
@@ -80,7 +116,10 @@ export default function AccountManagement() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
-		showLoading()
+		showLoading({
+			title: 'Authenticating',
+			message: 'Please wait...',
+		})
 		// TODO
 		const req = getActualInputValues(requestBody)
 
@@ -91,14 +130,14 @@ export default function AccountManagement() {
 				path: `simulate`,
 				method: 'post',
 				body: {
-					email: req.email,
+					email: String(req.email).trim(),
 				},
 			})
 			if (simulatedRes.success) {
-				res = await login(
-					activeAccount?.address,
-					simulatedRes?.data?.credentials?.idToken ?? '',
-				)
+				res = await login({
+					address: activeAccount?.address,
+					accessToken: simulatedRes?.data?.credentials?.idToken ?? '',
+				})
 				if (
 					!(
 						res?.error?.statusCode === 401 ||
@@ -113,11 +152,15 @@ export default function AccountManagement() {
 							message: 'Re-Link was successful.',
 						})
 					} else {
-						showRewardPoolSelection()
+						router.replace('/')
+						showAlert({
+							title: 'Linked',
+							message: 'Link was successful.',
+						})
 					}
 				}
 			} else {
-				showAlert({
+				showError({
 					title: 'Dear Gamer',
 					message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
 				})
@@ -128,17 +171,17 @@ export default function AccountManagement() {
 					path: `auth/create-user`,
 					method: 'post',
 					body: {
-						email: req.email,
+						email: String(req.email).trim(),
 						password: req.password,
-						username: req.username,
+						username: String(req.username).trim(),
 					},
 				})
 				if (!signUpRes.success) {
-					showAlert({
-					title: 'Dear Gamer',
-					message: `We're unable to create your gamer account. Please try again later.`,
-				})
-				return
+					showError({
+						title: 'Dear Gamer',
+						message: `We're unable to create your gamer account. Please try again later.`,
+					})
+					return
 					// res = await signIn('credentials', {
 					// 	...req,
 					// 	address: activeAccount?.address ?? '',
@@ -153,16 +196,17 @@ export default function AccountManagement() {
 				redirect: false,
 				callbackUrl: `/?success=true${relink === 'true' ? '&relink=true' : ''}`,
 			})
+			console.log(res)
 			// await fetch('/api/auth/session')
 			if (res.error) {
-				showAlert({
+				showError({
 					title: 'Dear Gamer',
 					message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
 				})
 			} else {
 				const session = await getSession()
 				if (!res.ok) {
-					showAlert({
+					showError({
 						title: 'Dear Gamer',
 						message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
 					})
@@ -178,16 +222,20 @@ export default function AccountManagement() {
 								message: 'Re-Link was successful.',
 							})
 						} else {
-							showRewardPoolSelection?.()
+							router.replace('/')
+							showAlert({
+								title: 'Linked',
+								message: 'Link was successful.',
+							})
 						}
 					} else {
-						showAlert({
+						showError({
 							title: 'Dear Gamer',
 							message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
 						})
 					}
 				} else {
-					showAlert({
+					showError({
 						title: 'Dear Gamer',
 						message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
 					})
@@ -206,7 +254,7 @@ export default function AccountManagement() {
 		const session = await getSession()
 
 		await request({
-			path: 'logout',
+			path: 'auth/logout',
 			method: 'post',
 			body: {
 				address: activeAccount?.address,
@@ -239,13 +287,21 @@ export default function AccountManagement() {
 		}
 	}, [loggedIn, user])
 
+	const isDisabled = useMemo(() => {
+		return requestBody?.email &&
+			requestBody?.password &&
+			(userExists === false ? requestBody?.username : true)
+			? false
+			: true
+	}, [requestBody, userExists])
+
 	return (
 		<div
 			className={cf(
 				s.flex,
 				s.flexCenter,
 				a.connectWallet,
-				activeWallet?.isActive ? a.isActive : '',
+				isActive ? a.isActive : '',
 				loggedIn === false ? a.notLoggedIn : '',
 			)}
 		>
@@ -262,23 +318,12 @@ export default function AccountManagement() {
 					You are logged in.
 				</div>
 			)}
-			{!!(activeAccount && activeAccount?.address && loggedIn === false) && (
+			{!!(activeAccount && activeAccount?.address && loggedIn === false) ? (
 				<form
 					onSubmit={handleSubmit}
 					className={cf(s.flex, s.flexTop, a.form)}
 				>
 					<span className={cf(s.wMax, s.tCenter, a.reg)}>Login</span>
-					{userExists === false && (
-						<InputField
-							tag={'username'}
-							state={requestBody}
-							handler={handler}
-							type={'text'}
-							label={'Username'}
-							placeholder={''}
-							required={true}
-						/>
-					)}
 					<InputField
 						tag={'email'}
 						state={requestBody}
@@ -288,25 +333,47 @@ export default function AccountManagement() {
 						placeholder={''}
 						required={true}
 						autoComplete={'username'}
+						cusLabel={a.fieldLabel}
+						cusClass={a.fieldInput}
 					/>
-					<InputField
-						tag={'password'}
-						state={requestBody}
-						handler={handler}
-						type={'password'}
-						label={'Password'}
-						placeholder={''}
-						required={true}
-						autoComplete={'current-password'}
-					/>
+					{userExists === false && (
+						<InputField
+							tag={'username'}
+							state={requestBody}
+							handler={handler}
+							type={'text'}
+							label={'Username'}
+							placeholder={''}
+							required={true}
+							cusLabel={a.fieldLabel}
+							cusClass={a.fieldInput}
+						/>
+					)}
+					{userExists !== null && (
+						<InputField
+							tag={'password'}
+							state={requestBody}
+							handler={handler}
+							type={'password'}
+							label={'Password'}
+							placeholder={''}
+							required={true}
+							autoComplete={'current-password'}
+							cusLabel={a.fieldLabel}
+							cusClass={a.fieldInput}
+						/>
+					)}
 					<div className={cf(s.wMax, s.flex, s.flexCenter, a.subCon)}>
 						<BorderedButton
 							type={'submit'}
 							tag={'Continue'}
 							icon={<BsArrowRight className={cf(s.dInlineBlock, a.subIcon)} />}
+							disabled={isDisabled}
 						/>
 					</div>
 				</form>
+			) : (
+				<ConnectWalletButton isLanding={true} />
 			)}
 		</div>
 	)

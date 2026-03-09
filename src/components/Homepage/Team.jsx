@@ -1,22 +1,65 @@
 'use client'
 
-import s from '@/styles';
-import { cf } from '@/utils';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { FaXTwitter } from 'react-icons/fa6';
-import { GoArrowRight } from 'react-icons/go';
-import Container from './Container';
-import t from './Team.module.css';
+import s from '@/styles'
+import { cf } from '@/utils'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FaXTwitter } from 'react-icons/fa6'
+import { GoArrowRight } from 'react-icons/go'
+import Container from './Container'
+import t from './Team.module.css'
 
 // Team members data
 const teamMembers = [
-	{ id: 1, name: 'John Doe', role: 'Co-Founder', img: '/img/JohnDoe.png' },
-	{ id: 2, name: 'Jane Smith', role: 'CEO', img: '/img/JaneSmith.png' },
-	{ id: 3, name: 'Mike Johnson', role: 'CTO', img: '/img/MikeJohnson.png' },
-	{ id: 4, name: 'Sarah Wilson', role: 'COO', img: '/img/JaneSmith.png' },
-	{ id: 5, name: 'David Brown', role: 'CFO', img: '/img/DavidBrown.png' },
+	{
+		id: 1,
+		name: 'Mark Barber',
+		role: 'Founder',
+		img: '/img/PFP_Mark_Slim.png',
+		imgExpanded: '/img/PFP_Mark_Mid.png',
+		social: 'https://x.com/ea_aro1914',
+	},
+	{
+		id: 2,
+		name: `Declan O'Callahan`,
+		role: 'Co-Founder and Artist',
+		img: '/img/PFP_Dec_Slim.png',
+		imgExpanded: '/img/PFP_Dec_Mid.png',
+		social: 'https://x.com/Ghettopigeons',
+	},
+	{
+		id: 3,
+		name: 'Goonerlabs',
+		role: 'Backend Developer',
+		img: '/img/PFP_Goon_Slim.png',
+		imgExpanded: '/img/PFP_Goon_Mid.png',
+		social: 'https://x.com/hanswolfhart',
+	},
+	{
+		id: 4,
+		name: 'Emmanuel Agbavwe',
+		role: 'Frontend Developer',
+		img: '/img/PFP_Aro_Slim.png',
+		imgExpanded: '/img/PFP_Aro_Mid.png',
+		social: 'https://x.com/ea_aro1914',
+	},
+	{
+		id: 5,
+		name: 'Francis O. Samuel',
+		role: 'Marketing Lead',
+		img: '/img/PFP_Preach_Slim.png',
+		imgExpanded: '/img/PFP_Preach_Mid.png',
+		social: 'https://x.com/bullpreacher',
+	},
+	{
+		id: 6,
+		name: 'Oceanic',
+		role: 'Quality Assurance Lead',
+		img: '/img/PFP_Oceanic_Slim.png',
+		imgExpanded: '/img/PFP_Oceanic_Mid.png',
+		social: 'https://x.com/Oceanic_9000',
+	},
 ]
 
 // device capability detection
@@ -64,6 +107,7 @@ function Member({
 	name,
 	role,
 	img,
+	imgExpanded,
 	social,
 	expanded,
 	memberID,
@@ -80,7 +124,7 @@ function Member({
 				s.flexStart,
 				t.member,
 				isExpanded ? t.expanded : '',
-				isHighlighted && !isExpanded ? t.highlighted : ''
+				isHighlighted && !isExpanded ? t.highlighted : '',
 			)}
 			data-memberid={memberID}
 			{...mouseHandlers}
@@ -96,7 +140,7 @@ function Member({
 					/>
 
 					<Image
-						src={img}
+						src={imgExpanded}
 						alt={`${name} profile view`}
 						width={400}
 						height={300}
@@ -155,7 +199,7 @@ export default function Team() {
 						const id = Number(e.currentTarget.dataset.memberid)
 						expand(id)
 					},
-			  }
+				}
 			: {}
 
 	return (
@@ -170,6 +214,7 @@ export default function Team() {
 						name={m.name}
 						role={m.role}
 						img={m.img}
+						imgExpanded={m.imgExpanded}
 						social={'https://x.com/ea_aro1914'}
 						expanded={expanded}
 						memberID={m.id}

@@ -1,11 +1,75 @@
-
-
-/* iPad Pro */
-@media only screen and (max-width: 1024px) {
+.connectWallet {
+	width: 100%;
+	min-height: 320px;
 }
-/* Small device */
-@media only screen and (max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+
+.notLoggedIn {
+	padding: 24px 16px;
 }
-/* Tiny device */
+
+.form {
+	width: min(100%, 560px);
+	flex-direction: column;
+	align-items: stretch;
+	gap: 14px;
+	padding: 20px;
+	border: 1px solid #2f2f2f;
+	border-radius: 2px;
+	background: rgba(10, 10, 10, 0.9);
+}
+
+.reg {
+	color: #fff;
+	font-family: var(--font-space-g);
+	font-size: 26px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	margin-bottom: 6px;
+}
+
+.fieldLabel {
+	max-width: 100% !important;
+	min-height: initial !important;
+	height: auto !important;
+	padding: 0 !important;
+	border: none !important;
+	background: transparent !important;
+}
+
+.fieldInput {
+	min-height: 52px;
+}
+
+.subCon {
+	margin-top: 8px;
+}
+
+.subIcon {
+	font-size: 16px;
+}
+
+.userDetails {
+	padding: 18px;
+	border: 1px solid #2f2f2f;
+	border-radius: 2px;
+	background: rgba(10, 10, 10, 0.9);
+	color: #fff;
+	font-family: var(--font-space-g);
+	text-transform: uppercase;
+}
+
 @media only screen and (max-width: 480px) {
+	.form {
+		padding: 14px;
+		gap: 12px;
+	}
+
+	.reg {
+		font-size: 20px;
+	}
+
+	.fieldInput {
+		min-height: 48px;
+	}
 }

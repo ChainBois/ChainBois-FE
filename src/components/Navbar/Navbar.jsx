@@ -2,7 +2,7 @@
 
 import CB from '@/assets/svg/CB.svg'
 import CBBranding from '@/assets/svg/CBBranding.svg'
-import { isEqual, useMain, useMediaQuery } from '@/hooks'
+import { useMain, useMediaQuery } from '@/hooks'
 import s from '@/styles'
 import { cf } from '@/utils'
 import Image from 'next/image'
@@ -36,41 +36,38 @@ function NavItem({
 }) {
 	const [isHovered, setIsHovered] = useState(false)
 
-	const Responder = memo(
-		({ action, tag, style, onMouseEnter, onMouseLeave }) =>
-			isLink ? (
-				<>
-					{action ? (
-						<Link
-							href={action}
-							className={style}
-							onMouseEnter={onMouseEnter}
-							onMouseLeave={onMouseLeave}
-						>
-							{tag}
-						</Link>
-					) : (
-						<span
-							className={style}
-							onMouseEnter={onMouseEnter}
-							onMouseLeave={onMouseLeave}
-						>
-							{tag}
-						</span>
-					)}
-				</>
-			) : (
-				<button
-					onClick={action}
-					className={style}
-					onMouseEnter={onMouseEnter}
-					onMouseLeave={onMouseLeave}
-				>
-					{tag}
-				</button>
-			),
-		(prev, next) => isEqual(prev, next),
-	)
+	const Responder = ({ action, tag, style, onMouseEnter, onMouseLeave }) =>
+		isLink ? (
+			<>
+				{action ? (
+					<Link
+						href={action}
+						className={style}
+						onMouseEnter={onMouseEnter}
+						onMouseLeave={onMouseLeave}
+					>
+						{tag}
+					</Link>
+				) : (
+					<span
+						className={style}
+						onMouseEnter={onMouseEnter}
+						onMouseLeave={onMouseLeave}
+					>
+						{tag}
+					</span>
+				)}
+			</>
+		) : (
+			<button
+				onClick={action}
+				className={style}
+				onMouseEnter={onMouseEnter}
+				onMouseLeave={onMouseLeave}
+			>
+				{tag}
+			</button>
+		)
 
 	const handleMouseEnter = () => {
 		if (showTooltip) {

@@ -5,7 +5,9 @@ import s from '@/styles'
 import { cf } from '@/utils'
 import {
 	Alert,
-	// Loading,
+	CreationProgress,
+	Loading,
+	Error,
 } from '../Popups'
 import m from './Modal.module.css'
 
@@ -13,7 +15,9 @@ const Modal = () => {
 	const { modal, showModal, setShowModal, canCloseModal } = useNotifications()
 
 	const modals = {
-		// loading: <Loading />,
+		loading: <Loading />,
+		creationProgress: <CreationProgress />,
+		error: <Error />,
 		alert: <Alert />,
 	}
 

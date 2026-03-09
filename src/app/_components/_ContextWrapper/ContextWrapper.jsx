@@ -13,17 +13,17 @@ import {
 export default function ContextWrapper({ children }) {
 	return (
 		<ToastContextProvider>
-			<ThirdwebProviders>
-				<SessionContextProvider>
-					<AuthContextProvider>
-						<NotificationSystemContextProvider>
+			<NotificationSystemContextProvider>
+				<ThirdwebProviders>
+					<SessionContextProvider>
+						<AuthContextProvider>
 							<MainContextProvider>
 								<ParamsContextProvider>{children}</ParamsContextProvider>
 							</MainContextProvider>
-						</NotificationSystemContextProvider>
-					</AuthContextProvider>
-				</SessionContextProvider>
-			</ThirdwebProviders>
+						</AuthContextProvider>
+					</SessionContextProvider>
+				</ThirdwebProviders>
+			</NotificationSystemContextProvider>
 		</ToastContextProvider>
 	)
 }

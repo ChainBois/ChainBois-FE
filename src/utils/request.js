@@ -1,5 +1,6 @@
 // import { PUBLIC_ENV } from '@/constants'
 import axios from 'axios'
+import { auth } from '@/config/firebase'
 
 const serverURI = process.env.NEXT_PUBLIC_BACKEND_BASE_URI
 const clientID = process.env.NEXT_PUBLIC_CLIENT_ID
@@ -11,6 +12,16 @@ const axiosCall = axios.create({
 	},
 	withCredentials: true,
 	timeout: 180000,
+})
+
+axiosCall.interceptors.request.use(async (config) => {
+	const user = auth.currentUser
+
+	if (user) {
+		const token = await user.getIdToken()
+		config.headers.Authorization = `Bearer ${token}`
+	}
+	return config
 })
 
 /**
@@ -39,6 +50,7 @@ export const request = async ({
 	includeClientID = false,
 	cancelToken,
 } = {}) => {
+	// const accessToken = null
 	const flags = {
 		headers: {},
 		cancelToken,
@@ -137,7 +149,7 @@ export const requestUpload = async ({
 					: 0
 
 			onProgress(
-				progress
+				progress,
 				// {
 				// 	loaded: progressEvent.loaded,
 				// 	total: progressEvent.total,
@@ -158,7 +170,7 @@ export const requestUpload = async ({
 		// Validate file is actually a File/Blob object
 		if (!(file instanceof File) && !(file instanceof Blob)) {
 			throw new Error(
-				`Invalid file type: expected File or Blob, got ${typeof file}`
+				`Invalid file type: expected File or Blob, got ${typeof file}`,
 			)
 		}
 
@@ -337,7 +349,7 @@ export const refreshRequest = async (accessToken, address) => {
 			{
 				address: address,
 			},
-			flags
+			flags,
 		)
 		return { ...res.data, success: true }
 	} catch (err) {

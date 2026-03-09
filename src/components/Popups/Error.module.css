@@ -1,0 +1,70 @@
+.popup {
+	width: min(100%, 620px);
+}
+
+.content {
+	align-items: stretch;
+	border-color: #5e2224;
+	background: linear-gradient(180deg, #1a0f10 0%, #100b0c 100%);
+}
+
+.popupTitle {
+	color: #ffb3b5;
+}
+
+.closeBtn:hover {
+	border-color: #ff5a61;
+}
+
+.popupMessage {
+	color: #f4cecf;
+}
+
+.errorDetails {
+	margin: 0;
+	padding: 10px;
+	border: 1px solid #3e2a2b;
+	border-radius: 2px;
+	background: #0c0909;
+	color: #d8b8b8;
+	font-family: var(--font-space-g);
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 140%;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.popupActionButtonBox {
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.primaryAction,
+.secondaryAction {
+	min-width: 120px;
+	height: 42px;
+	padding: 0 14px;
+	border-radius: 2px;
+	font-family: var(--font-space-g);
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.primaryAction {
+	border: 1px solid #ec1b24;
+	background: #ec1b24;
+	color: #fff;
+}
+
+.secondaryAction {
+	border: 1px solid #535353;
+	background: #121212;
+	color: #fff;
+}
+
+.secondaryAction:hover {
+	border-color: #ec1b24;
+}
