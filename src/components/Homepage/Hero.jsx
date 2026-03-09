@@ -66,7 +66,7 @@ export const HomePageHero = () => {
 			subText={
 				<>
 					ChainBois is a 3rd person shooter P2E{' '}
-					<br className={cf(h.lgHidden)} /> game on AVAX{' '}
+					<br className={cf(h.lgHidden)} /> game on Avalanche{' '}
 					<br className={cf(h.mdHidden)} />
 					available on Mobile & PC.
 				</>

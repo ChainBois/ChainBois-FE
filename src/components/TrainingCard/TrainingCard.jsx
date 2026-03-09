@@ -93,7 +93,7 @@ export default function TrainingCard({ pseudoIndex }) {
 							{progress}% to Level {currentStep + 1}
 						</span>
 						<span className={cf(s.flex, s.flexRight, t.upgradeCost)}>
-							Upgrade Cost: {currentStep * 15 + 15} AVAX
+							Upgrade Cost: {currentStep * 15 + 15} $AVAX
 						</span>
 					</p>
 					<div className={cf(s.wMax, s.flex, s.flexLeft, t.progressBar)}>

@@ -25,7 +25,7 @@ const NotificationSystemContextProvider = ({ children }) => {
 		}),
 		useState({
 			success: false,
-			tag: 'AVAX Payment',
+			tag: '$AVAX Payment',
 			description: 'Pending...',
 			processing: false,
 			complete: false,

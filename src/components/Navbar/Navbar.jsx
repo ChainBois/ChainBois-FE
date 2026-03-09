@@ -109,13 +109,13 @@ function NavItem({
 
 function PlayButton() {
 	return (
-		<button
+		<Link
 			className={cf(s.flex, s.flexCenter, s.g10, n.playButton)}
-			onClick={() => {}}
+			href={'/request-access'}
 		>
 			<span className={s.dInlineBlock}>Play Now</span>
 			<MdArrowOutward className={cf(s.dInlineBlock, n.playIcon)} />
-		</button>
+		</Link>
 	)
 }
 
@@ -234,7 +234,8 @@ function MobileMenu({ isOpen, onClose }) {
 
 				{/* Play button */}
 				<div className={n.mobilePlayWrapper}>
-					<button
+					<Link
+						href={'/request-access'}
 						className={cf(
 							s.flex,
 							s.flexCenter,
@@ -245,7 +246,7 @@ function MobileMenu({ isOpen, onClose }) {
 					>
 						<span className={s.dInlineBlock}>Play Now</span>
 						<MdArrowOutward className={cf(s.dInlineBlock, n.playIcon)} />
-					</button>
+					</Link>
 				</div>
 			</div>
 
