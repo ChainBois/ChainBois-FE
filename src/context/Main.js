@@ -68,7 +68,17 @@ const MainContextProvider = ({ children }) => {
 		complete,
 		setComplete,
 		displayAlert,
+		showLoading,
+		showError,
+		hideLoading,
+		hideError,
 	} = useNotifications()
+
+	const showAlert = ({ ...opts }) =>
+		displayAlert({
+			useShowAlert: true,
+			...opts,
+		})
 
 	const activeAccount = useActiveAccount()
 	const activeWallet = useActiveWallet()
@@ -129,7 +139,7 @@ const MainContextProvider = ({ children }) => {
 			// await fetch('/api/auth/session')
 		}
 		revalidateUserOnStatusChange()
-	}, [status])
+	}, [status, session, activeAccount?.address, login, showAlert, setUser])
 
 	const hasLoginResolve = useMemo(
 		() => !!loginRequest?.resolve,
