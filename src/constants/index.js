@@ -8,7 +8,7 @@ export const WEBSOCKET_URL = process.env.NEXT_PUBLIC_WEBSOCKET_URL
 export const MOBILE_QUERY = '(max-width: 480px)'
 export const TABLET_QUERY =
 	'(max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape)'
-export const BATTLE_TOKEN = '0xF16214F76f19bD1E6d3349fC199B250a8E441E8C'
+export const BATTLE_TOKEN = '0xcC704c908A37A78d944a8310F8ebc0c0456CbeC0'
 export const FIREBASE_API_K = process.env.NEXT_PUBLIC_FIREBASE_API_K
 export const FIREBASE_A_DOMAIN = process.env.NEXT_PUBLIC_FIREBASE_A_DOMAIN
 export const FIREBASE_DATABASE_URL =
