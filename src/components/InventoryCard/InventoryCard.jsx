@@ -81,7 +81,7 @@ export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
 						</p>
 					</header>
 					<footer className={cf(s.wMax, s.flex, s.flexCenter, i.footer)}>
-						<BuyButton buyButton={i.buyButton} />
+						<BuyButton buyButton={i.buyButton} sell />
 					</footer>
 				</div>
 			</div>

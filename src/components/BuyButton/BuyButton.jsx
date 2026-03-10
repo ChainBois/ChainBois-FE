@@ -4,13 +4,17 @@ import { cf } from '@/utils'
 import s from '@/styles'
 import b from './BuyButton.module.css'
 
-export default function BuyButton({ action = null, buyButton = '' }) {
+export default function BuyButton({
+	action = null,
+	buyButton = '',
+	sell = false,
+}) {
 	return (
 		<button
 			className={cf(s.flex, s.flexCenter, s.g10, b.buyButton, buyButton)}
 			onClick={action?.()}
 		>
-			<span className={s.dInlineBlock}>Buy</span>
+			<span className={s.dInlineBlock}>{sell ? 'Sell' : 'Buy'}</span>
 		</button>
 	)
 }
