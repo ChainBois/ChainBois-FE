@@ -13,10 +13,12 @@ import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
 import { useEffect, useMemo, useState } from 'react'
+import NothingYet from '@/components/NothingYet'
 
 export default function Page() {
 	const { user, verifyAssets } = useAuth()
-	const { showLoading, hideLoading, showError, displayAlert } = useNotifications()
+	const { showLoading, hideLoading, showError, displayAlert } =
+		useNotifications()
 	const weapons = useMemo(
 		() => (Array.isArray(user?.weapons) ? user.weapons : []),
 		[user?.weapons],
@@ -66,29 +68,44 @@ export default function Page() {
 				tag={'Your Weapons'}
 				cusClass={cf(p.container)}
 			>
-				<ScrollMenu />
-				<MaxWidth
-					maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
-				>
-					<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
-						<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
-							{visibleWeapons.map((weapon, i) => (
-								<InventoryCard
-									key={`weapon-${weapon?.tokenId ?? i}`}
-									pseudoIndex={i}
-									weapon={weapon}
-								/>
-							))}
-							<PaginationLocal
-								array={visibleWeapons}
-								refArray={weapons}
-								step={9}
-								setArray={setVisibleWeapons}
-								full
+				{visibleWeapons?.length > 0 ? (
+					<>
+						<ScrollMenu />
+						<MaxWidth
+							maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
+						>
+							<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
+								<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
+									{visibleWeapons.map((weapon, i) => (
+										<InventoryCard
+											key={`weapon-${weapon?.tokenId ?? i}`}
+											pseudoIndex={i}
+											weapon={weapon}
+										/>
+									))}
+									<PaginationLocal
+										array={visibleWeapons}
+										refArray={weapons}
+										step={9}
+										setArray={setVisibleWeapons}
+										full
+									/>
+								</div>
+							</div>
+						</MaxWidth>
+					</>
+				) : (
+					<NothingYet
+						message={`You don’t have any NFT yet`}
+						cta={
+							<BorderedButton
+								tag={'Purchase'}
+								action={() => {}}
+								borderButtonText={h.heroActionText}
 							/>
-						</div>
-					</div>
-				</MaxWidth>
+						}
+					/>
+				)}
 			</Container>
 		</div>
 	)

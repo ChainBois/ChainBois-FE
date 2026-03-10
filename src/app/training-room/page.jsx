@@ -12,6 +12,7 @@ import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
 import { useEffect, useMemo, useState } from 'react'
+import NothingYet from '@/components/NothingYet'
 
 export default function Page() {
 	const { user, verifyAssets } = useAuth()
@@ -90,29 +91,42 @@ export default function Page() {
 				tag={'Your ChainBois Collection'}
 				cusClass={cf(p.container)}
 			>
-				<MaxWidth
-					maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
-				>
-					<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
-						<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
-							{visibleAssets.map((asset, i) => (
-								<TrainingCard
-									key={`asset-${asset?.nftTokenId ?? i}`}
-									pseudoIndex={i}
-									asset={asset}
-									onDetails={openAssetDetails}
+				{visibleAssets.length > 0 ? (
+					<MaxWidth
+						maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
+					>
+						<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
+							<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
+								{visibleAssets.map((asset, i) => (
+									<TrainingCard
+										key={`asset-${asset?.nftTokenId ?? i}`}
+										pseudoIndex={i}
+										asset={asset}
+										onDetails={openAssetDetails}
+									/>
+								))}
+								<PaginationLocal
+									array={visibleAssets}
+									refArray={assets}
+									step={9}
+									setArray={setVisibleAssets}
+									full
 								/>
-							))}
-							<PaginationLocal
-								array={visibleAssets}
-								refArray={assets}
-								step={9}
-								setArray={setVisibleAssets}
-								full
-							/>
+							</div>
 						</div>
-					</div>
-				</MaxWidth>
+					</MaxWidth>
+				) : (
+					<NothingYet
+						message={`You don’t have any NFT yet`}
+						cta={
+							<BorderedButton
+								tag={'Purchase'}
+								action={() => {}}
+								borderButtonText={h.heroActionText}
+							/>
+						}
+					/>
+				)}
 			</Container>
 		</div>
 	)

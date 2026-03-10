@@ -89,13 +89,13 @@ export const HomePageHero = () => {
 						borderButtonText={h.heroActionText}
 						icon={<MdPhoneIphone className={h.heroActionIcon} />}
 					/>
-					<BorderedButton
+					{/* <BorderedButton
 						tag={'View Tournaments'}
 						action={'/battleground'}
 						isLink={true}
 						borderButtonText={h.heroActionText}
 						icon={<HiOutlineTrophy className={h.heroActionIcon} />}
-					/>
+					/> */}
 				</>
 			}
 			isLanding={true}
