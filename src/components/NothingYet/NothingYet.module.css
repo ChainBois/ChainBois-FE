@@ -1,18 +1,28 @@
 .wrapper {
-    max-width: 645px;
+	max-width: 645px;
+	gap: 50px;
 }
 
 .message {
-    font-weight: 500 !important;
-    line-height: 120% !important;
+	font-weight: 500 !important;
+	line-height: 120% !important;
 }
 
 /* iPad Pro */
 @media only screen and (max-width: 1024px) {
 }
 /* Small device */
-@media only screen and (max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+	.wrapper {
+		max-width: 400px;
+		gap: 40px;
+	}
 }
 /* Tiny device */
 @media only screen and (max-width: 480px) {
+	.wrapper {
+		max-width: 300px;
+		gap: 30px;
+	}
 }
