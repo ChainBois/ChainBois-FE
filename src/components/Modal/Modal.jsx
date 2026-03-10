@@ -8,6 +8,7 @@ import {
 	CreationProgress,
 	Loading,
 	Error,
+	TrainingAssetDetails,
 } from '../Popups'
 import m from './Modal.module.css'
 
@@ -19,6 +20,7 @@ const Modal = () => {
 		creationProgress: <CreationProgress />,
 		error: <Error />,
 		alert: <Alert />,
+		trainingAssetDetails: <TrainingAssetDetails />,
 	}
 
 	return (

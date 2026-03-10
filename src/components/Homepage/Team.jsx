@@ -215,7 +215,7 @@ export default function Team() {
 						role={m.role}
 						img={m.img}
 						imgExpanded={m.imgExpanded}
-						social={'https://x.com/ea_aro1914'}
+						social={m.social}
 						expanded={expanded}
 						memberID={m.id}
 						isHighlighted={highlighted === m.id}

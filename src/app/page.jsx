@@ -3,10 +3,10 @@
 import {
 	Gameplay,
 	HomePageHero,
+	Leaderboard,
 	Roadmap,
 	Socials,
 	Team,
-	Tournament,
 } from '@/components/Homepage';
 import s from '@/styles';
 import { cf } from '@/utils';
@@ -17,7 +17,7 @@ export default function Page() {
 		<div className={cf(s.wMax, s.flex, s.flexStart, p.page)}>
 			<HomePageHero />
 			<Gameplay />
-			<Tournament />
+			<Leaderboard />
 			<Roadmap />
 			<Team />
 			<Socials />			

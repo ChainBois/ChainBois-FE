@@ -1,6 +1,6 @@
 'use client'
 
-import { cf, formatAsCurrency } from '@/utils'
+import { cf, getWeaponImageCandidates } from '@/utils'
 import s from '@/styles'
 import i from './InventoryCard.module.css'
 import Image from 'next/image'
@@ -9,13 +9,9 @@ import Inventory_2 from '@/assets/img/Inventory_2.png'
 import Inventory_3 from '@/assets/img/Inventory_3.png'
 import Inventory_4 from '@/assets/img/Inventory_4.png'
 import BuyButton from '../BuyButton'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-export default function InventoryCard({ pseudoIndex }) {
-	const currentStep = useMemo(() => {
-		return Math.floor((pseudoIndex + 1) / 2)
-	}, [pseudoIndex])
-
+export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
 	const showcase = useMemo(() => {
 		const index = (pseudoIndex + 1) % 3
 		switch (index) {
@@ -30,25 +26,58 @@ export default function InventoryCard({ pseudoIndex }) {
 		}
 	}, [pseudoIndex])
 
+	const imageCandidates = useMemo(
+		() =>
+			getWeaponImageCandidates({
+				tokenId: weapon?.tokenId,
+				name: weapon?.name,
+			}),
+		[weapon?.name, weapon?.tokenId],
+	)
+
+	const [imageIndex, setImageIndex] = useState(0)
+
+	useEffect(() => {
+		setImageIndex(0)
+	}, [weapon?.name, weapon?.tokenId])
+
+	const imageSrc = imageCandidates[imageIndex] ?? showcase
+
 	const title = useMemo(() => {
-		return 'AR-47 “Tempest”'
-	}, [pseudoIndex])
+		return weapon?.name || 'Weapon NFT'
+	}, [weapon?.name])
+
+	const description = useMemo(() => {
+		if (Number.isInteger(weapon?.tokenId)) {
+			return `Weapon token #${weapon.tokenId}`
+		}
+		return 'Weapon NFT linked to your wallet.'
+	}, [weapon?.tokenId])
+
+	const handleImageError = () => {
+		if (imageIndex < imageCandidates.length - 1) {
+			setImageIndex((current) => current + 1)
+		}
+	}
 
 	return (
 		<section className={cf(s.flex, s.flexCenter, i.inventoryCard)}>
 			<div className={cf(s.wMax, s.flex, s.flexCenter, i.cardWrapper)}>
 				<figure className={cf(s.wMax, s.flex, s.flexCenter, i.showcase)}>
 					<Image
-						src={showcase}
-						alt={'Item showcase'}
+						src={imageSrc}
+						alt={title}
+						fill
+						unoptimized={typeof imageSrc === 'string'}
 						className={cf(s.wMax, s.hMax, s.flex, s.flexCenter, i.img)}
+						onError={handleImageError}
 					/>
 				</figure>
 				<div className={cf(s.wMax, s.flex, s.flexCenter, i.content)}>
 					<header className={cf(s.wMax, s.flex, s.flexCenter, i.header)}>
 						<h3 className={cf(s.wMax, s.tLeft, i.title)}>{title}</h3>
 						<p className={cf(s.wMax, s.tLeft, i.description)}>
-							Balanced rifle with storm-burst recoil pattern.
+							{description}
 						</p>
 					</header>
 					<footer className={cf(s.wMax, s.flex, s.flexCenter, i.footer)}>

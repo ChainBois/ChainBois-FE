@@ -67,6 +67,7 @@ const NotificationSystemContextProvider = ({ children }) => {
 		actionTag: 'Retry',
 		action: null,
 	})
+	const [trainingAssetInfo, setTrainingAssetInfo] = useState(null)
 
 	const [forCreation, setForCreation] = useState(true)
 	const [complete, setComplete] = useState(false)
@@ -79,41 +80,44 @@ const NotificationSystemContextProvider = ({ children }) => {
 	 * @param {Object} neg An object with two properties-tag and value; used to express the user's negative response
 	 * @param {Object} pos An object with two properties-tag and value; used to express the user's positive response
 	 */
-	const showAlert = async ({
-		title = 'Hey',
-		message = `You've got a message`,
-		forConfirmation = false,
-		neg = {},
-		pos = {},
-	}) => {
-		setAlertInfo(() => ({
-			title,
-			message,
-			forConfirmation,
-			neg:
-				Object.keys(neg).length === 2
-					? neg
-					: {
-							tag: neg?.tag ?? 'Cancel',
-							value: neg?.value ?? null,
-						},
-			pos:
-				Object.keys(pos).length === 2
-					? pos
-					: {
-							tag: pos?.tag ?? 'Continue',
-							value: pos?.value ?? true,
-						},
-		}))
-		setCanCloseModal(() => false)
-		setModal(() => 'alert')
-		setShowModal(() => true)
-		return await new Promise((resolve, reject) => {
-			setPromiseOfConfirmation({ resolve, reject })
-		})
-			.then((e) => e)
-			.catch((e) => e)
-	}
+	const showAlert = useCallback(
+		async ({
+			title = 'Hey',
+			message = `You've got a message`,
+			forConfirmation = false,
+			neg = {},
+			pos = {},
+		}) => {
+			setAlertInfo(() => ({
+				title,
+				message,
+				forConfirmation,
+				neg:
+					Object.keys(neg).length === 2
+						? neg
+						: {
+								tag: neg?.tag ?? 'Cancel',
+								value: neg?.value ?? null,
+							},
+				pos:
+					Object.keys(pos).length === 2
+						? pos
+						: {
+								tag: pos?.tag ?? 'Continue',
+								value: pos?.value ?? true,
+							},
+			}))
+			setCanCloseModal(() => false)
+			setModal(() => 'alert')
+			setShowModal(() => true)
+			return await new Promise((resolve, reject) => {
+				setPromiseOfConfirmation({ resolve, reject })
+			})
+				.then((e) => e)
+				.catch((e) => e)
+		},
+		[],
+	)
 
 	const showLoading = useCallback(
 		({
@@ -256,6 +260,8 @@ const NotificationSystemContextProvider = ({ children }) => {
 			setLoadingInfo,
 			errorInfo,
 			setErrorInfo,
+			trainingAssetInfo,
+			setTrainingAssetInfo,
 			showLoading,
 			showCreationProgress,
 			hideLoading,
@@ -273,14 +279,18 @@ const NotificationSystemContextProvider = ({ children }) => {
 			canCloseModal,
 			canCloseModalParent,
 			stage1,
+			setStage1,
 			stage2,
+			setStage2,
 			stage3,
+			setStage3,
 			alertInfo,
 			promiseOfConfirmation,
 			forCreation,
 			complete,
 			loadingInfo,
 			errorInfo,
+			trainingAssetInfo,
 			showLoading,
 			showCreationProgress,
 			hideLoading,

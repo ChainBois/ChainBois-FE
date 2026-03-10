@@ -61,22 +61,22 @@ export default function Gameplay() {
 			{
 				title: 'SIGN UP',
 				number: '01',
-				text: `Create an account and we'll give you a free access. Join and let's $Battle`,
+				text: `Create your gamer account, connect your wallet, and lock in your profile. Once you're linked, you're ready to compete.`,
 			},
 			{
 				title: 'Join Tournament',
 				number: '02',
-				text: `Once you've joined, follow the prompts to select your character and equip them with some badass weapons.`,
+				text: `Enter the battleground, queue into tournaments, and climb the ranks. Your performance feeds the leaderboard.`,
 			},
 			{
 				title: 'Earn Tokens',
 				number: '03',
-				text: `When you finish the game, you are rewarded with $Battle tokens that can be used in the marketplace.`,
+				text: `Score climbs over time. Points accumulate alongside gameplay and will power the economy as future phases roll out.`,
 			},
 			{
 				title: 'Level Up',
 				number: '04',
-				text: `Earn enough XP to level up and unlock new adventures. You can always pick up where you left off. `,
+				text: `Level your ChainBoi, refresh your on-chain assets when needed, and set your active avatar for the dashboard.`,
 			},
 		],
 		[]
@@ -130,8 +130,9 @@ export default function Gameplay() {
 				/>
 				<div className={cf(g.gameplayButtonContainer)}>
 					<BorderedButton
-						tag={'Watch Gameplay'}
-						action={() => {}}
+						tag={'Enter Battleground'}
+						action={'/battleground'}
+						isLink={true}
 						icon={<BsCaretRightFill />}
 						borderButtonContent={g.gameplayButtonContent}
 						borderButtonText={g.gameplayButtonText}

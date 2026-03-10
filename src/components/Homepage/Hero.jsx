@@ -4,6 +4,7 @@ import s from '@/styles'
 import { cf } from '@/utils'
 import { DESKTOP_BUILD_URL, MOBILE_BUILD_URL } from '@/constants'
 import { MdDesktopWindows, MdPhoneIphone } from 'react-icons/md'
+import { HiOutlineTrophy } from 'react-icons/hi2'
 import ConnectWalletButton from '../ConnectWalletButton'
 import BorderedButton from './../BorderedButton'
 import h from './Hero.module.css'
@@ -87,6 +88,13 @@ export const HomePageHero = () => {
 						isLink={true}
 						borderButtonText={h.heroActionText}
 						icon={<MdPhoneIphone className={h.heroActionIcon} />}
+					/>
+					<BorderedButton
+						tag={'View Tournaments'}
+						action={'/battleground'}
+						isLink={true}
+						borderButtonText={h.heroActionText}
+						icon={<HiOutlineTrophy className={h.heroActionIcon} />}
 					/>
 				</>
 			}

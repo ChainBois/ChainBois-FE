@@ -18,6 +18,11 @@ export { formatAttributes } from './formatAttributes'
 export { formatTimestamp } from './formatTimestamp'
 export { getDuration } from './getDuration'
 export { handleIPFSMedia } from './handleIPFSMedia'
+export {
+	getChainBoiImageCandidates,
+	getChainBoiImageUrl,
+	getWeaponImageCandidates,
+} from './ipfsAssetUrls'
 export { isNaN } from './isNaN'
 export { msToTime } from './msToTime'
 export { isFocused } from './navUtils'

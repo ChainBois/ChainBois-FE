@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Turborepo
 .turbo
+
+*.docx
+docs/

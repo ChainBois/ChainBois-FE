@@ -1,5 +1,6 @@
 export { default as Hero, HomePageHero } from "./Hero";
 export { default as Gameplay } from './Gameplay'
+export { default as Leaderboard } from './Leaderboard'
 export { default as Tournament } from './Tournament'
 export { default as Roadmap } from './Roadmap'
 export { default as Team } from './Team'

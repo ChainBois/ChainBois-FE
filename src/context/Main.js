@@ -6,13 +6,11 @@ import {
 	useNotifications,
 	usePlatformDataFetcher,
 	useAuth,
-	useDebouncedEffect,
 } from '@/hooks'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	useActiveAccount,
 	useActiveWalletConnectionStatus,
-	useActiveWallet,
 } from 'thirdweb/react'
 import { useSession } from 'next-auth/react'
 
@@ -30,14 +28,10 @@ const MainContextProvider = ({ children }) => {
 	const { data: session, status } = useSession()
 
 	const {
-		makeRequest,
 		user,
 		setUser,
-		requestingLogin,
-		loginRequest,
-		refresh,
 		login,
-		logout,
+		fetchCurrentUser,
 	} = useAuth()
 
 	const {
@@ -74,18 +68,19 @@ const MainContextProvider = ({ children }) => {
 		hideError,
 	} = useNotifications()
 
-	const showAlert = ({ ...opts }) =>
-		displayAlert({
-			useShowAlert: true,
-			...opts,
-		})
+	const showAlert = useCallback(
+		({ ...opts }) =>
+			displayAlert({
+				useShowAlert: true,
+				...opts,
+			}),
+		[displayAlert],
+	)
 
 	const activeAccount = useActiveAccount()
-	const activeWallet = useActiveWallet()
 	const isConnected = useActiveWalletConnectionStatus() === 'connected'
 
 	const [platformDataIsLoading, setPlatformDataIsLoading] = useState(false)
-	const [tempAddress, setTempAddress] = useState('')
 	const [triggerCounter, setTriggerCounter] = useState(0)
 
 	const updateTriggerCounter = () => setTriggerCounter((x) => x + 1)
@@ -98,14 +93,6 @@ const MainContextProvider = ({ children }) => {
 		updateTriggerCounter,
 	})
 
-	const checkIfUserExists = async (email) => {
-		const res = await request({
-			path: `auth/check-user/${email}`,
-			method: 'post',
-		})
-		setUserExists(res?.data?.data?.exists)
-	}
-
 	const ContextValue = useMemo(
 		() => ({
 			dimensions,
@@ -115,17 +102,22 @@ const MainContextProvider = ({ children }) => {
 		[dimensions, matches, retrievePlatformData],
 	)
 
+	const sessionAccessToken = session?.user?.accessToken ?? null
+
 	useEffect(() => {
 		const revalidateUserOnStatusChange = async () => {
 			if (status === 'authenticated') {
-				const {
-					user: { accessToken, ...user },
-				} = session
-				if (accessToken && (activeAccount?.address ?? '')) {
+				if (sessionAccessToken && (activeAccount?.address ?? '')) {
 					await login({
 						address: activeAccount?.address ?? '',
-						accessToken,
+						accessToken: sessionAccessToken,
 						showLoading,
+					})
+				} else if (sessionAccessToken) {
+					await fetchCurrentUser({
+						accessToken: sessionAccessToken,
+						silent: true,
+						showError,
 					})
 				} else {
 					showAlert({
@@ -139,67 +131,21 @@ const MainContextProvider = ({ children }) => {
 			// await fetch('/api/auth/session')
 		}
 		revalidateUserOnStatusChange()
-	}, [status, session, activeAccount?.address, login, showAlert, setUser])
-
-	const hasLoginResolve = useMemo(
-		() => !!loginRequest?.resolve,
-		[loginRequest?.resolve],
-	)
-	const hasLoginReject = useMemo(
-		() => !!loginRequest?.reject,
-		[loginRequest?.reject],
-	)
-
-	useDebouncedEffect(
-		(deps) => {
-			const [
-				activeAddress,
-				isActive,
-				isConnected,
-				requestingLogin,
-				hasResolve,
-				hasReject,
-				tempAddress,
-			] = deps
-
-			const handleLoginEffect = async () => {
-				const walletIsConnectedAndActive = isActive && isConnected
-				if (activeAddress && walletIsConnectedAndActive) {
-					if (tempAddress !== activeAddress || requestingLogin) {
-						// const res = await checkIfUserExists(
-						// 	async () => await login({ address: activeAddress, accessToken: undefined }), // TODO: showLoading?
-						// )
-						// if (res) {
-						// 	if (requestingLogin && hasResolve && loginRequest?.resolve) {
-						// 		loginRequest.resolve(res) // Current closure reference
-						// 	}
-						// 	setTempAddress(() => activeAddress)
-						// } else {
-						// 	if (requestingLogin && hasReject && loginRequest?.reject) {
-						// 		loginRequest.reject() // Current closure reference
-						// 	}
-						// 	logout(false)
-						// }
-						logout(false)
-					}
-				}
-			}
-			handleLoginEffect()
-		},
-		[
-			activeAccount?.address,
-			!!activeWallet,
-			isConnected,
-			requestingLogin,
-			hasLoginResolve,
-			hasLoginReject,
-			tempAddress,
-		],
-	)
+	}, [
+		activeAccount?.address,
+		fetchCurrentUser,
+		login,
+		sessionAccessToken,
+		showAlert,
+		showError,
+		showLoading,
+		status,
+		setUser,
+	])
 
 	useEffect(() => {
 		retrievePlatformData()
-	}, [])
+	}, [retrievePlatformData])
 
 	return (
 		<MainContext.Provider value={ContextValue}>{children}</MainContext.Provider>

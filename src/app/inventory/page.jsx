@@ -7,16 +7,26 @@ import InventoryCard from '@/components/InventoryCard'
 import MaxWidth from '@/components/MaxWidth'
 import { PaginationLocal } from '@/components/Pagination'
 import ScrollMenu from '@/components/ScrollMenu'
+import { useAuth, useNotifications } from '@/hooks'
 import s from '@/styles'
 import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
-
-const cards = [
-	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-]
+import { useEffect, useMemo, useState } from 'react'
 
 export default function Page() {
+	const { user, verifyAssets } = useAuth()
+	const { showLoading, hideLoading, showError, displayAlert } = useNotifications()
+	const weapons = useMemo(
+		() => (Array.isArray(user?.weapons) ? user.weapons : []),
+		[user?.weapons],
+	)
+	const [visibleWeapons, setVisibleWeapons] = useState([])
+
+	useEffect(() => {
+		setVisibleWeapons(weapons.slice(0, 9))
+	}, [weapons])
+
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
 			<Hero
@@ -38,8 +48,15 @@ export default function Page() {
 				links={
 					<>
 						<BorderedButton
-							tag={'Convert'}
-							action={() => {}}
+							tag={'Refresh Assets'}
+							action={() =>
+								verifyAssets({
+									showLoading,
+									hideLoading,
+									showError,
+									displayAlert,
+								})
+							}
 							borderButtonText={h.heroActionText}
 						/>
 					</>
@@ -55,17 +72,18 @@ export default function Page() {
 				>
 					<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
 						<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
-							{cards.map((card, i) => (
+							{visibleWeapons.map((weapon, i) => (
 								<InventoryCard
-									key={`card-${i}`}
+									key={`weapon-${weapon?.tokenId ?? i}`}
 									pseudoIndex={i}
+									weapon={weapon}
 								/>
 							))}
 							<PaginationLocal
-								array={[]}
-								refArray={cards}
+								array={visibleWeapons}
+								refArray={weapons}
 								step={9}
-								setArray={() => {}}
+								setArray={setVisibleWeapons}
 								full
 							/>
 						</div>

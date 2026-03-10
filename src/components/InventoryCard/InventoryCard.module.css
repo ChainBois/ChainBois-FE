@@ -29,6 +29,7 @@
 	aspect-ratio: 323 / 255;
 	height: auto;
 	background: url(../../assets/img/bgBox.png) #000000;
+	position: relative;
 }
 
 .img {

@@ -1,0 +1,99 @@
+.popup {
+	width: min(100%, 760px);
+}
+
+.content {
+	align-items: stretch;
+	border-color: #5b1d20;
+	background:
+		linear-gradient(180deg, rgba(32, 10, 12, 0.98) 0%, rgba(10, 10, 10, 0.98) 100%),
+		#0a0a0a;
+}
+
+.popupTitleBox {
+	align-items: flex-start;
+}
+
+.titleGroup {
+	gap: 4px;
+}
+
+.popupTitle {
+	color: #fff;
+}
+
+.popupSubtitle {
+	color: #ff8a90;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.assetBody {
+	gap: 20px;
+	align-items: stretch;
+}
+
+.assetImageFrame {
+	width: min(100%, 280px);
+	padding: 8px;
+	border: 1px solid #5b1d20;
+	background: linear-gradient(180deg, #18090b 0%, #070707 100%);
+}
+
+.assetImageInner {
+	position: relative;
+	aspect-ratio: 1 / 1;
+	background: #050505;
+}
+
+.assetImage {
+	object-fit: cover;
+	object-position: center;
+}
+
+.assetMeta {
+	flex: 1;
+	gap: 14px;
+}
+
+.metaBlock {
+	gap: 4px;
+	padding: 12px 14px;
+	border: 1px solid #2f2f2f;
+	background: rgba(255, 255, 255, 0.02);
+}
+
+.metaLabel {
+	color: #8f8f8f;
+	font-family: var(--font-space-g);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.metaValue {
+	color: #fff;
+	font-family: var(--font-space-g);
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 140%;
+}
+
+.popupActionButtonBox {
+	gap: 12px;
+}
+
+.primaryButton {
+	filter: saturate(1.1);
+}
+
+@media only screen and (max-width: 640px) {
+	.assetBody {
+		flex-direction: column;
+	}
+
+	.assetImageFrame {
+		width: 100%;
+	}
+}

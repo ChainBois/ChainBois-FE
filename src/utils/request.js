@@ -24,6 +24,37 @@ axiosCall.interceptors.request.use(async (config) => {
 	return config
 })
 
+axiosCall.interceptors.response.use(
+	(response) => response,
+	async (error) => {
+		const status = error.response?.status
+		const message =
+			error.response?.data?.message ||
+			error.response?.data?.error ||
+			'Something went wrong'
+		switch (status) {
+			case 401:
+				try {
+					const user = auth.currentUser
+					if (user) {
+						await user.getIdToken(true) // force refresh
+						const config = error.config
+						config.headers.Authorization = `Bearer ${await user.getIdToken()}`
+						return api(config) // retry original request
+					}
+				} catch {
+					await auth.signOut()
+					window.location.href = '/request-access'
+				}
+				break
+			case 503:
+				console.warn('Service unavailable:', message)
+				break
+		}
+		return Promise.reject(error)
+	},
+)
+
 /**
  * Makes an HTTP request using axios with configurable options
  * @param {Object} options - The request configuration options

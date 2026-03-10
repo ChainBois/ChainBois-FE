@@ -6,16 +6,53 @@ import Container from '@/components/Homepage/Container'
 import MaxWidth from '@/components/MaxWidth'
 import { PaginationLocal } from '@/components/Pagination'
 import TrainingCard from '@/components/TrainingCard'
+import { useAuth, useNotifications } from '@/hooks'
 import s from '@/styles'
 import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
-
-const cards = [
-	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-]
+import { useEffect, useMemo, useState } from 'react'
 
 export default function Page() {
+	const { user, verifyAssets } = useAuth()
+	const {
+		showLoading,
+		hideLoading,
+		showError,
+		displayAlert,
+		setModal,
+		setShowModal,
+		setCanCloseModal,
+		setTrainingAssetInfo,
+	} = useNotifications()
+	const assets = useMemo(() => {
+		if (user?.assets?.hasNft && Number.isInteger(user?.assets?.nftTokenId)) {
+			return [user.assets]
+		}
+		if (user?.hasNft && Number.isInteger(user?.nftTokenId)) {
+			return [
+				{
+					hasNft: user.hasNft,
+					nftTokenId: user.nftTokenId,
+					level: user.level,
+				},
+			]
+		}
+		return []
+	}, [user?.assets, user?.hasNft, user?.level, user?.nftTokenId])
+	const [visibleAssets, setVisibleAssets] = useState([])
+
+	useEffect(() => {
+		setVisibleAssets(assets.slice(0, 9))
+	}, [assets])
+
+	const openAssetDetails = (asset) => {
+		setTrainingAssetInfo(asset)
+		setCanCloseModal(true)
+		setModal('trainingAssetDetails')
+		setShowModal(true)
+	}
+
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
 			<Hero
@@ -35,8 +72,15 @@ export default function Page() {
 				links={
 					<>
 						<BorderedButton
-							tag={'Convert'}
-							action={() => {}}
+							tag={'Refresh Assets'}
+							action={() =>
+								verifyAssets({
+									showLoading,
+									hideLoading,
+									showError,
+									displayAlert,
+								})
+							}
 							borderButtonText={h.heroActionText}
 						/>
 					</>
@@ -51,17 +95,19 @@ export default function Page() {
 				>
 					<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
 						<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
-							{cards.map((card, i) => (
+							{visibleAssets.map((asset, i) => (
 								<TrainingCard
-									key={`card-${i}`}
+									key={`asset-${asset?.nftTokenId ?? i}`}
 									pseudoIndex={i}
+									asset={asset}
+									onDetails={openAssetDetails}
 								/>
 							))}
 							<PaginationLocal
-								array={[]}
-								refArray={cards}
+								array={visibleAssets}
+								refArray={assets}
 								step={9}
-								setArray={() => {}}
+								setArray={setVisibleAssets}
 								full
 							/>
 						</div>

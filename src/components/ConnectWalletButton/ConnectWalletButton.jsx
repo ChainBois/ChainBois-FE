@@ -1,6 +1,7 @@
 'use client'
 
 import { thirdwebClient } from '@/lib'
+import { thirdwebAppMetadata, thirdwebWallets } from '@/lib/thirdwebWallets'
 import s from '@/styles'
 import { cf } from '@/utils'
 import { avalancheFuji } from 'thirdweb/chains'
@@ -10,18 +11,8 @@ import {
 	useActiveAccount,
 	useWalletBalance,
 } from 'thirdweb/react'
-import { createWallet } from 'thirdweb/wallets'
 import c from './ConnectWalletButton.module.css'
 import { BATTLE_TOKEN } from '@/constants'
-
-const wallets = [
-	// inAppWallet(), // email/social login (optional)
-	createWallet('io.metamask'),
-	createWallet('app.keplr'),
-	createWallet('app.phantom'),
-	createWallet('com.coinbase.wallet'),
-	createWallet('com.trustwallet.app'),
-]
 
 const StandIn = ({ center = false }) => {
 	return (
@@ -90,8 +81,9 @@ export default function ConnectWalletButton({
 	return true ? (
 		<ConnectButton
 			client={thirdwebClient}
-			wallets={wallets}
+			wallets={thirdwebWallets}
 			chain={avalancheFuji} // explicit, in addition to ChainProvider default
+			appMetadata={thirdwebAppMetadata}
 			theme={darkTheme({
 				colors: {},
 			})}

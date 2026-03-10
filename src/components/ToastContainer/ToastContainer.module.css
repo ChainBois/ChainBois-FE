@@ -9,6 +9,8 @@
 	animation: slideIn 0.3s ease-out;
 	cursor: pointer;
 	transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+	/* Theme-aligned defaults (can be overridden per toast type) */
+	--toast-accent: var(--chain-red);
 }
 
 .toastWrapper:hover {
@@ -21,9 +23,11 @@
 	gap: 12px;
 	padding: 16px;
 	border-radius: 8px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	backdrop-filter: blur(10px);
-	-webkit-backdrop-filter: blur(10px);
+	background: rgba(10, 10, 10, 0.96);
+	color: rgba(255, 255, 255, 0.92);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-left: 4px solid var(--toast-accent);
+	box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
 	min-width: 300px;
 	max-width: 500px;
 	font-family: var(
@@ -38,27 +42,19 @@
 
 /* Toast Types */
 .toast-success .toastContent {
-	background-color: rgb(255, 238, 14, 0.95);
-	color: black;
-	border: 1px solid rgba(255, 239, 14, 0.3);
+	--toast-accent: #70c16c;
 }
 
 .toast-error .toastContent {
-	background-color: rgb(255, 72, 0, 0.95);
-	color: rgb(0, 0, 0);
-	border: 1px solid rgb(255, 72, 0, 0.3);
+	--toast-accent: var(--chain-red);
 }
 
 .toast-warning .toastContent {
-	background-color:rgb(26, 28, 30, 0.95);
-	color: rgba(255, 72, 0);
-	border: 1px solid rgb(255, 72, 0, 0.3);
+	--toast-accent: #ffd700;
 }
 
 .toast-info .toastContent {
-	background-color: rgb(255, 255, 255, 0.95);
-	color: var(--not-black);
-	border: 1px solid rgb(255, 255, 255, 0.3);
+	--toast-accent: rgba(255, 255, 255, 0.55);
 }
 
 /* Icons */
@@ -72,6 +68,7 @@
 .toastIcon {
 	width: 20px;
 	height: 20px;
+	color: var(--toast-accent);
 }
 
 /* Message */
@@ -93,12 +90,14 @@
 	align-items: center;
 	justify-content: center;
 	opacity: 0.8;
-	transition: opacity 0.2s;
+	border-radius: 6px;
+	transition: opacity 0.2s, background-color 0.2s;
 	flex-shrink: 0;
 }
 
 .toastCloseButton:hover {
 	opacity: 1;
+	background-color: rgba(255, 255, 255, 0.08);
 }
 
 .toastCloseIcon {
