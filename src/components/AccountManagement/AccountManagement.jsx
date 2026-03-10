@@ -214,7 +214,7 @@ export default function AccountManagement() {
 				} else if (res.url) {
 					if (
 						res.url.slice(res.url.lastIndexOf('/')) ===
-						`/?success=true${relink === 'true' ? '&relink=true' : ''}`
+						next ?? `/`
 					) {
 						if (relink === 'true') {
 							router.replace(pathname)
