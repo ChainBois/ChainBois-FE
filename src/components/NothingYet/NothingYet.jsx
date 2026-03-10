@@ -3,7 +3,7 @@
 import { cf } from '@/utils'
 import s from '@/styles'
 import n from './NothingYet.module.css'
-import h from './Homepage/Hero.module.css'
+import h from '../Homepage/Hero.module.css'
 
 export default function NothingYet({ message, cta }) {
 	return (

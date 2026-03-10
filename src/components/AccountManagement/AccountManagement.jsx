@@ -36,7 +36,7 @@ export default function AccountManagement() {
 	const { user, setUser } = useAuth()
 	const { status, data: session } = useSession()
 	const activeAccount = useActiveAccount()
-	const { relink, useSimulation } = useQueryParams()
+	const { relink, useSimulation, next } = useQueryParams()
 	const [loggedIn, setLoggedIn] = useState(null)
 	const [requestBody, setRequestBody] = useState({})
 	const [userMediaData, setUserMediaData] = useState({})
@@ -195,7 +195,7 @@ export default function AccountManagement() {
 				...req,
 				address: activeAccount?.address ?? '',
 				redirect: false,
-				callbackUrl: `/?success=true${relink === 'true' ? '&relink=true' : ''}`,
+				callbackUrl: next ?? `/`,
 			})
 			console.log(res)
 			// await fetch('/api/auth/session')
@@ -249,7 +249,7 @@ export default function AccountManagement() {
 	const signout = async () => {
 		showLoading()
 		const x = await signOut({
-			callbackUrl: '/',
+			callbackUrl: '/request-access',
 			redirect: false,
 		})
 		const session = await getSession()

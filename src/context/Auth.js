@@ -410,7 +410,7 @@ const AuthContextProvider = ({ children }) => {
 				type: 'error',
 			})
 		const x = await signOut({
-			callbackUrl: '/',
+			callbackUrl: '/request-access',
 			redirect: false,
 		})
 		const session = await getSession()
