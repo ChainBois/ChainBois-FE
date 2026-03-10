@@ -42,7 +42,8 @@ export default function AccountManagement() {
 	const [userMediaData, setUserMediaData] = useState({})
 	const [userExists, setUserExists] = useState(null)
 
-	const next = searchParams.get('next')
+ const pathname = usePathname()
+	const next = searchParams.get('next') ?? pathname
 	const relink = searchParams.get('relink')
 
 	const activeWalletConnectionStatus = useActiveWalletConnectionStatus()
@@ -81,7 +82,7 @@ export default function AccountManagement() {
 	)
 
 	const router = useRouter()
-	const pathname = usePathname()
+	
 
 	/**
 	 * Handles changes to input fields and updates request body accordingly.
