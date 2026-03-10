@@ -95,16 +95,20 @@ export default function Page() {
 						</MaxWidth>
 					</>
 				) : (
-					<NothingYet
-						message={`You don’t have any NFT yet`}
-						cta={
-							<BorderedButton
-								tag={'Purchase'}
-								action={() => {}}
-								borderButtonText={h.heroActionText}
-							/>
-						}
-					/>
+					<MaxWidth
+						maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
+					>
+						<NothingYet
+							message={`You don’t have any NFT yet`}
+							cta={
+								<BorderedButton
+									tag={'Purchase'}
+									action={() => {}}
+									borderButtonText={h.heroActionText}
+								/>
+							}
+						/>
+					</MaxWidth>
 				)}
 			</Container>
 		</div>

@@ -91,10 +91,10 @@ export default function Page() {
 				tag={'Your ChainBois Collection'}
 				cusClass={cf(p.container)}
 			>
-				{visibleAssets.length > 0 ? (
-					<MaxWidth
-						maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
-					>
+				<MaxWidth
+					maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
+				>
+					{visibleAssets.length > 0 ? (
 						<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
 							<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
 								{visibleAssets.map((asset, i) => (
@@ -114,19 +114,19 @@ export default function Page() {
 								/>
 							</div>
 						</div>
-					</MaxWidth>
-				) : (
-					<NothingYet
-						message={`You don’t have any NFT yet`}
-						cta={
-							<BorderedButton
-								tag={'Purchase'}
-								action={() => {}}
-								borderButtonText={h.heroActionText}
-							/>
-						}
-					/>
-				)}
+					) : (
+						<NothingYet
+							message={`You don’t have any NFT yet`}
+							cta={
+								<BorderedButton
+									tag={'Purchase'}
+									action={() => {}}
+									borderButtonText={h.heroActionText}
+								/>
+							}
+						/>
+					)}
+				</MaxWidth>
 			</Container>
 		</div>
 	)

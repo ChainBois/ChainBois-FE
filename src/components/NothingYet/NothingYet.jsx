@@ -11,13 +11,13 @@ export default function NothingYet({ message, cta }) {
 			className={cf(
 				s.flex,
 				s.flex_dColumn,
-				s.flexBottom,
+				s.flexTop,
 				s.tCenter,
 				s.pX10,
 				s.pY20,
 			)}
 		>
-			<div className={cf(s.flex, s.flex_dColumn, s.flexBottom, n.wrapper)}>
+			<div className={cf(s.flex, s.flex_dColumn, s.flexTop, n.wrapper)}>
 				<p className={cf(s.wMax, s.tLeft, h.heroTitle, n.message)}>{message ?? 'Nothing Yet'}</p>
 				{cta}
 			</div>
