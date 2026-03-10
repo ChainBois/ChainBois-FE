@@ -40,6 +40,7 @@ export const authProviders = {
 						return {
 							...response?.data?.data.user,
 							assets: response?.data?.data?.assets ?? [],
+							weapons: response?.data?.data?.weapons ?? [],
 							accessToken: userCredential.user.accessToken,
 						}
 					}

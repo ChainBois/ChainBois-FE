@@ -4,7 +4,7 @@ import { getSession, signIn, signOut, useSession } from 'next-auth/react'
 import s from '@/styles'
 import a from './AccountManagement.module.css'
 import { useAuth, useDebouncedEffect, useQueryParams } from '@/hooks'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {
 	useActiveAccount,
 	useActiveWalletConnectionStatus,
@@ -36,11 +36,14 @@ export default function AccountManagement() {
 	const { user, setUser } = useAuth()
 	const { status, data: session } = useSession()
 	const activeAccount = useActiveAccount()
-	const { relink, useSimulation, next } = useQueryParams()
+	const searchParams = useSearchParams()
 	const [loggedIn, setLoggedIn] = useState(null)
 	const [requestBody, setRequestBody] = useState({})
 	const [userMediaData, setUserMediaData] = useState({})
 	const [userExists, setUserExists] = useState(null)
+
+	const next = searchParams.get('next')
+	const relink = searchParams.get('relink')
 
 	const activeWalletConnectionStatus = useActiveWalletConnectionStatus()
 	const isActive = useMemo(
@@ -52,7 +55,7 @@ export default function AccountManagement() {
 		const res = await request({
 			path: `auth/check-user/${email}`,
 		})
-		console.log('check user', res)
+		// console.log('check user', res)
 		setUserExists(res?.data?.data?.exists)
 	}
 
@@ -69,8 +72,8 @@ export default function AccountManagement() {
 	useDebouncedEffect(
 		(deps) => {
 			const [email] = deps
-			console.log('email', email)
-			console.log('email check', validateEmail(email))
+			// console.log('email', email)
+			// console.log('email check', validateEmail(email))
 			if (email && validateEmail(email)) checkIfUserExists(email)
 		},
 		[requestBody?.email],
@@ -80,6 +83,10 @@ export default function AccountManagement() {
 	const router = useRouter()
 	const pathname = usePathname()
 
+	/**
+	 * Handles changes to input fields and updates request body accordingly.
+	 * @param {Object} e - Event object.
+	 */
 	const handler = (e) => {
 		const name = e.target.name
 		const value = e.target.value
@@ -125,114 +132,60 @@ export default function AccountManagement() {
 
 		let res = undefined
 
-		if (useSimulation === 'true') {
-			const simulatedRes = await request({
-				path: `simulate`,
+		if (userExists === false) {
+			const signUpRes = await request({
+				path: `auth/create-user`,
 				method: 'post',
 				body: {
 					email: String(req.email).trim(),
+					password: req.password,
+					username: String(req.username).trim(),
 				},
 			})
-			if (simulatedRes.success) {
-				res = await login({
-					address: activeAccount?.address,
-					accessToken: simulatedRes?.data?.data?.credentials?.idToken ?? '',
+			if (!signUpRes.success) {
+				showError({
+					title: 'Dear Gamer',
+					message: `We're unable to create your gamer account. Please try again later.`,
 				})
-				console.log({ res })
-				if (
-					!(
-						res?.error?.statusCode === 401 ||
-						res?.status === 401 ||
-						res?.message === 'Token has expired'
-					)
-				) {
+				return
+				// res = await signIn('credentials', {
+				// 	...req,
+				// 	address: activeAccount?.address ?? '',
+				// 	redirect: false,
+				// 	callbackUrl: `/?success=true${relink === 'true' ? '&relink=true' : ''}`,
+				// })
+			}
+		}
+		res = await signIn('credentials', {
+			...req,
+			address: activeAccount?.address ?? '',
+			redirect: false,
+			callbackUrl: next ?? `/`,
+		})
+		// await fetch('/api/auth/session')
+		if (res.error) {
+			showError({
+				title: 'Dear Gamer',
+				message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
+			})
+		} else {
+			const session = await getSession()
+			if (!res.ok) {
+				showError({
+					title: 'Dear Gamer',
+					message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
+				})
+			} else if (res.url) {
+				if (res.url.slice(res.url.lastIndexOf('/')) === next ?? `/`) {
 					if (relink === 'true') {
-						router.replace(pathname)
 						showAlert({
 							title: 'Linked',
 							message: 'Re-Link was successful.',
 						})
 					} else {
-						router.replace('/')
 						showAlert({
 							title: 'Linked',
 							message: 'Link was successful.',
-						})
-					}
-				}
-			} else {
-				showError({
-					title: 'Dear Gamer',
-					message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
-				})
-			}
-		} else {
-			if (userExists === false) {
-				const signUpRes = await request({
-					path: `auth/create-user`,
-					method: 'post',
-					body: {
-						email: String(req.email).trim(),
-						password: req.password,
-						username: String(req.username).trim(),
-					},
-				})
-				if (!signUpRes.success) {
-					showError({
-						title: 'Dear Gamer',
-						message: `We're unable to create your gamer account. Please try again later.`,
-					})
-					return
-					// res = await signIn('credentials', {
-					// 	...req,
-					// 	address: activeAccount?.address ?? '',
-					// 	redirect: false,
-					// 	callbackUrl: `/?success=true${relink === 'true' ? '&relink=true' : ''}`,
-					// })
-				}
-			}
-			res = await signIn('credentials', {
-				...req,
-				address: activeAccount?.address ?? '',
-				redirect: false,
-				callbackUrl: next ?? `/`,
-			})
-			console.log(res)
-			// await fetch('/api/auth/session')
-			if (res.error) {
-				showError({
-					title: 'Dear Gamer',
-					message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
-				})
-			} else {
-				const session = await getSession()
-				if (!res.ok) {
-					showError({
-						title: 'Dear Gamer',
-						message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
-					})
-				} else if (res.url) {
-					if (
-						res.url.slice(res.url.lastIndexOf('/')) ===
-						next ?? `/`
-					) {
-						if (relink === 'true') {
-							router.replace(pathname)
-							showAlert({
-								title: 'Linked',
-								message: 'Re-Link was successful.',
-							})
-						} else {
-							router.replace('/')
-							showAlert({
-								title: 'Linked',
-								message: 'Link was successful.',
-							})
-						}
-					} else {
-						showError({
-							title: 'Dear Gamer',
-							message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
 						})
 					}
 				} else {
@@ -241,6 +194,11 @@ export default function AccountManagement() {
 						message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
 					})
 				}
+			} else {
+				showError({
+					title: 'Dear Gamer',
+					message: `We're unable to create a link to your gamer account. Please ensure your login details are correct, and that you're using the same wallet as your first successful login with the intended account.`,
+				})
 			}
 		}
 		retrievePlatformData()
@@ -374,7 +332,10 @@ export default function AccountManagement() {
 					</div>
 				</form>
 			) : (
-				<ConnectWalletButton isLanding={true} center />
+				<ConnectWalletButton
+					isLanding={true}
+					center
+				/>
 			)}
 		</div>
 	)

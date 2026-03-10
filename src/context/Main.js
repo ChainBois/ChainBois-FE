@@ -27,12 +27,7 @@ const MainContextProvider = ({ children }) => {
 
 	const { data: session, status } = useSession()
 
-	const {
-		user,
-		setUser,
-		login,
-		fetchCurrentUser,
-	} = useAuth()
+	const { user, setUser, login, logout, fetchCurrentUser } = useAuth()
 
 	const {
 		modal,
@@ -126,7 +121,7 @@ const MainContextProvider = ({ children }) => {
 					})
 				}
 			} else if (status === 'unauthenticated') {
-				setUser((x) => ({}))
+				await logout(false, null)
 			}
 			// await fetch('/api/auth/session')
 		}
@@ -135,6 +130,7 @@ const MainContextProvider = ({ children }) => {
 		activeAccount?.address,
 		fetchCurrentUser,
 		login,
+		logout,
 		sessionAccessToken,
 		showAlert,
 		showError,

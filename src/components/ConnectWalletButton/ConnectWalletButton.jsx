@@ -13,6 +13,7 @@ import {
 } from 'thirdweb/react'
 import c from './ConnectWalletButton.module.css'
 import { BATTLE_TOKEN } from '@/constants'
+import { useAuth, useNotifications } from '@/hooks'
 
 const StandIn = ({ center = false }) => {
 	return (
@@ -78,6 +79,9 @@ export default function ConnectWalletButton({
 	isLanding = false,
 	center = false,
 }) {
+	const { logout } = useAuth()
+	const { displayAlert } = useNotifications()
+
 	return true ? (
 		<ConnectButton
 			client={thirdwebClient}
@@ -88,7 +92,7 @@ export default function ConnectWalletButton({
 				colors: {},
 			})}
 			connectButton={{
-				label: <StandIn center={ center } />,
+				label: <StandIn center={center} />,
 				className: c.connectButton,
 			}}
 			detailsButton={{
@@ -103,6 +107,15 @@ export default function ConnectWalletButton({
 				size: 'compact',
 			}}
 			connectedAccountAvatarUrl={'https://chain-bois.vercel.app/img/CB.svg'}
+			doLogout={async () => {
+				await logout(false, [
+					() =>
+						displayAlert({
+							title: 'Logged out',
+							message: 'You have been successfully logged out.',
+						}),
+				])
+			}}
 		/>
 	) : (
 		<DetailsStandIn />
