@@ -27,8 +27,8 @@ export default function Page() {
 		setTrainingAssetInfo,
 	} = useNotifications()
 	const assets = useMemo(() => {
-		if (user?.assets?.hasNft && Number.isInteger(user?.assets?.nftTokenId)) {
-			return [user.assets]
+		if (user?.assets?.length > 0) {
+			return user.assets
 		}
 		if (user?.hasNft && Number.isInteger(user?.nftTokenId)) {
 			return [

@@ -125,13 +125,13 @@ export default function TrainingAssetDetails() {
 				<nav className={cf(s.wMax, s.flex, s.flexEnd, p.popupActionButtonBox, d.popupActionButtonBox)}>
 					<PolyButton
 						tag='Close'
-						side='left'
+						side='right'
 						polyButton={cf(p.polyButton)}
 						action={() => setShowModal(false)}
 					/>
 					<PolyButton
 						tag={isActiveAvatar ? 'Active Avatar' : 'Set As Avatar'}
-						side='right'
+						side='left'
 						polyButton={cf(p.polyButton, d.primaryButton)}
 						action={() =>
 							setAvatar({
