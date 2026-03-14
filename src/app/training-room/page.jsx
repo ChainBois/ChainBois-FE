@@ -28,7 +28,10 @@ export default function Page() {
 	} = useNotifications()
 	const assets = useMemo(() => {
 		if (user?.assets?.length > 0) {
-			return user.assets
+			return user.assets.map((el) => ({
+				nftTokenId: el.tokenId,
+				level: el.level,
+			}))
 		}
 		if (user?.hasNft && Number.isInteger(user?.nftTokenId)) {
 			return [
