@@ -19,7 +19,11 @@ axiosCall.interceptors.request.use(async (config) => {
 
 	if (user) {
 		const token = await user.getIdToken()
-		config.headers.Authorization = `Bearer ${token}`
+		const existingAuthHeader =
+			config?.headers?.Authorization ?? config?.headers?.authorization
+		if (!existingAuthHeader) {
+			config.headers.Authorization = `Bearer ${token}`
+		}
 	}
 	return config
 })

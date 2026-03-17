@@ -82,6 +82,7 @@
 	border: none;
 	border-radius: 48.47px;
 	background: rgba(217, 217, 217, 0.2);
+	overflow: hidden;
 }
 
 .progress {

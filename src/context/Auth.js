@@ -51,6 +51,25 @@ const getMaxAssetLevel = (assets = [], fallback = 1) => {
 	return maxLevel
 }
 
+const mergeWeaponsByTokenId = (currentWeapons = [], incomingWeapons = []) => {
+	if (!Array.isArray(currentWeapons) && !Array.isArray(incomingWeapons)) return []
+	if (!Array.isArray(currentWeapons)) return incomingWeapons
+	if (!Array.isArray(incomingWeapons)) return currentWeapons
+
+	const byTokenId = new Map()
+	for (const weapon of currentWeapons) {
+		const tokenId = asTokenId(weapon?.tokenId)
+		if (tokenId === null) continue
+		byTokenId.set(tokenId, weapon)
+	}
+	for (const weapon of incomingWeapons) {
+		const tokenId = asTokenId(weapon?.tokenId)
+		if (tokenId === null) continue
+		byTokenId.set(tokenId, weapon)
+	}
+	return [...byTokenId.values()]
+}
+
 const AuthContextProvider = ({ children }) => {
 	const activeAccount = useActiveAccount()
 	const router = useRouter()
@@ -414,8 +433,139 @@ const AuthContextProvider = ({ children }) => {
 			type: 'success',
 		})
 
-			return res
-		}, [activeAccount?.address, makeRequest])
+		return res
+	}, [activeAccount?.address, makeRequest])
+
+	const fetchTrainingNfts = useCallback(async ({ address } = {}) => {
+		const walletAddress = address ?? activeAccount?.address ?? ''
+		if (!walletAddress) return { success: false, message: 'Wallet address required' }
+
+		return await makeRequest({
+			path: `training/nfts/${walletAddress}`,
+			method: 'get',
+		})
+	}, [activeAccount?.address, makeRequest])
+
+	const syncTrainingNfts = useCallback(async ({ address } = {}) => {
+		const res = await fetchTrainingNfts({ address })
+		if (!res?.success) return res
+
+		const nfts = res?.data?.data?.nfts
+		const normalizedAssets = normalizeChainBoiAssets(Array.isArray(nfts) ? nfts : [])
+
+		setUser((current) => ({
+			...current,
+			hasNft: normalizedAssets.length > 0,
+			nftTokenId: asTokenId(current?.nftTokenId) ?? asTokenId(normalizedAssets?.[0]?.tokenId),
+			level: getMaxAssetLevel(normalizedAssets, asFiniteNumber(current?.level) ?? 1),
+			assets: normalizedAssets,
+		}))
+
+		return res
+	}, [fetchTrainingNfts])
+
+	const fetchTrainingNftDetail = useCallback(async ({ tokenId } = {}) => {
+		const normalizedTokenId = asTokenId(tokenId)
+		if (normalizedTokenId === null) {
+			return { success: false, message: 'Valid tokenId required' }
+		}
+
+		return await makeRequest({
+			path: `training/nft/${normalizedTokenId}`,
+			method: 'get',
+		})
+	}, [makeRequest])
+
+	const fetchTrainingLevelUpCost = useCallback(async ({ tokenId, currentLevel } = {}) => {
+		const params = new URLSearchParams()
+		const normalizedTokenId = asTokenId(tokenId)
+		if (normalizedTokenId !== null) params.set('tokenId', String(normalizedTokenId))
+
+		const normalizedCurrentLevel = asFiniteNumber(currentLevel)
+		if (normalizedCurrentLevel !== null) params.set('currentLevel', String(normalizedCurrentLevel))
+
+		const query = params.toString()
+		return await makeRequest({
+			path: `training/level-up/cost${query ? `?${query}` : ''}`,
+			method: 'get',
+		})
+	}, [makeRequest])
+
+	const fetchTrainingEligibility = useCallback(async ({ tokenId } = {}) => {
+		const normalizedTokenId = asTokenId(tokenId)
+		if (normalizedTokenId === null) {
+			return { success: false, message: 'Valid tokenId required' }
+		}
+
+		return await makeRequest({
+			path: `training/eligibility/${normalizedTokenId}`,
+			method: 'get',
+		})
+	}, [makeRequest])
+
+	const submitTrainingLevelUp = useCallback(async ({ tokenId, txHash } = {}) => {
+		const normalizedTokenId = asTokenId(tokenId)
+		const hash = String(txHash ?? '').trim()
+		if (normalizedTokenId === null) return { success: false, message: 'Valid tokenId required' }
+		if (!hash) return { success: false, message: 'txHash is required' }
+
+		const res = await makeRequest({
+			path: 'training/level-up',
+			method: 'post',
+			body: {
+				tokenId: normalizedTokenId,
+				txHash: hash,
+			},
+		})
+
+		if (!res?.success) return res
+
+		const levelUpData = res?.data?.data ?? {}
+		const newLevel = asFiniteNumber(levelUpData?.newLevel)
+		const nextRank = levelUpData?.rank
+
+		setUser((current) => {
+			const currentAssets = Array.isArray(current?.assets) ? current.assets : []
+			const updatedAssets = currentAssets.some((asset) => asTokenId(asset?.tokenId) === normalizedTokenId)
+				? currentAssets.map((asset) =>
+						asTokenId(asset?.tokenId) === normalizedTokenId
+							? {
+									...asset,
+									...(newLevel !== null ? { level: newLevel } : {}),
+									...(nextRank ? { rank: nextRank } : {}),
+							  }
+							: asset,
+				  )
+				: [
+						...currentAssets,
+						{
+							tokenId: normalizedTokenId,
+							...(newLevel !== null ? { level: newLevel } : {}),
+							...(nextRank ? { rank: nextRank } : {}),
+						},
+				  ]
+
+			const unlockedWeapons =
+				Array.isArray(levelUpData?.unlockedWeapons) ? levelUpData.unlockedWeapons : null
+			const ownedWeaponNfts =
+				Array.isArray(levelUpData?.ownedWeaponNfts) ? levelUpData.ownedWeaponNfts : null
+			const mergedWeapons = mergeWeaponsByTokenId(
+				Array.isArray(current?.weapons) ? current.weapons : [],
+				ownedWeaponNfts ?? unlockedWeapons ?? [],
+			)
+
+			return {
+				...current,
+				hasNft: updatedAssets.length > 0,
+				nftTokenId: asTokenId(current?.nftTokenId) ?? asTokenId(updatedAssets?.[0]?.tokenId),
+				level: getMaxAssetLevel(updatedAssets, asFiniteNumber(current?.level) ?? 1),
+				assets: updatedAssets,
+				...(mergedWeapons.length ? { weapons: mergedWeapons } : {}),
+			}
+		})
+
+		return res
+	}, [makeRequest])
 
 	const setAvatar = useCallback(async ({
 		tokenId,
@@ -539,9 +689,19 @@ const AuthContextProvider = ({ children }) => {
 		login,
 		fetchCurrentUser,
 		verifyAssets,
+		fetchTrainingNfts,
+		syncTrainingNfts,
+		fetchTrainingNftDetail,
+		fetchTrainingLevelUpCost,
+		fetchTrainingEligibility,
+		submitTrainingLevelUp,
 		setAvatar,
 		logout,
 	}), [
+		fetchTrainingEligibility,
+		fetchTrainingLevelUpCost,
+		fetchTrainingNftDetail,
+		fetchTrainingNfts,
 		fetchCurrentUser,
 		login,
 		loginRequest,
@@ -549,7 +709,9 @@ const AuthContextProvider = ({ children }) => {
 		makeRequest,
 		refresh,
 		requestingLogin,
+		submitTrainingLevelUp,
 		setAvatar,
+		syncTrainingNfts,
 		user,
 		verifyAssets,
 	])

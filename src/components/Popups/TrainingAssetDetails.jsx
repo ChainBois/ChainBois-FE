@@ -29,14 +29,16 @@ const getAvatarTokenId = (user) => {
 }
 
 export default function TrainingAssetDetails() {
-	const { user, setAvatar } = useAuth()
+	const {
+		user,
+		setAvatar,
+		fetchTrainingNftDetail,
+		fetchTrainingLevelUpCost,
+		fetchTrainingEligibility,
+	} = useAuth()
 	const {
 		trainingAssetInfo,
 		setShowModal,
-		showLoading,
-		hideLoading,
-		showError,
-		displayAlert,
 	} = useNotifications()
 
 	const tokenId = trainingAssetInfo?.nftTokenId ?? null
@@ -50,16 +52,88 @@ export default function TrainingAssetDetails() {
 	const isActiveAvatar =
 		Number.isInteger(activeAvatarTokenId) && activeAvatarTokenId === tokenId
 	const imageSrc = imageCandidates[imageIndex] ?? null
+	const [nftDetail, setNftDetail] = useState(null)
+	const [costInfo, setCostInfo] = useState(null)
+	const [eligibility, setEligibility] = useState(null)
+	const [isFetching, setIsFetching] = useState(false)
 
 	useEffect(() => {
 		setImageIndex(0)
 	}, [tokenId])
+
+	useEffect(() => {
+		let isActive = true
+		setNftDetail(null)
+		setCostInfo(null)
+		setEligibility(null)
+
+		const loadDetails = async () => {
+			if (!Number.isInteger(tokenId)) return
+			setIsFetching(true)
+
+			const [detailRes, costRes, eligibilityRes] = await Promise.allSettled([
+				fetchTrainingNftDetail({ tokenId }),
+				fetchTrainingLevelUpCost({ tokenId }),
+				fetchTrainingEligibility({ tokenId }),
+			])
+
+			if (!isActive) return
+
+			if (detailRes.status === 'fulfilled' && detailRes.value?.success) {
+				setNftDetail(detailRes.value?.data?.data ?? null)
+			}
+
+			if (costRes.status === 'fulfilled' && costRes.value?.success) {
+				setCostInfo(costRes.value?.data?.data ?? null)
+			}
+
+			if (eligibilityRes.status === 'fulfilled' && eligibilityRes.value?.success) {
+				setEligibility(eligibilityRes.value?.data?.data ?? null)
+			}
+
+			setIsFetching(false)
+		}
+
+		loadDetails()
+
+		return () => {
+			isActive = false
+		}
+	}, [
+		fetchTrainingEligibility,
+		fetchTrainingLevelUpCost,
+		fetchTrainingNftDetail,
+		tokenId,
+	])
 
 	const handleImageError = () => {
 		if (imageIndex < imageCandidates.length - 1) {
 			setImageIndex((current) => current + 1)
 		}
 	}
+
+		const nextLevelCost = costInfo?.cost ?? null
+		const nextLevelCurrency = costInfo?.currency ?? 'AVAX'
+		const nextRank = costInfo?.nextRank ?? null
+		const rank = nftDetail?.rank ?? trainingAssetInfo?.rank ?? null
+
+		const traits = Array.isArray(nftDetail?.traits) ? nftDetail.traits : []
+		const inGameStats = nftDetail?.inGameStats ?? null
+		const formatTraitValue = (value) => {
+			if (value === null || value === undefined) return ''
+			if (
+				typeof value === 'string' ||
+				typeof value === 'number' ||
+				typeof value === 'boolean'
+			) {
+				return String(value)
+			}
+			try {
+				return JSON.stringify(value)
+			} catch {
+				return String(value)
+			}
+		}
 
 	return (
 		<section className={cf(s.flex, s.flexCenter, p.popup, d.popup)}>
@@ -91,10 +165,10 @@ export default function TrainingAssetDetails() {
 					</button>
 				</header>
 
-				<div className={cf(s.wMax, s.flex, s.flexCenter, d.assetBody)}>
-					<div className={cf(s.flex, s.flexCenter, d.assetImageFrame)}>
-						<div className={cf(s.wMax, s.hMax, d.assetImageInner)}>
-							{imageSrc ? (
+					<div className={cf(s.wMax, s.flex, d.assetBody)}>
+						<div className={cf(s.flex, s.flexCenter, d.assetImageFrame)}>
+								<div className={cf(s.wMax, d.assetImageInner)}>
+								{imageSrc ? (
 								<Image
 									src={imageSrc}
 									alt={`ChainBoi #${tokenId ?? 'N/A'}`}
@@ -107,29 +181,114 @@ export default function TrainingAssetDetails() {
 						</div>
 					</div>
 
-					<div className={cf(s.flex, s.flex_dColumn, d.assetMeta)}>
-						<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
-							<span className={cf(d.metaLabel)}>Status</span>
-							<span className={cf(d.metaValue)}>
-								{isActiveAvatar ? 'Active Avatar' : 'Available for Avatar'}
-							</span>
+						<div className={cf(s.flex, s.flex_dColumn, d.assetMeta)}>
+								<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
+									<span className={cf(d.metaLabel)}>Status</span>
+									<span className={cf(d.metaValue)}>
+										{isActiveAvatar ? 'Active Avatar' : 'Available for Avatar'}
+									</span>
+								</div>
+								<div className={cf(d.metaGrid)}>
+								<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
+									<span className={cf(d.metaLabel)}>Rank</span>
+									<span className={cf(d.metaValue)}>
+										{rank ? rank : isFetching ? 'Loading…' : 'N/A'}
+									</span>
+								</div>
+							<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
+								<span className={cf(d.metaLabel)}>Level</span>
+								<span className={cf(d.metaValue)}>Level {level}</span>
+							</div>
+							<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
+								<span className={cf(d.metaLabel)}>Next Level Cost</span>
+								<span className={cf(d.metaValue)}>
+									{costInfo?.isMaxLevel
+										? 'Max level reached'
+										: nextLevelCost
+											? `${nextLevelCost} ${nextLevelCurrency}`
+											: isFetching
+												? 'Loading…'
+												: 'N/A'}
+								</span>
+							</div>
+								{nextRank ? (
+									<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
+										<span className={cf(d.metaLabel)}>Next Rank</span>
+										<span className={cf(d.metaValue)}>{nextRank}</span>
+									</div>
+								) : null}
+								{eligibility?.activeTournaments?.length ? (
+									<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
+										<span className={cf(d.metaLabel)}>Active Tournaments</span>
+										<span className={cf(d.metaValue)}>
+											{eligibility.activeTournaments.length}
+										</span>
+									</div>
+									) : null}
+									</div>
+								</div>
 						</div>
-						<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
-							<span className={cf(d.metaLabel)}>Level</span>
-							<span className={cf(d.metaValue)}>Level {level}</span>
-						</div>
-						<div className={cf(s.flex, s.flex_dColumn, d.metaBlock)}>
-							<span className={cf(d.metaLabel)}>Ownership</span>
-							<span className={cf(d.metaValue)}>Verified from your connected wallet</span>
-						</div>
-					</div>
-				</div>
 
-				<nav className={cf(s.wMax, s.flex, s.flexEnd, p.popupActionButtonBox, d.popupActionButtonBox)}>
-					<PolyButton
-						tag={isActiveAvatar ? 'Active Avatar' : 'Set As Avatar'}
-						side='right'
-						polyButton={cf(p.polyButton, d.primaryButton)}
+					{inGameStats ? (
+						<section className={cf(s.wMax, s.flex, s.flex_dColumn, d.statsSection)}>
+							<header className={cf(s.wMax, s.flex, s.spaceXBetween, d.statsHeader)}>
+								<span className={cf(d.statsTitle)}>In-Game Stats</span>
+							</header>
+							<div className={cf(s.wMax, s.flex, d.statsRow)}>
+								<article className={cf(s.flex, s.flex_dColumn, d.statTile)}>
+									<span className={cf(d.statType)}>Kills</span>
+									<span className={cf(d.statValue)}>
+										{Number(inGameStats?.kills ?? 0)}
+									</span>
+								</article>
+								<article className={cf(s.flex, s.flex_dColumn, d.statTile)}>
+									<span className={cf(d.statType)}>Score</span>
+									<span className={cf(d.statValue)}>
+										{Number(inGameStats?.score ?? 0)}
+									</span>
+								</article>
+								<article className={cf(s.flex, s.flex_dColumn, d.statTile)}>
+									<span className={cf(d.statType)}>Games Played</span>
+									<span className={cf(d.statValue)}>
+										{Number(inGameStats?.gamesPlayed ?? 0)}
+									</span>
+								</article>
+							</div>
+						</section>
+					) : null}
+
+					{traits.length ? (
+						<section className={cf(s.wMax, s.flex, s.flex_dColumn, d.traitsSection)}>
+							<header className={cf(s.wMax, s.flex, s.spaceXBetween, d.traitsHeader)}>
+								<span className={cf(d.traitsTitle)}>Traits</span>
+								<span className={cf(d.traitsCount)}>{traits.length}</span>
+							</header>
+							<div className={cf(s.wMax, s.flex, d.traitsRow)}>
+								{traits.map((trait, index) => (
+									<article
+										key={
+											trait?._id ??
+											`${trait?.trait_type}-${String(trait?.value)}-${index}`
+										}
+										className={cf(s.flex, s.flex_dColumn, d.traitTile)}
+									>
+										<span className={cf(d.traitType)}>
+											{trait?.trait_type ?? 'Trait'}
+										</span>
+										<span className={cf(d.traitValue)}>
+											{formatTraitValue(trait?.value) || '—'}
+										</span>
+									</article>
+								))}
+							</div>
+						</section>
+					) : null}
+
+					<nav className={cf(s.wMax, s.flex, s.flexEnd, p.popupActionButtonBox, d.popupActionButtonBox)}>
+						<PolyButton
+							tag={isActiveAvatar ? 'Active Avatar' : 'Set As Avatar'}
+							side='right'
+							polyButton={cf(p.polyButton, d.primaryButton)}
 						action={() =>
 							setAvatar({
 								tokenId,
@@ -139,13 +298,13 @@ export default function TrainingAssetDetails() {
 								displayAlert,
 								onSuccess: () => setShowModal(false),
 							})
-						}
-						disabled={isActiveAvatar || !Number.isInteger(tokenId)}
-					/>
-					<PolyButton
-						tag='Close'
-						side='left'
-						polyButton={cf(p.polyButton)}
+							}
+							disabled={isActiveAvatar || !Number.isInteger(tokenId)}
+						/>
+						<PolyButton
+							tag='Close'
+							side='left'
+							polyButton={cf(p.polyButton)}
 						action={() => setShowModal(false)}
 					/>
 				</nav>

@@ -32,6 +32,7 @@
 	height: 100px;
 	width: auto;
 	aspect-ratio: auto 1017 / 101;
+	max-width: 100%;
 }
 
 @media only screen and (min-width: 1025px) {
