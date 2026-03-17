@@ -17,9 +17,12 @@ const getAvatarTokenId = (user) => {
 	const metricsTokenId = Number(user?.metrics?.avatar)
 	if (Number.isInteger(metricsTokenId) && metricsTokenId >= 0) return metricsTokenId
 
-	// Phase 1 API shape only exposes a single owned ChainBoi token ID (`nftTokenId`),
-	// so we treat it as the effective avatar when no explicit avatar field exists.
-	const ownedTokenId = Number(user?.assets?.nftTokenId ?? user?.nftTokenId)
+	// Phase 1 convenience fields expose a single owned ChainBoi token ID (`nftTokenId`),
+	// but the current Phase 1 API also returns `assets[]` (multiple ChainBois).
+	const ownedTokenIdSource =
+		user?.nftTokenId ??
+		(Array.isArray(user?.assets) ? user.assets?.[0]?.tokenId : user?.assets?.nftTokenId)
+	const ownedTokenId = Number(ownedTokenIdSource)
 	if (Number.isInteger(ownedTokenId) && ownedTokenId >= 0) return ownedTokenId
 
 	return null

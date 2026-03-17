@@ -10,11 +10,52 @@ import { useNotifications } from '@/hooks'
 
 export const AuthContext = React.createContext()
 
+const asTokenId = (value) => {
+	const tokenId = Number(value)
+	return Number.isInteger(tokenId) && tokenId >= 0 ? tokenId : null
+}
+
+const asFiniteNumber = (value) => {
+	const num = Number(value)
+	return Number.isFinite(num) ? num : null
+}
+
+const normalizeChainBoiAssets = (assets) => {
+	if (Array.isArray(assets)) return assets.filter(Boolean)
+
+	if (assets && typeof assets === 'object') {
+		if (Array.isArray(assets.assets)) return assets.assets.filter(Boolean)
+
+		const tokenId = asTokenId(assets?.tokenId ?? assets?.nftTokenId)
+		if (tokenId !== null) {
+			return [
+				{
+					tokenId,
+					level: asFiniteNumber(assets?.level) ?? 1,
+				},
+			]
+		}
+	}
+
+	return []
+}
+
+const getMaxAssetLevel = (assets = [], fallback = 1) => {
+	if (!Array.isArray(assets) || assets.length === 0) return fallback
+
+	let maxLevel = fallback
+	for (const asset of assets) {
+		const level = asFiniteNumber(asset?.level)
+		if (level !== null) maxLevel = Math.max(maxLevel, level)
+	}
+	return maxLevel
+}
+
 const AuthContextProvider = ({ children }) => {
 	const activeAccount = useActiveAccount()
 	const router = useRouter()
 	const { displayAlert } = useNotifications()
-	const [user, setUser] = useState('')
+	const [user, setUser] = useState({})
 	const [requestingLogin, setRequestingLogin] = useState(false)
 	const [loginRequest, setLoginRequest] = useState(null)
 	const loginRequestRef = useRef(null)
@@ -54,27 +95,63 @@ const AuthContextProvider = ({ children }) => {
 		[clearInteractiveLogin],
 	)
 
-	const applyUserPayload = useCallback(({ user: rawUser = {}, assets, weapons } = {}) => {
+	const applyUserPayload = useCallback((payload = {}) => {
+		const { user: rawUser = {}, assets, weapons } = payload ?? {}
 		const { accessToken = null, ...userData } = rawUser ?? {}
-		const nextAssets =
-			assets ??
-			(userData?.hasNft !== undefined ||
-			userData?.nftTokenId !== undefined ||
-			userData?.level !== undefined
-				? {
-						hasNft: userData?.hasNft ?? false,
-						nftTokenId: userData?.nftTokenId ?? null,
-						level: userData?.level ?? 1,
-					}
-				: undefined)
 
-		setUser((current) => ({
-			...current,
-			...userData,
-			...(nextAssets ? { assets: nextAssets } : {}),
-			...(Array.isArray(weapons) ? { weapons } : {}),
-			...(accessToken ? { accessToken } : {}),
-		}))
+		const hasProvidedAssets =
+			payload && Object.prototype.hasOwnProperty.call(payload, 'assets')
+		const hasProvidedWeapons =
+			payload && Object.prototype.hasOwnProperty.call(payload, 'weapons')
+
+		const normalizedWeapons = hasProvidedWeapons && Array.isArray(weapons) ? weapons : null
+
+		setUser((current) => {
+			const normalizedAssets = hasProvidedAssets
+				? normalizeChainBoiAssets(assets)
+				: null
+
+			const shouldUpdateAssetConvenience =
+				hasProvidedAssets ||
+				userData?.hasNft !== undefined ||
+				userData?.nftTokenId !== undefined
+
+			const nextNftTokenId = shouldUpdateAssetConvenience
+				? (asTokenId(userData?.nftTokenId) ??
+					(hasProvidedAssets ? asTokenId(normalizedAssets?.[0]?.tokenId) : null) ??
+					asTokenId(current?.nftTokenId) ??
+					null)
+				: undefined
+
+			const nextHasNft = shouldUpdateAssetConvenience
+				? (userData?.hasNft ??
+					(hasProvidedAssets
+						? (normalizedAssets?.length ?? 0) > 0
+						: current?.hasNft ?? nextNftTokenId !== null))
+				: undefined
+
+			const nextLevel = shouldUpdateAssetConvenience
+				? (asFiniteNumber(userData?.level) ??
+					(hasProvidedAssets
+						? getMaxAssetLevel(normalizedAssets ?? [], asFiniteNumber(current?.level) ?? 1)
+						: asFiniteNumber(current?.level) ?? 1))
+				: undefined
+
+			return {
+				...current,
+				...userData,
+				...(shouldUpdateAssetConvenience
+					? {
+							hasNft: nextHasNft,
+							nftTokenId: nextNftTokenId,
+							level: nextLevel,
+					  }
+					: {}),
+				...(normalizedAssets ? { assets: normalizedAssets } : {}),
+				...(normalizedWeapons ? { weapons: normalizedWeapons } : {}),
+				...(accessToken ? { accessToken } : {}),
+			}
+		})
 	}, [])
 
 	const refresh = useCallback(async () => {
@@ -303,26 +380,33 @@ const AuthContextProvider = ({ children }) => {
 				})
 			}
 			return res
-		}
+			}
 
-		const verifiedData = res?.data?.data ?? {}
-		const nextAssets = {
-			hasNft: verifiedData?.hasNft ?? false,
-			nftTokenId: verifiedData?.nftTokenId ?? null,
-			level: verifiedData?.level ?? user?.level ?? 1,
-		}
-		const nextWeapons = Array.isArray(verifiedData?.ownedWeaponNfts)
-			? verifiedData.ownedWeaponNfts
-			: []
+			const verifiedData = res?.data?.data ?? {}
+			const nextWeapons = Array.isArray(verifiedData?.ownedWeaponNfts)
+				? verifiedData.ownedWeaponNfts
+				: []
 
-		setUser((current) => ({
-			...current,
-			hasNft: nextAssets.hasNft,
-			nftTokenId: nextAssets.nftTokenId,
-			level: nextAssets.level,
-			assets: nextAssets,
-			weapons: nextWeapons,
-		}))
+			setUser((current) => {
+				const normalizedAssets = normalizeChainBoiAssets(verifiedData?.assets)
+				const derivedLevel = getMaxAssetLevel(
+					normalizedAssets,
+					asFiniteNumber(current?.level) ?? 1,
+				)
+
+				return {
+					...current,
+					hasNft: verifiedData?.hasNft ?? normalizedAssets.length > 0,
+					nftTokenId:
+						asTokenId(verifiedData?.nftTokenId) ??
+						asTokenId(normalizedAssets?.[0]?.tokenId) ??
+						asTokenId(current?.nftTokenId) ??
+						null,
+					level: asFiniteNumber(verifiedData?.level) ?? derivedLevel,
+					assets: normalizedAssets,
+					weapons: nextWeapons,
+				}
+			})
 
 		displayAlert?.({
 			title: 'Assets Updated',
@@ -330,8 +414,8 @@ const AuthContextProvider = ({ children }) => {
 			type: 'success',
 		})
 
-		return res
-	}, [activeAccount?.address, makeRequest, user?.level])
+			return res
+		}, [activeAccount?.address, makeRequest])
 
 	const setAvatar = useCallback(async ({
 		tokenId,
@@ -373,24 +457,40 @@ const AuthContextProvider = ({ children }) => {
 			return res
 		}
 
-		const nextLevel = res?.data?.data?.level
-		setUser((current) => ({
-			...current,
-			activeAvatarTokenId: tokenId,
-			...(Number.isFinite(nextLevel)
-				? {
-						level: nextLevel,
-						assets: {
-							...(current?.assets ?? {}),
-							level: nextLevel,
-						},
-				  }
-				: {}),
-			metrics: {
-				...(current?.metrics ?? {}),
-				avatar: tokenId,
-			},
-		}))
+			const nextLevel = asFiniteNumber(res?.data?.data?.level)
+			setUser((current) => {
+				const currentAssets = Array.isArray(current?.assets) ? current.assets : []
+				const updatedAssets =
+					nextLevel !== null
+						? currentAssets.map((asset) =>
+								asTokenId(asset?.tokenId) === tokenId
+									? { ...asset, level: nextLevel }
+									: asset,
+						  )
+						: currentAssets
+
+				const derivedLevel = getMaxAssetLevel(
+					updatedAssets,
+					asFiniteNumber(current?.level) ?? 1,
+				)
+
+				return {
+					...current,
+					activeAvatarTokenId: tokenId,
+					...(nextLevel !== null
+						? {
+								level: Math.max(nextLevel, derivedLevel),
+								hasNft: current?.hasNft ?? true,
+								nftTokenId: asTokenId(current?.nftTokenId) ?? tokenId,
+								assets: updatedAssets,
+						  }
+						: {}),
+					metrics: {
+						...(current?.metrics ?? {}),
+						avatar: tokenId,
+					},
+				}
+			})
 
 		displayAlert?.({
 			title: 'Avatar Updated',

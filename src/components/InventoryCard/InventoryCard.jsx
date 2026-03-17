@@ -11,11 +11,13 @@ import Inventory_4 from '@/assets/img/Inventory_4.png'
 import BuyButton from '../BuyButton'
 import { useEffect, useMemo, useState } from 'react'
 
-export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
-	const showcase = useMemo(() => {
-		const index = (pseudoIndex + 1) % 3
-		switch (index) {
-			case 0:
+	export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
+		const weaponName = weapon?.weaponName ?? weapon?.name ?? ''
+
+		const showcase = useMemo(() => {
+			const index = (pseudoIndex + 1) % 3
+			switch (index) {
+				case 0:
 				return Inventory_1
 			case 1:
 				return Inventory_2
@@ -26,26 +28,26 @@ export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
 		}
 	}, [pseudoIndex])
 
-	const imageCandidates = useMemo(
-		() =>
-			getWeaponImageCandidates({
-				tokenId: weapon?.tokenId,
-				name: weapon?.name,
-			}),
-		[weapon?.name, weapon?.tokenId],
-	)
+		const imageCandidates = useMemo(
+			() =>
+				getWeaponImageCandidates({
+					tokenId: weapon?.tokenId,
+					name: weaponName,
+				}),
+			[weaponName, weapon?.tokenId],
+		)
 
 	const [imageIndex, setImageIndex] = useState(0)
 
-	useEffect(() => {
-		setImageIndex(0)
-	}, [weapon?.name, weapon?.tokenId])
+		useEffect(() => {
+			setImageIndex(0)
+		}, [weaponName, weapon?.tokenId])
 
 	const imageSrc = imageCandidates[imageIndex] ?? showcase
 
-	const title = useMemo(() => {
-		return weapon?.name || 'Weapon NFT'
-	}, [weapon?.name])
+		const title = useMemo(() => {
+			return weaponName || 'Weapon NFT'
+		}, [weaponName])
 
 	const description = useMemo(() => {
 		if (Number.isInteger(weapon?.tokenId)) {
