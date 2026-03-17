@@ -68,7 +68,7 @@ const PolyButton = memo(
 
 		useResizeEffect(
 			() => {
-				const width = polyButtonContainerRef.current.offsetWidth
+				const width = polyButtonContainerRef?.current?.offsetWidth || 0
 				const basePadding = 3.5
 				const multiplier = basePadding / 170
 				const newPadding = multiplier * width

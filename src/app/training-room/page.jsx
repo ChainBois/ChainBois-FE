@@ -165,7 +165,8 @@ export default function Page() {
 			hideLoading?.()
 			showError?.({
 				title: 'Payment Failed',
-				message: 'Unable to read the payment transaction hash. Please try again.',
+				message:
+					'Unable to read the payment transaction hash. Please try again.',
 			})
 			return
 		}
@@ -175,14 +176,19 @@ export default function Page() {
 			message: 'Verifying payment and updating your ChainBoi on-chain.',
 		})
 
-		const levelUpRes = await submitTrainingLevelUp({ tokenId, txHash: paymentTxHash })
+		const levelUpRes = await submitTrainingLevelUp({
+			tokenId,
+			txHash: paymentTxHash,
+		})
 		hideLoading?.()
 
 		if (!levelUpRes?.success) {
 			showError?.({
 				title: 'Level Up Failed',
 				message:
-					levelUpRes?.message || levelUpRes?.error || 'Unable to level up right now.',
+					levelUpRes?.message ||
+					levelUpRes?.error ||
+					'Unable to level up right now.',
 			})
 			return
 		}
@@ -191,6 +197,12 @@ export default function Page() {
 			title: 'Level Up Complete',
 			message: `ChainBoi #${tokenId} leveled up successfully.`,
 			type: 'success',
+		})
+		verifyAssets({
+			showLoading: null,
+			hideLoading: null,
+			showError: null,
+			displayAlert: null,
 		})
 	}
 
@@ -234,28 +246,28 @@ export default function Page() {
 				<MaxWidth
 					maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
 				>
-						{visibleAssets.length > 0 ? (
-							<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
-								<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
-									{visibleAssets.map((asset, i) => (
-										<TrainingCard
-											key={`asset-${asset?.nftTokenId ?? i}`}
-											pseudoIndex={i}
-											asset={asset}
-											onDetails={openAssetDetails}
-											onLevelUp={handleLevelUp}
-										/>
-									))}
-									<PaginationLocal
-										array={visibleAssets}
-										refArray={assets}
-										step={9}
-										setArray={setVisibleAssets}
-										full
+					{visibleAssets.length > 0 ? (
+						<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
+							<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
+								{visibleAssets.map((asset, i) => (
+									<TrainingCard
+										key={`asset-${asset?.nftTokenId ?? i}`}
+										pseudoIndex={i}
+										asset={asset}
+										onDetails={openAssetDetails}
+										onLevelUp={handleLevelUp}
 									/>
-								</div>
+								))}
+								<PaginationLocal
+									array={visibleAssets}
+									refArray={assets}
+									step={9}
+									setArray={setVisibleAssets}
+									full
+								/>
 							</div>
-						) : (
+						</div>
+					) : (
 						<NothingYet
 							message={`You don’t have any NFT yet`}
 							cta={

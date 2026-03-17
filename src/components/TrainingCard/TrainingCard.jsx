@@ -66,7 +66,7 @@ export default function TrainingCard({
 				method: 'get',
 			})
 
-			if (!isActive) return
+			// if (!isActive) return
 
 			if (res?.success) {
 				setAssetDetails(res?.data?.data ?? null)
@@ -99,7 +99,7 @@ export default function TrainingCard({
 				method: 'get',
 			})
 
-			if (!isActive) return
+			// if (!isActive) return
 
 			if (res?.success) {
 				const resData = res?.data?.data

@@ -3,8 +3,8 @@
 import { refreshRequest, request, requestUpload } from '@/utils'
 import axios from 'axios'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { signOut, getSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { signOut, getSession, useSession } from 'next-auth/react'
+import { usePathname, useRouter } from 'next/navigation'
 import { useActiveAccount } from 'thirdweb/react'
 import { useNotifications } from '@/hooks'
 
@@ -52,7 +52,8 @@ const getMaxAssetLevel = (assets = [], fallback = 1) => {
 }
 
 const mergeWeaponsByTokenId = (currentWeapons = [], incomingWeapons = []) => {
-	if (!Array.isArray(currentWeapons) && !Array.isArray(incomingWeapons)) return []
+	if (!Array.isArray(currentWeapons) && !Array.isArray(incomingWeapons))
+		return []
 	if (!Array.isArray(currentWeapons)) return incomingWeapons
 	if (!Array.isArray(incomingWeapons)) return currentWeapons
 
@@ -73,13 +74,15 @@ const mergeWeaponsByTokenId = (currentWeapons = [], incomingWeapons = []) => {
 const AuthContextProvider = ({ children }) => {
 	const activeAccount = useActiveAccount()
 	const router = useRouter()
+	const pathname = usePathname()
+	const { data: session } = useSession()
 	const { displayAlert } = useNotifications()
 	const [user, setUser] = useState({})
 	const [requestingLogin, setRequestingLogin] = useState(false)
 	const [loginRequest, setLoginRequest] = useState(null)
 	const loginRequestRef = useRef(null)
 
-	const beginInteractiveLogin = useCallback(() => {
+	const beginInteractiveLogin = useCallback(async () => {
 		setRequestingLogin(true)
 		return new Promise((resolve, reject) => {
 			const nextLoginRequest = { resolve, reject }
@@ -123,7 +126,8 @@ const AuthContextProvider = ({ children }) => {
 		const hasProvidedWeapons =
 			payload && Object.prototype.hasOwnProperty.call(payload, 'weapons')
 
-		const normalizedWeapons = hasProvidedWeapons && Array.isArray(weapons) ? weapons : null
+		const normalizedWeapons =
+			hasProvidedWeapons && Array.isArray(weapons) ? weapons : null
 
 		setUser((current) => {
 			const normalizedAssets = hasProvidedAssets
@@ -137,7 +141,9 @@ const AuthContextProvider = ({ children }) => {
 
 			const nextNftTokenId = shouldUpdateAssetConvenience
 				? (asTokenId(userData?.nftTokenId) ??
-					(hasProvidedAssets ? asTokenId(normalizedAssets?.[0]?.tokenId) : null) ??
+					(hasProvidedAssets
+						? asTokenId(normalizedAssets?.[0]?.tokenId)
+						: null) ??
 					asTokenId(current?.nftTokenId) ??
 					null)
 				: undefined
@@ -146,14 +152,17 @@ const AuthContextProvider = ({ children }) => {
 				? (userData?.hasNft ??
 					(hasProvidedAssets
 						? (normalizedAssets?.length ?? 0) > 0
-						: current?.hasNft ?? nextNftTokenId !== null))
+						: (current?.hasNft ?? nextNftTokenId !== null)))
 				: undefined
 
 			const nextLevel = shouldUpdateAssetConvenience
 				? (asFiniteNumber(userData?.level) ??
 					(hasProvidedAssets
-						? getMaxAssetLevel(normalizedAssets ?? [], asFiniteNumber(current?.level) ?? 1)
-						: asFiniteNumber(current?.level) ?? 1))
+						? getMaxAssetLevel(
+								normalizedAssets ?? [],
+								asFiniteNumber(current?.level) ?? 1,
+							)
+						: (asFiniteNumber(current?.level) ?? 1)))
 				: undefined
 
 			return {
@@ -164,7 +173,7 @@ const AuthContextProvider = ({ children }) => {
 							hasNft: nextHasNft,
 							nftTokenId: nextNftTokenId,
 							level: nextLevel,
-					  }
+						}
 					: {}),
 				...(normalizedAssets ? { assets: normalizedAssets } : {}),
 				...(normalizedWeapons ? { weapons: normalizedWeapons } : {}),
@@ -188,217 +197,223 @@ const AuthContextProvider = ({ children }) => {
 		return false
 	}, [user?.accessToken, user?.address])
 
-	const makeRequest = useCallback(async (
-		{
-			path = '',
-			method = 'get',
-			body = {},
-			prop = 'data',
-			includeClientID = false,
-		} = {},
-		upload = false,
-	) => {
-		const source = axios.CancelToken.source()
-		let accessToken = ''
+	const sessionAccessToken = session?.user?.accessToken ?? null
 
-		// Get access token
-		if (user?.accessToken) {
-			accessToken = user.accessToken
-		} else {
-			try {
-				accessToken = await beginInteractiveLogin()
-			} catch (error) {
-				return { success: false, message: 'Authentication failed' }
+	const makeRequest = useCallback(
+		async (
+			{
+				path = '',
+				method = 'get',
+				body = {},
+				prop = 'data',
+				includeClientID = false,
+			} = {},
+			upload = false,
+		) => {
+			const source = axios.CancelToken.source()
+			let accessToken = ''
+
+			// Get access token
+			if (sessionAccessToken) {
+				accessToken = sessionAccessToken
+			} else {
+				displayAlert({
+					title: 'Authentication Required',
+					message: 'Please log in to perform this action.',
+					type: 'error',
+					duration: 5000,
+				})
+				const nextPath = pathname ? `?next=${encodeURIComponent(pathname)}` : ''
+				router.replace(`/request-access${nextPath}`)
+				return { success: false, message: 'Authentication required' }
 			}
 
-			if (!accessToken) {
-				return { success: false, message: 'No access token received' }
-			}
-		}
-
-		// Helper function to make the actual request
-		const makeApiCall = (token) => {
-			return upload
-				? requestUpload({
-						path,
-						method,
-						file: body,
-						accessToken: token,
-						cancelToken: source.token,
-					})
-				: request({
-						path,
-						method,
-						body,
-						accessToken: token,
-						prop,
-						includeClientID,
-						cancelToken: source.token,
-					})
-		}
-
-		// Initial request
-		let response = await makeApiCall(accessToken)
-
-		// Handle 401/expired token
-		if (
-			response?.error?.statusCode === 401 ||
-			response?.status === 401 ||
-			response?.message === 'Token has expired'
-		) {
-			// Try refresh first
-			const refreshedToken = await refresh()
-			if (refreshedToken) {
-				return await makeApiCall(refreshedToken)
+			// Helper function to make the actual request
+			const makeApiCall = (token) => {
+				return upload
+					? requestUpload({
+							path,
+							method,
+							file: body,
+							accessToken: token,
+							cancelToken: source.token,
+						})
+					: request({
+							path,
+							method,
+							body,
+							accessToken: token,
+							prop,
+							includeClientID,
+							cancelToken: source.token,
+						})
 			}
 
-			// If refresh fails, try re-login
-			try {
-				const newToken = await beginInteractiveLogin()
+			// Initial request
+			let response = await makeApiCall(accessToken)
 
-				if (newToken) {
-					return await makeApiCall(newToken)
-				} else {
-					return { success: false, message: 'Re-authentication failed' }
+			// Handle 401/expired token
+			if (
+				response?.error?.statusCode === 401 ||
+				response?.status === 401 ||
+				response?.message === 'Token has expired'
+			) {
+				// Try refresh first
+				const refreshedToken = await refresh()
+				if (refreshedToken) {
+					return await makeApiCall(refreshedToken)
 				}
-			} catch (error) {
-				return { success: false, message: 'Re-authentication failed' }
+
+				// If refresh fails, try re-login
+				displayAlert({
+					title: 'Authentication Required',
+					message: 'Please log in to perform this action.',
+					type: 'error',
+					duration: 5000,
+				})
+				const nextPath = pathname ? `?next=${encodeURIComponent(pathname)}` : ''
+				router.replace(`/request-access${nextPath}`)
+				return { success: false, message: 'Authentication required' }
 			}
-		}
 
-		return response
-	}, [beginInteractiveLogin, refresh, user?.accessToken])
+			return response
+		},
+		[refresh, displayAlert, pathname, router, sessionAccessToken],
+	)
 
-	const login = useCallback(async ({ address, accessToken, showLoading }) => {
-		const res = await request({
-			path: `auth/login`,
-			method: 'post',
-			body: {
-				address: address || '',
-			},
-				accessToken: accessToken,
-		})
-		if (
-			res?.error?.statusCode === 401 ||
-			res?.status === 401 ||
-			res?.message === 'Token has expired'
-		) {
-			showLoading?.()
-			const x = await signOut({
-				callbackUrl: '/request-access',
-				redirect: false,
-			})
-			const session = await getSession()
-
-			await request({
-				path: 'auth/logout',
+	const login = useCallback(
+		async ({ address, accessToken, showLoading }) => {
+			const res = await request({
+				path: `auth/login`,
 				method: 'post',
 				body: {
-					address: activeAccount?.address ?? '',
+					address: address || '',
 				},
-				})
-			setUser(() => ({}))
-			rejectPendingLogin('Session expired')
-			router.push(x.url)
-			return
-		} else if (!res?.success) {
-			rejectPendingLogin(res?.message || 'Login failed')
-			return res
-		} else {
-			const authPayload = res?.data?.data ?? {}
-			applyUserPayload(authPayload)
-			resolvePendingLogin(authPayload?.user?.accessToken ?? null)
-		}
-		return res
-	}, [
-		activeAccount?.address,
-		applyUserPayload,
-		rejectPendingLogin,
-		resolvePendingLogin,
-		router,
-	])
-
-	const fetchCurrentUser = useCallback(async ({
-		accessToken,
-		silent = false,
-		showError,
-	} = {}) => {
-		const res = await request({
-			path: 'auth/me',
-			method: 'get',
-			accessToken,
-		})
-
-		if (!res?.success) {
-			if (!silent) {
-				showError?.({
-					title: 'Profile Sync Failed',
-					message:
-						res?.message || 'Unable to restore your profile right now.',
-				})
-			}
-			if (!silent) {
-				rejectPendingLogin(res?.message || 'Unable to restore your profile')
-			}
-			return res
-		}
-
-		const profileData = res?.data?.data ?? {}
-		applyUserPayload({
-			user: {
-				...profileData,
-				accessToken: accessToken ?? user?.accessToken ?? null,
-			},
-		})
-		resolvePendingLogin(accessToken ?? profileData?.accessToken ?? null)
-
-		return res
-	}, [applyUserPayload, rejectPendingLogin, resolvePendingLogin, user?.accessToken])
-
-	const verifyAssets = useCallback(async ({
-		showLoading,
-		hideLoading,
-		showError,
-		displayAlert,
-	} = {}) => {
-		if (!activeAccount?.address) {
-			showError?.({
-				title: 'Wallet Required',
-				message: 'Connect a wallet before refreshing your assets.',
+				accessToken: accessToken,
 			})
-			return { success: false, message: 'Wallet connection required' }
-		}
-
-		showLoading?.({
-			title: 'Refreshing Assets',
-			message: 'Checking on-chain ownership and syncing your profile.',
-		})
-
-		const res = await makeRequest({
-			path: 'game/verify-assets',
-			method: 'post',
-		})
-
-		hideLoading?.()
-
-		if (!res?.success) {
-			const message =
-				res?.message ||
-				res?.error ||
-				'Unable to refresh your assets right now.'
-
-			if (res?.status === 503) {
-				showError?.({
-					title: 'Asset Sync Unavailable',
-					message,
+			if (
+				res?.error?.statusCode === 401 ||
+				res?.status === 401 ||
+				res?.message === 'Token has expired'
+			) {
+				showLoading?.()
+				const x = await signOut({
+					callbackUrl: '/request-access',
+					redirect: false,
 				})
+				const session = await getSession()
+
+				await request({
+					path: 'auth/logout',
+					method: 'post',
+					body: {
+						address: activeAccount?.address ?? '',
+					},
+				})
+				setUser(() => ({}))
+				rejectPendingLogin('Session expired')
+				router.push(x.url)
+				return
+			} else if (!res?.success) {
+				rejectPendingLogin(res?.message || 'Login failed')
+				return res
 			} else {
-				showError?.({
-					title: 'Asset Sync Failed',
-					message,
-				})
+				const authPayload = res?.data?.data ?? {}
+				applyUserPayload(authPayload)
+				resolvePendingLogin(authPayload?.user?.accessToken ?? null)
 			}
 			return res
+		},
+		[
+			activeAccount?.address,
+			applyUserPayload,
+			rejectPendingLogin,
+			resolvePendingLogin,
+			router,
+		],
+	)
+
+	const fetchCurrentUser = useCallback(
+		async ({ accessToken, silent = false, showError } = {}) => {
+			const res = await request({
+				path: 'auth/me',
+				method: 'get',
+				accessToken,
+			})
+
+			if (!res?.success) {
+				if (!silent) {
+					showError?.({
+						title: 'Profile Sync Failed',
+						message:
+							res?.message || 'Unable to restore your profile right now.',
+					})
+				}
+				if (!silent) {
+					rejectPendingLogin(res?.message || 'Unable to restore your profile')
+				}
+				return res
+			}
+
+			const profileData = res?.data?.data ?? {}
+			applyUserPayload({
+				user: {
+					...profileData,
+					accessToken: accessToken ?? user?.accessToken ?? null,
+				},
+			})
+			resolvePendingLogin(accessToken ?? profileData?.accessToken ?? null)
+
+			return res
+		},
+		[
+			applyUserPayload,
+			rejectPendingLogin,
+			resolvePendingLogin,
+			user?.accessToken,
+		],
+	)
+
+	const verifyAssets = useCallback(
+		async ({ showLoading, hideLoading, showError, displayAlert } = {}) => {
+			if (!activeAccount?.address) {
+				showError?.({
+					title: 'Wallet Required',
+					message: 'Connect a wallet before refreshing your assets.',
+				})
+				return { success: false, message: 'Wallet connection required' }
+			}
+
+			showLoading?.({
+				title: 'Refreshing Assets',
+				message: 'Checking on-chain ownership and syncing your profile.',
+			})
+
+			const res = await makeRequest({
+				path: 'game/verify-assets',
+				method: 'post',
+			})
+
+			hideLoading?.()
+
+			if (!res?.success) {
+				const message =
+					res?.message ||
+					res?.error ||
+					'Unable to refresh your assets right now.'
+
+				if (res?.status === 503) {
+					showError?.({
+						title: 'Asset Sync Unavailable',
+						message,
+					})
+				} else {
+					showError?.({
+						title: 'Asset Sync Failed',
+						message,
+					})
+				}
+				return res
 			}
 
 			const verifiedData = res?.data?.data ?? {}
@@ -427,196 +442,247 @@ const AuthContextProvider = ({ children }) => {
 				}
 			})
 
-		displayAlert?.({
-			title: 'Assets Updated',
-			message: 'Your ChainBoi and weapon inventory were refreshed successfully.',
-			type: 'success',
-		})
+			displayAlert?.({
+				title: 'Assets Updated',
+				message:
+					'Your ChainBoi and weapon inventory were refreshed successfully.',
+				type: 'success',
+			})
 
-		return res
-	}, [activeAccount?.address, makeRequest])
+			return res
+		},
+		[activeAccount?.address, makeRequest],
+	)
 
-	const fetchTrainingNfts = useCallback(async ({ address } = {}) => {
-		const walletAddress = address ?? activeAccount?.address ?? ''
-		if (!walletAddress) return { success: false, message: 'Wallet address required' }
+	const fetchTrainingNfts = useCallback(
+		async ({ address } = {}) => {
+			const walletAddress = address ?? activeAccount?.address ?? ''
+			if (!walletAddress)
+				return { success: false, message: 'Wallet address required' }
 
-		return await makeRequest({
-			path: `training/nfts/${walletAddress}`,
-			method: 'get',
-		})
-	}, [activeAccount?.address, makeRequest])
+			return await makeRequest({
+				path: `training/nfts/${walletAddress}`,
+				method: 'get',
+			})
+		},
+		[activeAccount?.address, makeRequest],
+	)
 
-	const syncTrainingNfts = useCallback(async ({ address } = {}) => {
-		const res = await fetchTrainingNfts({ address })
-		if (!res?.success) return res
+	const syncTrainingNfts = useCallback(
+		async ({ address } = {}) => {
+			const res = await fetchTrainingNfts({ address })
+			if (!res?.success) return res
 
-		const nfts = res?.data?.data?.nfts
-		const normalizedAssets = normalizeChainBoiAssets(Array.isArray(nfts) ? nfts : [])
-
-		setUser((current) => ({
-			...current,
-			hasNft: normalizedAssets.length > 0,
-			nftTokenId: asTokenId(current?.nftTokenId) ?? asTokenId(normalizedAssets?.[0]?.tokenId),
-			level: getMaxAssetLevel(normalizedAssets, asFiniteNumber(current?.level) ?? 1),
-			assets: normalizedAssets,
-		}))
-
-		return res
-	}, [fetchTrainingNfts])
-
-	const fetchTrainingNftDetail = useCallback(async ({ tokenId } = {}) => {
-		const normalizedTokenId = asTokenId(tokenId)
-		if (normalizedTokenId === null) {
-			return { success: false, message: 'Valid tokenId required' }
-		}
-
-		return await makeRequest({
-			path: `training/nft/${normalizedTokenId}`,
-			method: 'get',
-		})
-	}, [makeRequest])
-
-	const fetchTrainingLevelUpCost = useCallback(async ({ tokenId, currentLevel } = {}) => {
-		const params = new URLSearchParams()
-		const normalizedTokenId = asTokenId(tokenId)
-		if (normalizedTokenId !== null) params.set('tokenId', String(normalizedTokenId))
-
-		const normalizedCurrentLevel = asFiniteNumber(currentLevel)
-		if (normalizedCurrentLevel !== null) params.set('currentLevel', String(normalizedCurrentLevel))
-
-		const query = params.toString()
-		return await makeRequest({
-			path: `training/level-up/cost${query ? `?${query}` : ''}`,
-			method: 'get',
-		})
-	}, [makeRequest])
-
-	const fetchTrainingEligibility = useCallback(async ({ tokenId } = {}) => {
-		const normalizedTokenId = asTokenId(tokenId)
-		if (normalizedTokenId === null) {
-			return { success: false, message: 'Valid tokenId required' }
-		}
-
-		return await makeRequest({
-			path: `training/eligibility/${normalizedTokenId}`,
-			method: 'get',
-		})
-	}, [makeRequest])
-
-	const submitTrainingLevelUp = useCallback(async ({ tokenId, txHash } = {}) => {
-		const normalizedTokenId = asTokenId(tokenId)
-		const hash = String(txHash ?? '').trim()
-		if (normalizedTokenId === null) return { success: false, message: 'Valid tokenId required' }
-		if (!hash) return { success: false, message: 'txHash is required' }
-
-		const res = await makeRequest({
-			path: 'training/level-up',
-			method: 'post',
-			body: {
-				tokenId: normalizedTokenId,
-				txHash: hash,
-			},
-		})
-
-		if (!res?.success) return res
-
-		const levelUpData = res?.data?.data ?? {}
-		const newLevel = asFiniteNumber(levelUpData?.newLevel)
-		const nextRank = levelUpData?.rank
-
-		setUser((current) => {
-			const currentAssets = Array.isArray(current?.assets) ? current.assets : []
-			const updatedAssets = currentAssets.some((asset) => asTokenId(asset?.tokenId) === normalizedTokenId)
-				? currentAssets.map((asset) =>
-						asTokenId(asset?.tokenId) === normalizedTokenId
-							? {
-									...asset,
-									...(newLevel !== null ? { level: newLevel } : {}),
-									...(nextRank ? { rank: nextRank } : {}),
-							  }
-							: asset,
-				  )
-				: [
-						...currentAssets,
-						{
-							tokenId: normalizedTokenId,
-							...(newLevel !== null ? { level: newLevel } : {}),
-							...(nextRank ? { rank: nextRank } : {}),
-						},
-				  ]
-
-			const unlockedWeapons =
-				Array.isArray(levelUpData?.unlockedWeapons) ? levelUpData.unlockedWeapons : null
-			const ownedWeaponNfts =
-				Array.isArray(levelUpData?.ownedWeaponNfts) ? levelUpData.ownedWeaponNfts : null
-			const mergedWeapons = mergeWeaponsByTokenId(
-				Array.isArray(current?.weapons) ? current.weapons : [],
-				ownedWeaponNfts ?? unlockedWeapons ?? [],
+			const nfts = res?.data?.data?.nfts
+			const normalizedAssets = normalizeChainBoiAssets(
+				Array.isArray(nfts) ? nfts : [],
 			)
 
-			return {
+			setUser((current) => ({
 				...current,
-				hasNft: updatedAssets.length > 0,
-				nftTokenId: asTokenId(current?.nftTokenId) ?? asTokenId(updatedAssets?.[0]?.tokenId),
-				level: getMaxAssetLevel(updatedAssets, asFiniteNumber(current?.level) ?? 1),
-				assets: updatedAssets,
-				...(mergedWeapons.length ? { weapons: mergedWeapons } : {}),
-			}
-		})
+				hasNft: normalizedAssets.length > 0,
+				nftTokenId:
+					asTokenId(current?.nftTokenId) ??
+					asTokenId(normalizedAssets?.[0]?.tokenId),
+				level: getMaxAssetLevel(
+					normalizedAssets,
+					asFiniteNumber(current?.level) ?? 1,
+				),
+				assets: normalizedAssets,
+			}))
 
-		return res
-	}, [makeRequest])
-
-	const setAvatar = useCallback(async ({
-		tokenId,
-		showLoading,
-		hideLoading,
-		showError,
-		displayAlert,
-		onSuccess,
-	} = {}) => {
-		if (!Number.isInteger(tokenId) || tokenId < 0) {
-			showError?.({
-				title: 'Invalid ChainBoi',
-				message: 'Select a valid ChainBoi before setting an avatar.',
-			})
-			return { success: false, message: 'Invalid tokenId' }
-		}
-
-		showLoading?.({
-			title: 'Setting Avatar',
-			message: 'Updating your active ChainBoi avatar.',
-		})
-
-		const res = await makeRequest({
-			path: 'game/set-avatar',
-			method: 'post',
-			body: {
-				tokenId,
-			},
-		})
-
-		hideLoading?.()
-
-		if (!res?.success) {
-			showError?.({
-				title: res?.status === 503 ? 'Avatar Update Unavailable' : 'Avatar Update Failed',
-				message:
-					res?.message || res?.error || 'Unable to set that ChainBoi as your avatar.',
-			})
 			return res
-		}
+		},
+		[fetchTrainingNfts],
+	)
+
+	const fetchTrainingNftDetail = useCallback(
+		async ({ tokenId } = {}) => {
+			const normalizedTokenId = asTokenId(tokenId)
+			if (normalizedTokenId === null) {
+				return { success: false, message: 'Valid tokenId required' }
+			}
+
+			return await makeRequest({
+				path: `training/nft/${normalizedTokenId}`,
+				method: 'get',
+			})
+		},
+		[makeRequest],
+	)
+
+	const fetchTrainingLevelUpCost = useCallback(
+		async ({ tokenId, currentLevel } = {}) => {
+			const params = new URLSearchParams()
+			const normalizedTokenId = asTokenId(tokenId)
+			if (normalizedTokenId !== null)
+				params.set('tokenId', String(normalizedTokenId))
+
+			const normalizedCurrentLevel = asFiniteNumber(currentLevel)
+			if (normalizedCurrentLevel !== null)
+				params.set('currentLevel', String(normalizedCurrentLevel))
+
+			const query = params.toString()
+			return await makeRequest({
+				path: `training/level-up/cost${query ? `?${query}` : ''}`,
+				method: 'get',
+			})
+		},
+		[makeRequest],
+	)
+
+	const fetchTrainingEligibility = useCallback(
+		async ({ tokenId } = {}) => {
+			const normalizedTokenId = asTokenId(tokenId)
+			if (normalizedTokenId === null) {
+				return { success: false, message: 'Valid tokenId required' }
+			}
+
+			return await makeRequest({
+				path: `training/eligibility/${normalizedTokenId}`,
+				method: 'get',
+			})
+		},
+		[makeRequest],
+	)
+
+	const submitTrainingLevelUp = useCallback(
+		async ({ tokenId, txHash } = {}) => {
+			const normalizedTokenId = asTokenId(tokenId)
+			const hash = String(txHash ?? '').trim()
+			if (normalizedTokenId === null)
+				return { success: false, message: 'Valid tokenId required' }
+			if (!hash) return { success: false, message: 'txHash is required' }
+
+			const res = await makeRequest({
+				path: 'training/level-up',
+				method: 'post',
+				body: {
+					tokenId: normalizedTokenId,
+					txHash: hash,
+				},
+			})
+
+			if (!res?.success) return res
+
+			const levelUpData = res?.data?.data ?? {}
+			const newLevel = asFiniteNumber(levelUpData?.newLevel)
+			const nextRank = levelUpData?.rank
+
+			setUser((current) => {
+				const currentAssets = Array.isArray(current?.assets)
+					? current.assets
+					: []
+				const updatedAssets = currentAssets.some(
+					(asset) => asTokenId(asset?.tokenId) === normalizedTokenId,
+				)
+					? currentAssets.map((asset) =>
+							asTokenId(asset?.tokenId) === normalizedTokenId
+								? {
+										...asset,
+										...(newLevel !== null ? { level: newLevel } : {}),
+										...(nextRank ? { rank: nextRank } : {}),
+									}
+								: asset,
+						)
+					: [
+							...currentAssets,
+							{
+								tokenId: normalizedTokenId,
+								...(newLevel !== null ? { level: newLevel } : {}),
+								...(nextRank ? { rank: nextRank } : {}),
+							},
+						]
+
+				const unlockedWeapons = Array.isArray(levelUpData?.unlockedWeapons)
+					? levelUpData.unlockedWeapons
+					: null
+				const ownedWeaponNfts = Array.isArray(levelUpData?.ownedWeaponNfts)
+					? levelUpData.ownedWeaponNfts
+					: null
+				const mergedWeapons = mergeWeaponsByTokenId(
+					Array.isArray(current?.weapons) ? current.weapons : [],
+					ownedWeaponNfts ?? unlockedWeapons ?? [],
+				)
+
+				return {
+					...current,
+					hasNft: updatedAssets.length > 0,
+					nftTokenId:
+						asTokenId(current?.nftTokenId) ??
+						asTokenId(updatedAssets?.[0]?.tokenId),
+					level: getMaxAssetLevel(
+						updatedAssets,
+						asFiniteNumber(current?.level) ?? 1,
+					),
+					assets: updatedAssets,
+					...(mergedWeapons.length ? { weapons: mergedWeapons } : {}),
+				}
+			})
+
+			return res
+		},
+		[makeRequest],
+	)
+
+	const setAvatar = useCallback(
+		async ({
+			tokenId,
+			showLoading,
+			hideLoading,
+			showError,
+			displayAlert,
+			onSuccess,
+		} = {}) => {
+			if (!Number.isInteger(tokenId) || tokenId < 0) {
+				showError?.({
+					title: 'Invalid ChainBoi',
+					message: 'Select a valid ChainBoi before setting an avatar.',
+				})
+				return { success: false, message: 'Invalid tokenId' }
+			}
+
+			showLoading?.({
+				title: 'Setting Avatar',
+				message: 'Updating your active ChainBoi avatar.',
+			})
+
+			const res = await makeRequest({
+				path: 'game/set-avatar',
+				method: 'post',
+				body: {
+					tokenId,
+				},
+			})
+
+			hideLoading?.()
+
+			if (!res?.success) {
+				showError?.({
+					title:
+						res?.status === 503
+							? 'Avatar Update Unavailable'
+							: 'Avatar Update Failed',
+					message:
+						res?.message ||
+						res?.error ||
+						'Unable to set that ChainBoi as your avatar.',
+				})
+				return res
+			}
 
 			const nextLevel = asFiniteNumber(res?.data?.data?.level)
 			setUser((current) => {
-				const currentAssets = Array.isArray(current?.assets) ? current.assets : []
+				const currentAssets = Array.isArray(current?.assets)
+					? current.assets
+					: []
 				const updatedAssets =
 					nextLevel !== null
 						? currentAssets.map((asset) =>
 								asTokenId(asset?.tokenId) === tokenId
 									? { ...asset, level: nextLevel }
 									: asset,
-						  )
+							)
 						: currentAssets
 
 				const derivedLevel = getMaxAssetLevel(
@@ -633,7 +699,7 @@ const AuthContextProvider = ({ children }) => {
 								hasNft: current?.hasNft ?? true,
 								nftTokenId: asTokenId(current?.nftTokenId) ?? tokenId,
 								assets: updatedAssets,
-						  }
+							}
 						: {}),
 					metrics: {
 						...(current?.metrics ?? {}),
@@ -642,79 +708,87 @@ const AuthContextProvider = ({ children }) => {
 				}
 			})
 
-		displayAlert?.({
-			title: 'Avatar Updated',
-			message: `ChainBoi #${tokenId} is now your active avatar.`,
-			type: 'success',
-		})
-		onSuccess?.(res)
-
-		return res
-	}, [makeRequest])
-
-	const logout = useCallback(async (showAlert_ = true, callbacks) => {
-		if (showAlert_)
-			displayAlert({
-				title: 'Alert',
-				message: 'Login aborted!',
-				type: 'error',
+			displayAlert?.({
+				title: 'Avatar Updated',
+				message: `ChainBoi #${tokenId} is now your active avatar.`,
+				type: 'success',
 			})
-		const x = await signOut({
-			callbackUrl: '/request-access',
-			redirect: false,
-		})
-		const session = await getSession()
+			onSuccess?.(res)
 
-		setUser(() => ({}))
-		rejectPendingLogin('Login aborted')
-		callbacks?.map((cb) => cb?.())
-		await request({
-			path: 'auth/logout',
-			method: 'post',
-			body: {
-				address: activeAccount?.address ?? '',
-			},
-			// includeClientID: true,
-		})
-		// router.push(x.url)
-	}, [activeAccount?.address, displayAlert, rejectPendingLogin])
+			return res
+		},
+		[makeRequest],
+	)
 
-	const ContextValue = useMemo(() => ({
-		makeRequest,
-		user,
-		setUser,
-		requestingLogin,
-		loginRequest,
-		refresh,
-		login,
-		fetchCurrentUser,
-		verifyAssets,
-		fetchTrainingNfts,
-		syncTrainingNfts,
-		fetchTrainingNftDetail,
-		fetchTrainingLevelUpCost,
-		fetchTrainingEligibility,
-		submitTrainingLevelUp,
-		setAvatar,
-		logout,
-	}), [
-		fetchTrainingEligibility,
-		fetchTrainingLevelUpCost,
-		fetchTrainingNftDetail,
-		fetchTrainingNfts,
-		fetchCurrentUser,
-		login,
-		loginRequest,
-		logout,
-		makeRequest,
-		refresh,
-		requestingLogin,
-		submitTrainingLevelUp,
-		setAvatar,
-		syncTrainingNfts,
-		user,
-		verifyAssets,
-	])
+	const logout = useCallback(
+		async (showAlert_ = true, callbacks) => {
+			if (showAlert_)
+				displayAlert({
+					title: 'Alert',
+					message: 'Login aborted!',
+					type: 'error',
+				})
+			const x = await signOut({
+				callbackUrl: '/request-access',
+				redirect: false,
+			})
+			const session = await getSession()
+
+			setUser(() => ({}))
+			rejectPendingLogin('Login aborted')
+			callbacks?.map((cb) => cb?.())
+			await request({
+				path: 'auth/logout',
+				method: 'post',
+				body: {
+					address: activeAccount?.address ?? '',
+				},
+				// includeClientID: true,
+			})
+			// router.push(x.url)
+		},
+		[activeAccount?.address, displayAlert, rejectPendingLogin],
+	)
+
+	const ContextValue = useMemo(
+		() => ({
+			makeRequest,
+			user,
+			setUser,
+			requestingLogin,
+			loginRequest,
+			refresh,
+			login,
+			fetchCurrentUser,
+			verifyAssets,
+			fetchTrainingNfts,
+			syncTrainingNfts,
+			fetchTrainingNftDetail,
+			fetchTrainingLevelUpCost,
+			fetchTrainingEligibility,
+			submitTrainingLevelUp,
+			setAvatar,
+			logout,
+		}),
+		[
+			fetchTrainingEligibility,
+			fetchTrainingLevelUpCost,
+			fetchTrainingNftDetail,
+			fetchTrainingNfts,
+			fetchCurrentUser,
+			login,
+			loginRequest,
+			logout,
+			makeRequest,
+			refresh,
+			requestingLogin,
+			submitTrainingLevelUp,
+			setAvatar,
+			syncTrainingNfts,
+			user,
+			verifyAssets,
+		],
+	)
 
 	return (
 		<AuthContext.Provider value={ContextValue}>{children}</AuthContext.Provider>
