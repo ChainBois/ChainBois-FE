@@ -54,7 +54,7 @@ export const authProviders = {
 		}),
 	],
 	pages: {
-		signIn: '/request-access',
+		signIn: '/access-request',
 	},
 	callbacks: {
 		async jwt({ token, user }) {

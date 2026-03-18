@@ -208,7 +208,7 @@ export default function AccountManagement() {
 	const signout = async () => {
 		showLoading()
 		const x = await signOut({
-			callbackUrl: '/request-access',
+			callbackUrl: '/access-request',
 			redirect: false,
 		})
 		const session = await getSession()

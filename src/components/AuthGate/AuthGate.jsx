@@ -42,7 +42,7 @@ export default function AuthGate({ children }) {
 		if (isCheckingAccess || isAuthorized) return
 
 		const nextPath = pathname ? `?next=${encodeURIComponent(pathname)}` : ''
-		router.replace(`/request-access${nextPath}`)
+		router.replace(`/access-request${nextPath}`)
 	}, [isAuthorized, isCheckingAccess, pathname, router])
 
 	if (!isAuthorized) {

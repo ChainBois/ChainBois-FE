@@ -77,8 +77,18 @@ const MainContextProvider = ({ children }) => {
 
 	const [platformDataIsLoading, setPlatformDataIsLoading] = useState(false)
 	const [triggerCounter, setTriggerCounter] = useState(0)
+	const [platformSettings, setPlatformSettings] = useState({})
 
 	const updateTriggerCounter = () => setTriggerCounter((x) => x + 1)
+
+	const getPlatformSettings = async () => {
+		const res = await request({
+			path: '/settings',
+		})
+		if (res?.success) {
+			setPlatformSettings(res?.data?.data)
+		}
+	}
 
 	const { retrievePlatformData } = usePlatformDataFetcher({
 		user,
@@ -86,6 +96,7 @@ const MainContextProvider = ({ children }) => {
 		platformDataIsLoading,
 		setPlatformDataIsLoading,
 		updateTriggerCounter,
+		getPlatformSettings,
 	})
 
 	const ContextValue = useMemo(
@@ -93,8 +104,9 @@ const MainContextProvider = ({ children }) => {
 			dimensions,
 			query: matches,
 			retrievePlatformData,
+			platformSettings,
 		}),
-		[dimensions, matches, retrievePlatformData],
+		[dimensions, matches, platformSettings, retrievePlatformData],
 	)
 
 	const sessionAccessToken = session?.user?.accessToken ?? null

@@ -48,7 +48,7 @@ axiosCall.interceptors.response.use(
 					}
 				} catch {
 					await auth.signOut()
-					window.location.href = '/request-access'
+					window.location.href = '/access-request'
 				}
 				break
 			case 503:

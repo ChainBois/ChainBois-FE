@@ -7,8 +7,8 @@
 }
 
 .borderButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: #ec1b24;
+	background: rgba(255, 255, 255, 0.1);
+	border-color: #ec1b24;
 }
 
 .borderButtonContent {
@@ -17,6 +17,14 @@
 	background: #ec1b24;
 	padding: 10px 20px;
 	gap: 8px;
+}
+
+.borderButton:disabled {
+	border-color: #4e4d4d !important;
+}
+
+.borderButton:disabled .borderButtonContent {
+	background: #4e4d4d !important;
 }
 
 .borderButtonText {
@@ -37,31 +45,42 @@
 
 /* --------------------------- Media Queries ------------------------- */
 /* iPad Air landscape */
-@media only screen and (max-width: 1180px) and (orientation: landscape) {}
+@media only screen and (max-width: 1180px) and (orientation: landscape) {
+}
 
 /* iPad Pro */
-@media only screen and (max-width: 1024px) {}
+@media only screen and (max-width: 1024px) {
+}
 
 /* iPad Mini landscape */
-@media only screen and (max-width: 1024px) and (orientation: landscape) {}
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+}
 
 /* Special (Range of iPad Pro - iPad Mini)*/
-@media only screen and (max-width: 1024px) and (min-width: 835px) {}
+@media only screen and (max-width: 1024px) and (min-width: 835px) {
+}
 
 /* Mobile landscape */
-@media only screen and (max-width: 950px) and (orientation: landscape) {}
+@media only screen and (max-width: 950px) and (orientation: landscape) {
+}
 
 /* Small device */
-@media only screen and (max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {}
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+}
 
 /* Tiny device */
-@media only screen and (max-width: 480px) {}
+@media only screen and (max-width: 480px) {
+}
 
 /* iPhone 12 */
-@media only screen and (max-width: 390px) {}
+@media only screen and (max-width: 390px) {
+}
 
 /* Super Tiny device */
-@media only screen and (max-width: 360px) {}
+@media only screen and (max-width: 360px) {
+}
 
 /* Query specifically for touchscreen devices */
-@media only screen and (hover: none) {}
+@media only screen and (hover: none) {
+}

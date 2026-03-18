@@ -1,17 +1,21 @@
 'use client'
 
-import GameplayBg from '@/assets/img/Gameplay.png';
-import s from '@/styles';
-import { cf } from '@/utils';
-import Image from 'next/image';
-import { useMemo } from 'react';
-import { BsCaretRightFill } from 'react-icons/bs';
-import BorderedButton from '../BorderedButton';
-import g from './Gameplay.module.css';
+import GameplayBg from '@/assets/img/Gameplay.png'
+import s from '@/styles'
+import { cf } from '@/utils'
+import Image from 'next/image'
+import { useMemo } from 'react'
+import { BsCaretRightFill } from 'react-icons/bs'
+import BorderedButton from '../BorderedButton'
+import g from './Gameplay.module.css'
+import GameplayVideo from './GameplayVideo'
+import { useMain } from '@/hooks'
 
 function OddTile({ title, number, text }) {
 	return (
-		<article className={cf(s.flex, s.flexCenter, s.p_relative, g.oddTile, g.cutIn)}>
+		<article
+			className={cf(s.flex, s.flexCenter, s.p_relative, g.oddTile, g.cutIn)}
+		>
 			<header className={cf(s.wMax, s.flex, s.flexLeft, g.oddTileHeader)}>
 				<p className={cf(s.wMax, s.tLeft, g.oddTileTitleNumber)}>{number}</p>
 				<h3 className={cf(s.wMax, s.tLeft, g.oddTileTitle)}>{title}</h3>
@@ -32,7 +36,7 @@ function Tile({ title, number, text }) {
 					s.flexCenter,
 					s.flex_dColumn,
 					s.g10,
-					g.tileContainer
+					g.tileContainer,
 				)}
 			>
 				<header
@@ -43,7 +47,7 @@ function Tile({ title, number, text }) {
 						s.spaceXBetween,
 						s.spaceYStart,
 						s.flexOne,
-						g.tileHeader
+						g.tileHeader,
 					)}
 				>
 					<p className={cf(s.wMax, s.tLeft, g.tileTitleNumber)}>{number}</p>
@@ -56,6 +60,22 @@ function Tile({ title, number, text }) {
 }
 
 export default function Gameplay() {
+	const { platformSettings } = useMain()
+	const trailer = useMemo(
+		() => platformSettings?.trailer ?? null,
+		[platformSettings],
+	)
+	const Trailer = useMemo(() => {
+		return !!trailer ? (
+			<GameplayVideo videoId={trailer} />
+		) : (
+			<Image
+				src={GameplayBg}
+				alt='Gameplay'
+				className={cf(s.p_absolute, g.gameplayBg)}
+			/>
+		)
+	}, [trailer])
 	const tiles = useMemo(
 		() => [
 			{
@@ -79,7 +99,7 @@ export default function Gameplay() {
 				text: `Level your ChainBoi, refresh your on-chain assets when needed, and set your active avatar for the dashboard.`,
 			},
 		],
-		[]
+		[],
 	)
 
 	const Tiles = useMemo(
@@ -99,9 +119,9 @@ export default function Gameplay() {
 						number={tile.number}
 						text={tile.text}
 					/>
-				)
+				),
 			),
-		[tiles]
+		[tiles],
 	)
 
 	return (
@@ -112,7 +132,7 @@ export default function Gameplay() {
 					s.flex,
 					s.flexCenter,
 					s.p_relative,
-					g.labelContainer
+					g.labelContainer,
 				)}
 			>
 				<h2 className={cf(s.p_absolute, g.title)}>
@@ -123,11 +143,7 @@ export default function Gameplay() {
 			<div
 				className={cf(s.wMax, s.flex, s.flexCenter, s.p_relative, g.gameplay)}
 			>
-				<Image
-					src={GameplayBg}
-					alt='Gameplay'
-					className={cf(s.p_absolute, g.gameplayBg)}
-				/>
+				{Trailer}
 				<div className={cf(g.gameplayButtonContainer)}>
 					<BorderedButton
 						tag={'Enter Battleground'}
@@ -147,7 +163,7 @@ export default function Gameplay() {
 					s.flex,
 					s.spaceXCenter,
 					s.spaceYEnd,
-					g.tilesWrapper
+					g.tilesWrapper,
 				)}
 			>
 				<div
@@ -157,7 +173,7 @@ export default function Gameplay() {
 						s.flex_dColumn,
 						s.spaceXEnd,
 						s.spaceYCenter,
-						g.tiles
+						g.tiles,
 					)}
 				>
 					{Tiles}

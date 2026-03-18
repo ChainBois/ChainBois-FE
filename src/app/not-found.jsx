@@ -60,7 +60,7 @@ export default function NotFoundPage() {
 					</div>
 
 					<div className={cf(s.flex, s.flexCenter, s.g20, styles.actionButtons)}>
-						<PolyButton
+						<BorderedButton
 							tag='Return to Base'
 							action='/'
 							isLink

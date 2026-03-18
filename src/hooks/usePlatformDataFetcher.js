@@ -9,6 +9,7 @@ export const usePlatformDataFetcher = ({
 	platformDataIsLoading,
 	setPlatformDataIsLoading,
 	updateTriggerCounter,
+	getPlatformSettings,
 }) => {
 	const stateRef = useRef({
 		user,
@@ -55,6 +56,7 @@ export const usePlatformDataFetcher = ({
 				}
 
 				await Promise.all([
+					getPlatformSettings(),
 					// getPrimaryCollections(),
 					// getListings({
 					// 	traits: stateRef.current.globalTraits,
@@ -87,6 +89,9 @@ export const usePlatformDataFetcher = ({
 		},
 		[
 			// Data retrieval callbacks
+			getPlatformSettings,
+			setPlatformDataIsLoading,
+			updateTriggerCounter,
 		],
 	)
 
@@ -118,6 +123,7 @@ export const usePlatformDataFetcher = ({
 		// roleIsAdmin,
 		user,
 		activeAddress,
+		retrievePlatformData,
 	])
 
 	// useEffect(() => {
@@ -138,18 +144,19 @@ export const usePlatformDataFetcher = ({
 	// }, [sLPage, globalTraits, roleIsAdmin])
 
 	useEffect(() => {
-		activityRef.current.isActive = true
+		const activityRefCurrent = activityRef.current
+		activityRefCurrent.isActive = true
 
-		activityRef.current.intervalID = setInterval(() => {
-			if (activityRef.current.isActive) {
+		activityRefCurrent.intervalID = setInterval(() => {
+			if (activityRefCurrent.isActive) {
 				retrievePlatformData()
 			}
 		}, 30000)
 
 		return () => {
-			activityRef.current.isActive = false
-			clearTimeout(activityRef.current.platformTimerID)
-			clearInterval(activityRef.current.intervalID)
+			activityRefCurrent.isActive = false
+			clearTimeout(activityRefCurrent.platformTimerID)
+			clearInterval(activityRefCurrent.intervalID)
 		}
 	}, [retrievePlatformData])
 

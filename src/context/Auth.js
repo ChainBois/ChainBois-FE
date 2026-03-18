@@ -224,7 +224,7 @@ const AuthContextProvider = ({ children }) => {
 					duration: 5000,
 				})
 				const nextPath = pathname ? `?next=${encodeURIComponent(pathname)}` : ''
-				router.replace(`/request-access${nextPath}`)
+				router.replace(`/access-request${nextPath}`)
 				return { success: false, message: 'Authentication required' }
 			}
 
@@ -272,7 +272,7 @@ const AuthContextProvider = ({ children }) => {
 					duration: 5000,
 				})
 				const nextPath = pathname ? `?next=${encodeURIComponent(pathname)}` : ''
-				router.replace(`/request-access${nextPath}`)
+				router.replace(`/access-request${nextPath}`)
 				return { success: false, message: 'Authentication required' }
 			}
 
@@ -298,7 +298,7 @@ const AuthContextProvider = ({ children }) => {
 			) {
 				showLoading?.()
 				const x = await signOut({
-					callbackUrl: '/request-access',
+					callbackUrl: '/access-request',
 					redirect: false,
 				})
 				const session = await getSession()
@@ -313,6 +313,7 @@ const AuthContextProvider = ({ children }) => {
 				setUser(() => ({}))
 				rejectPendingLogin('Session expired')
 				router.push(x.url)
+				hideLoading?.()
 				return
 			} else if (!res?.success) {
 				rejectPendingLogin(res?.message || 'Login failed')
@@ -729,7 +730,7 @@ const AuthContextProvider = ({ children }) => {
 					type: 'error',
 				})
 			const x = await signOut({
-				callbackUrl: '/request-access',
+				callbackUrl: '/access-request',
 				redirect: false,
 			})
 			const session = await getSession()

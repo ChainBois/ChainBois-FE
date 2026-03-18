@@ -108,7 +108,7 @@ function PlayButton() {
 	return (
 		<Link
 			className={cf(s.flex, s.flexCenter, s.g10, n.playButton)}
-			href={'/request-access'}
+			href={'/access-request'}
 		>
 			<span className={s.dInlineBlock}>Play Now</span>
 			<MdArrowOutward className={cf(s.dInlineBlock, n.playIcon)} />
@@ -232,7 +232,7 @@ function MobileMenu({ isOpen, onClose }) {
 				{/* Play button */}
 				<div className={n.mobilePlayWrapper}>
 					<Link
-						href={'/request-access'}
+						href={'/access-request'}
 						className={cf(
 							s.flex,
 							s.flexCenter,
