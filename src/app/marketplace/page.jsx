@@ -36,7 +36,8 @@ export default function Page() {
 					<>
 						<BorderedButton
 							tag={'View Inventory'}
-							action={() => {}}
+							isLink
+							action={'/inventory'}
 							borderButtonText={h.heroActionText}
 						/>
 					</>

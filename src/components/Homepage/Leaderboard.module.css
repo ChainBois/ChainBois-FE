@@ -5,6 +5,9 @@
 	margin-bottom: 100px;
 }
 
+.homeShell {
+}
+
 .intro {
 	width: min(100%, 420px);
 	gap: 12px;
@@ -237,6 +240,30 @@
 		flex-direction: column;
 		gap: 18px;
 		margin-bottom: 43px;
+	}
+
+	.homeShell .periodChip {
+		min-width: 92px;
+		height: 32px;
+		padding: 0 12px;
+		font-size: 10px;
+	}
+
+	.homeShell .rankValue {
+		font-size: 18px;
+	}
+
+	.homeShell .playerName {
+		font-size: 11px;
+	}
+
+	.homeShell .playerMeta,
+	.homeShell .statLabel {
+		font-size: 9px;
+	}
+
+	.homeShell .statValue {
+		font-size: 13px;
 	}
 
 	.title {

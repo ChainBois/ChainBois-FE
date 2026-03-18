@@ -104,7 +104,7 @@ export default function Leaderboard() {
 
 	return (
 		<Container tag='Leaderboard'>
-			<div className={cf(s.wMax, s.flex, s.flexTop, l.shell)}>
+			<div className={cf(s.wMax, s.flex, s.flexTop, l.shell, l.homeShell)}>
 				{/* <div className={cf(s.flex, s.flex_dColumn, l.intro)}>
 					<span className={cf(l.kicker)}>All-Time Ranking</span>
 					<h3 className={cf(l.title)}>Top operators across the ChainBois battleground.</h3>

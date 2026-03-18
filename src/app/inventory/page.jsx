@@ -103,7 +103,9 @@ export default function Page() {
 							cta={
 								<BorderedButton
 									tag={'Purchase'}
-									action={() => {}}
+									action={'https://chainbois-testnet-faucet.vercel.app'}
+									isLink
+									target={'_blank'}
 									borderButtonText={h.heroActionText}
 								/>
 							}

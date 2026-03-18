@@ -21,7 +21,7 @@ import {
 	CompletedTournament,
 } from '@/components/BattlegroundCards'
 import { useState } from 'react'
-import { useMain } from '@/hooks'
+import { useMain, useNotifications } from '@/hooks'
 import { useMemo } from 'react'
 
 const activeTourneys = [1, 2, 3]
@@ -39,6 +39,7 @@ const completedTourneys = [
 
 export default function Page() {
 	const { query: { isMobile = false } = {} } = useMain()
+	const { displayAlert } = useNotifications()
 	const [displayTourneys, setDisplayTourneys] = useState([])
 	const [upcoming_dTourneys, setUpcoming_dTourneys] = useState([])
 
@@ -153,7 +154,12 @@ export default function Page() {
 					<>
 						<BorderedButton
 							tag={'Convert'}
-							action={() => {}}
+							action={() => {
+								displayAlert({
+									title: 'Coming Soon',
+									message: 'This feature is coming soon.',
+								})
+							}}
 							borderButtonText={h.heroActionText}
 						/>
 					</>

@@ -18,7 +18,7 @@ const teamMembers = [
 		role: 'Founder',
 		img: '/img/PFP_Mark_Slim.png',
 		imgExpanded: '/img/PFP_Mark_Mid.png',
-		social: 'https://x.com/ea_aro1914',
+		social: 'https://x.com/ChainBois',
 	},
 	{
 		id: 2,

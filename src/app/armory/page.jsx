@@ -15,6 +15,7 @@ import s from '@/styles'
 import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
+import { useNotifications } from '@/hooks'
 
 const cards = [
 	{
@@ -83,6 +84,7 @@ const cards = [
 ]
 
 export default function Page() {
+	const { displayAlert } = useNotifications()
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
 			<Hero
@@ -106,7 +108,12 @@ export default function Page() {
 					<>
 						<BorderedButton
 							tag={'Convert'}
-							action={() => {}}
+							action={() => {
+								displayAlert({
+									title: 'Coming Soon',
+									message: 'This feature is coming soon.',
+								})
+							}}
 							borderButtonText={h.heroActionText}
 						/>
 					</>
