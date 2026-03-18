@@ -64,7 +64,13 @@
 }
 
 .polyButton {
-	width: 100px !important;
+	width: 160px !important;
+}
+
+@media only screen and (max-width: 834px) {
+	.polyButton {
+		width: 130px !important;
+	}
 }
 
 @media only screen and (max-width: 480px) {
@@ -84,5 +90,9 @@
 
 	.popupMessage {
 		font-size: 13px;
+	}
+
+	.polyButton {
+		width: 100px !important;
 	}
 }
