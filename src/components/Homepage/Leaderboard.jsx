@@ -37,6 +37,7 @@ export default function Leaderboard() {
 	const [entries, setEntries] = useState([])
 	const [isLoading, setIsLoading] = useState(true)
 	const [hasError, setHasError] = useState(false)
+	const [period] = useState('all')
 
 	useEffect(() => {
 		let isActive = true
@@ -45,10 +46,18 @@ export default function Leaderboard() {
 			setIsLoading(true)
 			setHasError(false)
 
-			const res = await request({
-				path: 'leaderboard?limit=5&page=1',
-				method: 'get',
-			})
+			const path =
+				period === 'all'
+					? 'leaderboard?limit=5&page=1'
+					: `leaderboard/${period}?limit=5&page=1`
+			let res = await request({ path, method: 'get' })
+
+			if (!res?.success && period !== 'all') {
+				res = await request({
+					path: `leaderboard?period=${encodeURIComponent(period)}&limit=5&page=1`,
+					method: 'get',
+				})
+			}
 
 			if (!isActive) return
 
@@ -68,7 +77,7 @@ export default function Leaderboard() {
 		return () => {
 			isActive = false
 		}
-	}, [])
+	}, [period])
 
 	const content = useMemo(() => {
 		if (isLoading) {
@@ -104,16 +113,16 @@ export default function Leaderboard() {
 					</p>
 				</div> */}
 
-				<div className={cf(s.wMax, s.flex, s.flex_dColumn, l.board)}>
-					<div className={cf(s.wMax, s.flex, s.spaceXBetween, s.spaceYCenter, l.boardHeader)}>
-						<div className={cf(s.flex, s.flexCenter, l.periodChip)}>All Time</div>
-						<BorderedButton
-							tag='Full Battleground'
-							action='/battleground'
-							isLink={true}
-							borderButton={l.boardLink}
-						/>
-					</div>
+					<div className={cf(s.wMax, s.flex, s.flex_dColumn, l.board)}>
+						<div className={cf(s.wMax, s.flex, s.spaceXBetween, s.spaceYCenter, l.boardHeader)}>
+							<div className={cf(s.flex, s.flexCenter, l.periodChip)}>All Time</div>
+							<BorderedButton
+								tag='Full Leaderboard'
+								action='/leaderboard'
+								isLink={true}
+								borderButton={l.boardLink}
+							/>
+						</div>
 
 					<div className={cf(s.wMax, s.flex, s.flex_dColumn, l.rows)}>
 						{content.map((entry) => (

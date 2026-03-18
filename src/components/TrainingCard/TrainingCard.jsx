@@ -247,7 +247,8 @@ export default function TrainingCard({
 						side='right'
 						polyButton={t.polyButton}
 						polyButtonText={t.polyButtonText}
-						action={() => onLevelUp({ ...asset, assetDetails })}
+						action={ () => onLevelUp({ ...asset, assetDetails }) }
+						disabled={isMaxLevel}
 					/>
 					<PolyButton
 						tag='Details'
