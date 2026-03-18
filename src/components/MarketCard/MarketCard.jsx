@@ -27,8 +27,8 @@ export default function MarketCard({ pseudoIndex }) {
 		}
 	}, [pseudoIndex])
 
-    const title = useMemo(() => {
-        const index = (pseudoIndex + 1) % 3
+	const title = useMemo(() => {
+		const index = (pseudoIndex + 1) % 3
 		switch (index) {
 			case 0:
 				return 'Demo Kit'
@@ -37,7 +37,7 @@ export default function MarketCard({ pseudoIndex }) {
 			case 2:
 				return 'Assault Rifle'
 		}
-    }, [pseudoIndex])
+	}, [pseudoIndex])
 
 	const price = useMemo(() => {
 		const value = currentStep * 300 + 300
@@ -78,7 +78,12 @@ export default function MarketCard({ pseudoIndex }) {
 						<p className={cf(s.dInlineBlock, s.tLeft, m.price)}>
 							{price} $BATTLE
 						</p>
-						<BuyButton buyButton={m.buyButton} />
+						<BuyButton
+							buyButton={m.buyButton}
+							isLink
+							action={ `https://chainbois-testnet-faucet.vercel.app/` }
+							target={'_blank'}
+						/>
 					</footer>
 				</div>
 			</div>

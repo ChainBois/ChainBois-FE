@@ -74,7 +74,11 @@ export default function ArmoryCard({ image, name, description, price }) {
 					<p className={cf(s.wMax, s.tCenter, a.price)}>{price} $BATTLE</p>
 				</header>
 				<footer className={cf(s.wMax, s.flex, s.flexCenter, a.footer)}>
-					<BuyButton />
+					<BuyButton
+						isLink
+						action={`https://chainbois-testnet-faucet.vercel.app/`}
+						target={'_blank'}
+					/>
 				</footer>
 			</div>
 		</article>

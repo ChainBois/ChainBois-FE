@@ -20,6 +20,22 @@
 	color: rgba(255, 255, 255, 1);
 }
 
+.buyButtonContent {
+	gap: 10px;
+}
+
+.buyButtonText {
+	color: inherit;
+}
+
+.buyButtonIcon {
+	color: inherit;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 /* iPad Pro */
 @media only screen and (max-width: 1024px) {
 }
