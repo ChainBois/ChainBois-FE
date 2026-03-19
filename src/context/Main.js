@@ -138,17 +138,11 @@ const MainContextProvider = ({ children }) => {
 			// await fetch('/api/auth/session')
 		}
 		revalidateUserOnStatusChange()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		activeAccount?.address,
-		fetchCurrentUser,
-		login,
-		logout,
 		sessionAccessToken,
-		showAlert,
-		showError,
-		showLoading,
 		status,
-		setUser,
 	])
 
 	useEffect(() => {
