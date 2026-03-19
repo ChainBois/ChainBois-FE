@@ -240,6 +240,7 @@ function MobileMenu({ isOpen, onClose }) {
 							n.playButton,
 							n.mobilePlayButton,
 						)}
+						onClick={onClose}
 					>
 						<span className={s.dInlineBlock}>Play Now</span>
 						<MdArrowOutward className={cf(s.dInlineBlock, n.playIcon)} />
