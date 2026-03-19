@@ -22,6 +22,7 @@ export {
 	getChainBoiImageCandidates,
 	getChainBoiImageUrl,
 	getWeaponImageCandidates,
+	ipfsToGateway,
 } from './ipfsAssetUrls'
 export { isNaN } from './isNaN'
 export { msToTime } from './msToTime'

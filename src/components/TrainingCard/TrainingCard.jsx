@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import s from '@/styles'
-import { cf, getChainBoiImageCandidates } from '@/utils'
+import { cf, getChainBoiImageCandidates, ipfsToGateway } from '@/utils'
 import t from './TrainingCard.module.css'
 import ChainSwords from '@/assets/svg/ChainSwords.svg'
 import Image from 'next/image'
@@ -34,9 +34,18 @@ export default function TrainingCard({
 		}
 	}, [pseudoIndex])
 
+	const tokenId = useMemo(() => {
+		const derived = asset?.tokenId ?? asset?.nftTokenId
+		return Number.isInteger(derived) ? derived : Number(derived)
+	}, [asset?.nftTokenId, asset?.tokenId])
+
 	const chainBoiImageCandidates = useMemo(
-		() => getChainBoiImageCandidates(asset?.nftTokenId),
-		[asset?.nftTokenId],
+		() => {
+			const fromApi = ipfsToGateway(asset?.imageUri)
+			if (fromApi.length) return fromApi
+			return getChainBoiImageCandidates(tokenId)
+		},
+		[asset?.imageUri, tokenId],
 	)
 
 	const [imageIndex, setImageIndex] = useState(0)
@@ -46,12 +55,11 @@ export default function TrainingCard({
 
 	useEffect(() => {
 		setImageIndex(0)
-	}, [asset?.nftTokenId])
+	}, [tokenId])
 
 	useEffect(() => {
 		let isActive = true
 
-		const tokenId = asset?.nftTokenId
 		if (!Number.isInteger(tokenId)) {
 			setAssetDetails(null)
 			setAssetDetailsIsLoading(false)
@@ -82,12 +90,11 @@ export default function TrainingCard({
 		return () => {
 			isActive = false
 		}
-	}, [asset?.nftTokenId, makeRequest])
+	}, [makeRequest, tokenId])
 
 	useEffect(() => {
 		let isActive = true
 
-		const tokenId = asset?.nftTokenId
 		if (!Number.isInteger(tokenId)) {
 			setAssetEligibility(null)
 			return
@@ -115,7 +122,7 @@ export default function TrainingCard({
 		return () => {
 			isActive = false
 		}
-	}, [asset?.nftTokenId, makeRequest])
+	}, [makeRequest, tokenId])
 
 	const isEligibleClass = useMemo(() => {
 		return assetEligibility ? t.active : ''
@@ -203,7 +210,7 @@ export default function TrainingCard({
 					{typeof imageSrc === 'string' ? (
 						<Image
 							src={imageSrc}
-							alt={`ChainBoi #${asset?.nftTokenId ?? pseudoIndex + 1}`}
+							alt={`ChainBoi #${tokenId ?? pseudoIndex + 1}`}
 							fill
 							unoptimized
 							className={cf(s.wMax, s.hMax, t.trainingCardImage)}
@@ -212,7 +219,7 @@ export default function TrainingCard({
 					) : (
 						<Image
 							src={imageSrc}
-							alt={`ChainBoi #${asset?.nftTokenId ?? pseudoIndex + 1}`}
+							alt={`ChainBoi #${tokenId ?? pseudoIndex + 1}`}
 							fill
 							className={cf(s.wMax, s.hMax, t.trainingCardImage)}
 						/>

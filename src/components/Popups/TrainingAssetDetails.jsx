@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useAuth, useNotifications } from '@/hooks'
 import s from '@/styles'
-import { cf, getChainBoiImageCandidates } from '@/utils'
+import { cf, getChainBoiImageCandidates, ipfsToGateway } from '@/utils'
 import Image from 'next/image'
 import { IoMdClose } from 'react-icons/io'
 import PolyButton from '../PolyButton'
@@ -49,21 +49,35 @@ export default function TrainingAssetDetails() {
 		displayAlert,
 	} = useNotifications()
 
-	const tokenId = trainingAssetInfo?.nftTokenId ?? null
-	const level = trainingAssetInfo?.level ?? 1
-	const imageCandidates = useMemo(
-		() => getChainBoiImageCandidates(tokenId),
-		[tokenId],
-	)
+	const tokenId = useMemo(() => {
+		const derived = trainingAssetInfo?.nftTokenId ?? trainingAssetInfo?.tokenId
+		const normalized =
+			derived === null || derived === undefined || derived === ''
+				? NaN
+				: Number(derived)
+		return Number.isInteger(normalized) && normalized >= 0 ? normalized : null
+	}, [trainingAssetInfo?.nftTokenId, trainingAssetInfo?.tokenId])
 	const [imageIndex, setImageIndex] = useState(0)
 	const activeAvatarTokenId = getAvatarTokenId(user)
 	const isActiveAvatar =
 		Number.isInteger(activeAvatarTokenId) && activeAvatarTokenId === tokenId
-	const imageSrc = imageCandidates[imageIndex] ?? null
 	const [nftDetail, setNftDetail] = useState(null)
 	const [costInfo, setCostInfo] = useState(null)
 	const [eligibility, setEligibility] = useState(null)
 	const [isFetching, setIsFetching] = useState(false)
+
+	const level = nftDetail?.level ?? trainingAssetInfo?.level ?? 1
+	const imageUri =
+		nftDetail?.imageUri ??
+		trainingAssetInfo?.imageUri ??
+		trainingAssetInfo?.assetDetails?.imageUri ??
+		null
+	const imageCandidates = useMemo(() => {
+		const fromApi = ipfsToGateway(imageUri)
+		if (fromApi.length) return fromApi
+		return getChainBoiImageCandidates(tokenId)
+	}, [imageUri, tokenId])
+	const imageSrc = imageCandidates[imageIndex] ?? null
 
 	useEffect(() => {
 		setImageIndex(0)

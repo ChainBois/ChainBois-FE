@@ -16,6 +16,23 @@ const normalizeWeaponFileName = (name = '') =>
 		.replace(/-9-/g, '9-')
 		.replace(/&/g, '')
 
+export const ipfsToGateway = (ipfsUri) => {
+	if (!ipfsUri) return []
+
+	const uri = String(ipfsUri).trim()
+	if (!uri) return []
+
+	if (uri.startsWith('ipfs://')) {
+		const path = uri.replace('ipfs://', '')
+		if (!path) return []
+		return IPFS_GATEWAYS.map((gateway) => `${gateway}/${path}`)
+	}
+
+	if (uri.startsWith('http://') || uri.startsWith('https://')) return [uri]
+
+	return []
+}
+
 export const getChainBoiImageUrl = (tokenId) => {
 	return getChainBoiImageCandidates(tokenId)[0] ?? null
 }

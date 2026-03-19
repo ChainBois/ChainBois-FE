@@ -40,16 +40,34 @@ export default function Page() {
 		setTrainingAssetInfo,
 	} = useNotifications()
 	const assets = useMemo(() => {
-		if (user?.assets?.length > 0) {
-			return user.assets.map((el) => ({
-				nftTokenId: el.tokenId,
-				level: el.level,
-			}))
+		const ownedAssets = Array.isArray(user?.assets)
+			? user.assets.filter(Boolean)
+			: []
+		if (ownedAssets.length > 0) {
+			return ownedAssets.map((asset) => {
+				const derivedTokenId = asset?.tokenId ?? asset?.nftTokenId
+				const tokenIdNum =
+					derivedTokenId === null ||
+					derivedTokenId === undefined ||
+					derivedTokenId === ''
+						? NaN
+						: Number(derivedTokenId)
+				const normalizedTokenId =
+					Number.isInteger(tokenIdNum) && tokenIdNum >= 0 ? tokenIdNum : null
+
+				return {
+					...asset,
+					...(normalizedTokenId !== null
+						? { tokenId: normalizedTokenId, nftTokenId: normalizedTokenId }
+						: {}),
+				}
+			})
 		}
 		if (user?.hasNft && Number.isInteger(user?.nftTokenId)) {
 			return [
 				{
 					hasNft: user.hasNft,
+					tokenId: user.nftTokenId,
 					nftTokenId: user.nftTokenId,
 					level: user.level,
 				},
