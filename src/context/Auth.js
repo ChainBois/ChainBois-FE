@@ -296,25 +296,27 @@ const AuthContextProvider = ({ children }) => {
 				res?.status === 401 ||
 				res?.message === 'Token has expired'
 			) {
-				showLoading?.()
-				const x = await signOut({
-					callbackUrl: '/access-request',
-					redirect: false,
-				})
-				const session = await getSession()
+				if (sessionAccessToken) {
+					showLoading?.()
+					const x = await signOut({
+						callbackUrl: '/access-request',
+						redirect: false,
+					})
+					const session = await getSession()
 
-				await request({
-					path: 'auth/logout',
-					method: 'post',
-					body: {
-						address: activeAccount?.address ?? '',
-					},
-				})
-				setUser(() => ({}))
-				rejectPendingLogin('Session expired')
-				router.push(x.url)
-				hideLoading?.()
-				return
+					await makeRequest({
+						path: 'auth/logout',
+						method: 'post',
+						body: {
+							address: activeAccount?.address ?? '',
+						},
+					})
+					setUser(() => ({}))
+					rejectPendingLogin('Session expired')
+					router.push(x.url)
+					hideLoading?.()
+				}
+				return { success: false, message: 'Authentication error' }
 			} else if (!res?.success) {
 				rejectPendingLogin(res?.message || 'Login failed')
 				return res
@@ -331,6 +333,8 @@ const AuthContextProvider = ({ children }) => {
 			rejectPendingLogin,
 			resolvePendingLogin,
 			router,
+			makeRequest,
+			sessionAccessToken,
 		],
 	)
 
