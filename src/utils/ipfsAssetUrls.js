@@ -16,7 +16,7 @@ const WEAPON_FILE_MAP = {
 	'Barrett-M82': '05',
 	'Sawed-Off-Shotgun': '06',
 	'M32A1-MSGL': '07',
-	'M-9-Bayonet': '08',
+	'M9-Bayonet': '08',
 	'Stoner-96': '09',
 	AK74M: '10',
 	'SRS99G-S6-AM': '11',
