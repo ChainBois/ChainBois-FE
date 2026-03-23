@@ -7,6 +7,12 @@ import MaxWidth from '@/components/MaxWidth'
 import { PaginationLocal } from '@/components/Pagination'
 import TrainingCard from '@/components/TrainingCard'
 import { useAuth, useNotifications } from '@/hooks'
+import {
+	ACTIVE_CHAIN,
+	ACTIVE_CHAIN_NAME,
+	PRIZE_POOL_ADDRESS,
+	thirdwebClient,
+} from '@/lib'
 import s from '@/styles'
 import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
@@ -14,11 +20,7 @@ import p from './page.module.css'
 import { useEffect, useMemo, useState } from 'react'
 import NothingYet from '@/components/NothingYet'
 import { useActiveAccount } from 'thirdweb/react'
-import { avalancheFuji } from 'thirdweb/chains'
 import { prepareTransaction, sendAndConfirmTransaction, toWei } from 'thirdweb'
-import { thirdwebClient } from '@/lib'
-
-const PRIZE_POOL_ADDRESS = '0xc81F02E4bbA2F891E5D831f2dDDD9eDD61F3F92e'
 
 export default function Page() {
 	const {
@@ -150,6 +152,15 @@ export default function Page() {
 			return
 		}
 
+		if (!PRIZE_POOL_ADDRESS) {
+			hideLoading?.()
+			showError?.({
+				title: 'Training Unavailable',
+				message: `Training payments are not configured for ${ACTIVE_CHAIN_NAME} yet.`,
+			})
+			return
+		}
+
 		showLoading?.({
 			title: 'Leveling Up',
 			message: 'Confirm the AVAX payment in your wallet.',
@@ -159,7 +170,7 @@ export default function Page() {
 		try {
 			const transaction = prepareTransaction({
 				client: thirdwebClient,
-				chain: avalancheFuji,
+				chain: ACTIVE_CHAIN,
 				to: PRIZE_POOL_ADDRESS,
 				value: toWei(costString),
 			})

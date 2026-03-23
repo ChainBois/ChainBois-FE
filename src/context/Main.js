@@ -12,9 +12,10 @@ import {
 	fetchInventoryHistory,
 	fetchInventoryNfts,
 	fetchInventoryWeapons,
+	normalizeWeaponAssets,
 	request,
 } from '@/utils'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
 	useActiveAccount,
 	useActiveWalletConnectionStatus,
@@ -81,6 +82,7 @@ const MainContextProvider = ({ children }) => {
 
 	const activeAccount = useActiveAccount()
 	const isConnected = useActiveWalletConnectionStatus() === 'connected'
+	const hasSeenConnectedWalletRef = useRef(false)
 
 	const [platformDataIsLoading, setPlatformDataIsLoading] = useState(false)
 	const [triggerCounter, setTriggerCounter] = useState(0)
@@ -110,7 +112,7 @@ const MainContextProvider = ({ children }) => {
 			const res = await fetchInventory({ address: walletAddress })
 			if (res?.success) {
 				const inventory = res?.data?.data ?? {}
-				const weapons = Array.isArray(inventory?.weapons) ? inventory.weapons : []
+				const weapons = normalizeWeaponAssets(inventory?.weapons)
 				const chainbois = Array.isArray(inventory?.chainbois)
 					? inventory.chainbois
 					: []
@@ -147,7 +149,7 @@ const MainContextProvider = ({ children }) => {
 
 			const res = await fetchInventoryWeapons({ address: walletAddress })
 			if (res?.success) {
-				const weapons = Array.isArray(res?.data?.data) ? res.data.data : []
+				const weapons = normalizeWeaponAssets(res?.data?.data)
 				setUser((current) => ({
 					...current,
 					address: current?.address ?? walletAddress,
@@ -238,6 +240,12 @@ const MainContextProvider = ({ children }) => {
 	const sessionAccessToken = session?.user?.accessToken ?? null
 
 	useEffect(() => {
+		if (isConnected) {
+			hasSeenConnectedWalletRef.current = true
+		}
+	}, [isConnected])
+
+	useEffect(() => {
 		const revalidateUserOnStatusChange = async () => {
 			if (status === 'authenticated') {
 				if (sessionAccessToken && (activeAccount?.address ?? '')) {
@@ -259,7 +267,8 @@ const MainContextProvider = ({ children }) => {
 					})
 				}
 			} else if (status === 'unauthenticated') {
-				await logout(false, null)
+				hasSeenConnectedWalletRef.current = false
+				setUser(() => ({}))
 			}
 			// await fetch('/api/auth/session')
 		}
@@ -268,8 +277,22 @@ const MainContextProvider = ({ children }) => {
 	}, [
 		activeAccount?.address,
 		sessionAccessToken,
+		setUser,
 		status,
 	])
+
+	useEffect(() => {
+		if (status === 'unauthenticated') {
+			hasSeenConnectedWalletRef.current = false
+			return
+		}
+
+		if (status !== 'authenticated' || isConnected) return
+		if (!hasSeenConnectedWalletRef.current) return
+
+		hasSeenConnectedWalletRef.current = false
+		void logout(false, null)
+	}, [isConnected, logout, status])
 
 	return (
 		<MainContext.Provider value={ContextValue}>{children}</MainContext.Provider>

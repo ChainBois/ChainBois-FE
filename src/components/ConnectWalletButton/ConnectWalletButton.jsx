@@ -1,10 +1,9 @@
 'use client'
 
-import { thirdwebClient } from '@/lib'
+import { ACTIVE_CHAIN, ACTIVE_CHAIN_NAME, thirdwebClient } from '@/lib'
 import { thirdwebAppMetadata, thirdwebWallets } from '@/lib/thirdwebWallets'
 import s from '@/styles'
 import { cf } from '@/utils'
-import { avalancheFuji } from 'thirdweb/chains'
 import {
 	ConnectButton,
 	darkTheme,
@@ -42,10 +41,10 @@ const StandIn = ({ center = false }) => {
 	)
 }
 
-const DetailsStandIn = () => {
+const ConfiguredBalanceStandIn = () => {
 	const activeAccount = useActiveAccount()
 	const { data, isLoading, isError } = useWalletBalance({
-		chain: avalancheFuji,
+		chain: ACTIVE_CHAIN,
 		address: activeAccount?.address,
 		client: thirdwebClient,
 		tokenAddress: BATTLE_TOKEN,
@@ -69,6 +68,31 @@ const DetailsStandIn = () => {
 	)
 }
 
+const DetailsStandIn = () => {
+	if (!BATTLE_TOKEN) {
+		return (
+			<span
+				className={cf(s.wMax, s.flex, s.flexCenter, s.p_absolute, c.standIn)}
+			>
+				<span className={cf(s.flex, c.standInDot, c.connected)}></span>
+
+				<span className={cf(s.wMax, s.tLeft, c.standInTitle)}>
+					Balance unavailable
+				</span>
+				<span className={cf(s.wMax, s.tLeft, c.standInText)}>
+					Token balance is not configured for {ACTIVE_CHAIN_NAME}
+				</span>
+
+				<button className={cf(s.wMax, s.tLeft, c.standInFooterText)}>
+					View Details
+				</button>
+			</span>
+		)
+	}
+
+	return <ConfiguredBalanceStandIn />
+}
+
 /**
  * A custom Connect Wallet button for Chainbois.
  * @param {object} props - Optional props.
@@ -86,7 +110,7 @@ export default function ConnectWalletButton({
 		<ConnectButton
 			client={thirdwebClient}
 			wallets={thirdwebWallets}
-			chain={avalancheFuji} // explicit, in addition to ChainProvider default
+			chain={ACTIVE_CHAIN}
 			appMetadata={thirdwebAppMetadata}
 			theme={darkTheme({
 				colors: {},
@@ -97,9 +121,13 @@ export default function ConnectWalletButton({
 			}}
 			detailsButton={{
 				className: c.detailsButton,
-				displayBalanceToken: {
-					[avalancheFuji.id]: BATTLE_TOKEN,
-				},
+				...(BATTLE_TOKEN
+					? {
+							displayBalanceToken: {
+								[ACTIVE_CHAIN.id]: BATTLE_TOKEN,
+							},
+						}
+					: {}),
 			}}
 			connectModal={{
 				title: 'Sign in to Chainbois',

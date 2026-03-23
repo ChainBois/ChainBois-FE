@@ -41,10 +41,28 @@ const normalizePagination = (payload) => {
 	const candidates = [
 		payload?.data?.pagination,
 		payload?.data?.data?.pagination,
+		payload?.data,
+		payload?.data?.data,
 		payload?.pagination,
 	]
 	for (const candidate of candidates) {
-		if (candidate && typeof candidate === 'object') return candidate
+		if (!candidate || typeof candidate !== 'object') continue
+
+		// Newer leaderboard payloads return pagination fields at the root of `data`.
+		const pages = candidate?.pages ?? candidate?.totalPages
+		const currentPage = candidate?.page ?? candidate?.currentPage
+		const totalUsers = candidate?.total ?? candidate?.totalUsers
+		const hasUsefulFields =
+			pages !== undefined || currentPage !== undefined || totalUsers !== undefined
+
+		if (hasUsefulFields) {
+			return {
+				...candidate,
+				pages,
+				page: currentPage,
+				total: totalUsers,
+			}
+		}
 	}
 	return null
 }
@@ -183,9 +201,9 @@ export default function Page() {
 			return Array.from({ length: 10 }, (_, index) => ({
 				id: `loading-${index}`,
 				username: 'Loading...',
-				score: '...',
-				pointsBalance: '...',
-				gamesPlayed: '...',
+				currentScore: '...',
+				scoreGained: '...',
+				gamesPlayed: null,
 				rank: '...',
 			}))
 		}
@@ -194,9 +212,9 @@ export default function Page() {
 			id: entry?.uid ?? entry?._id ?? `leaderboard-${index}`,
 			rank: Number(entry?.rank ?? index + 1),
 			username: getEntryValue(entry, ['username', 'displayName', 'name'], 'Unknown Player'),
-			score: getEntryValue(entry, ['score', 'totalScore'], 0),
-			pointsBalance: getEntryValue(entry, ['pointsBalance', 'points'], 0),
-			gamesPlayed: getEntryValue(entry, ['gamesPlayed'], 0),
+			currentScore: getEntryValue(entry, ['currentScore', 'score', 'totalScore'], 0),
+			scoreGained: getEntryValue(entry, ['scoreGained', 'scoreGain', 'pointsBalance', 'points'], 0),
+			gamesPlayed: getEntryValue(entry, ['gamesPlayed'], null),
 		}))
 	}, [entries, isLoading])
 
@@ -284,20 +302,22 @@ export default function Page() {
 										<span className={cf(l.playerName)}>
 											{getEntryValue(viewerRank, ['username', 'displayName', 'name'], 'You')}
 										</span>
-										<span className={cf(l.playerMeta)}>
-											{Number(getEntryValue(viewerRank, ['gamesPlayed'], 0))} games played
-										</span>
+										{getEntryValue(viewerRank, ['gamesPlayed'], null) !== null ? (
+											<span className={cf(l.playerMeta)}>
+												{Number(getEntryValue(viewerRank, ['gamesPlayed'], 0))} games played
+											</span>
+										) : null}
 									</div>
 									<div className={cf(s.flex, s.flex_dColumn, l.statBlock)}>
-										<span className={cf(l.statLabel)}>Score</span>
+										<span className={cf(l.statLabel)}>Current Score</span>
 										<span className={cf(l.statValue)}>
-											{getEntryValue(viewerRank, ['score', 'totalScore'], 0)}
+											{getEntryValue(viewerRank, ['currentScore', 'score', 'totalScore'], 0)}
 										</span>
 									</div>
 									<div className={cf(s.flex, s.flex_dColumn, l.statBlock, l.pointsBlock)}>
-										<span className={cf(l.statLabel)}>Points</span>
+										<span className={cf(l.statLabel)}>Score Gained</span>
 										<span className={cf(l.statValue)}>
-											{getEntryValue(viewerRank, ['pointsBalance', 'points'], 0)}
+											{getEntryValue(viewerRank, ['scoreGained', 'scoreGain', 'pointsBalance', 'points'], 0)}
 										</span>
 									</div>
 								</article>
@@ -315,17 +335,19 @@ export default function Page() {
 									</div>
 									<div className={cf(s.flex, s.flex_dColumn, l.playerBlock)}>
 										<span className={cf(l.playerName)}>{entry.username}</span>
-										<span className={cf(l.playerMeta)}>
-											{Number(entry.gamesPlayed ?? 0)} games played
-										</span>
+										{entry.gamesPlayed !== null && entry.gamesPlayed !== undefined ? (
+											<span className={cf(l.playerMeta)}>
+												{Number(entry.gamesPlayed ?? 0)} games played
+											</span>
+										) : null}
 									</div>
 									<div className={cf(s.flex, s.flex_dColumn, l.statBlock)}>
-										<span className={cf(l.statLabel)}>Score</span>
-										<span className={cf(l.statValue)}>{entry.score}</span>
+										<span className={cf(l.statLabel)}>Current Score</span>
+										<span className={cf(l.statValue)}>{entry.currentScore}</span>
 									</div>
 									<div className={cf(s.flex, s.flex_dColumn, l.statBlock, l.pointsBlock)}>
-										<span className={cf(l.statLabel)}>Points</span>
-										<span className={cf(l.statValue)}>{entry.pointsBalance}</span>
+										<span className={cf(l.statLabel)}>Score Gained</span>
+										<span className={cf(l.statValue)}>{entry.scoreGained}</span>
 									</div>
 								</article>
 							))}

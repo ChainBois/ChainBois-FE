@@ -1,13 +1,43 @@
 'use client'
 
+import Image from 'next/image'
+import { useEffect, useMemo, useState } from 'react'
+import DefaultArmoryImage from '@/assets/img/AR.png'
 import s from '@/styles'
-import a from './ArmoryCard.module.css'
 import { cf } from '@/utils'
 import FloatingStars from '../FloatingStars'
 import BuyButton from '../BuyButton'
-import Image from 'next/image'
+import a from './ArmoryCard.module.css'
 
-export default function ArmoryCard({ image, name, description, price }) {
+const formatPriceLabel = (price) => {
+	const numericValue = Number(price)
+	if (Number.isFinite(numericValue) && numericValue >= 0) {
+		return `${numericValue.toLocaleString('en-US', {
+			maximumFractionDigits: 2,
+		})} $BATTLE`
+	}
+
+	const fallbackLabel = String(price ?? '').trim()
+	return fallbackLabel || 'Price TBA'
+}
+
+export default function ArmoryCard({
+	image,
+	fallbackImage = DefaultArmoryImage,
+	name,
+	description,
+	price,
+}) {
+	const [showFallbackImage, setShowFallbackImage] = useState(false)
+
+	useEffect(() => {
+		setShowFallbackImage(false)
+	}, [image])
+
+	const imageSrc =
+		!showFallbackImage && image ? image : fallbackImage || DefaultArmoryImage
+	const priceLabel = useMemo(() => formatPriceLabel(price), [price])
+
 	return (
 		<article className={cf(s.flex, s.flexCenter, a.card)}>
 			<div
@@ -45,12 +75,15 @@ export default function ArmoryCard({ image, name, description, price }) {
 							s.flexCenter,
 							a.imageContainer,
 						)}
-						style={{ position: 'relative', zIndex: 1 }}
 					>
 						<Image
-							src={image}
-							alt={'armory piece'}
+							src={imageSrc}
+							alt={name || 'Armory piece'}
+							fill
+							sizes='(max-width: 480px) 156px, (max-width: 834px) 310px, 400px'
+							unoptimized={typeof imageSrc === 'string'}
 							className={cf(s.wMax, s.hMax, a.image)}
+							onError={() => setShowFallbackImage(true)}
 						/>
 					</figure>
 					<FloatingStars
@@ -71,7 +104,7 @@ export default function ArmoryCard({ image, name, description, price }) {
 				>
 					<h3 className={cf(s.wMax, s.tCenter, a.name)}>{name}</h3>
 					<p className={cf(s.wMax, s.tCenter, a.description)}>{description}</p>
-					<p className={cf(s.wMax, s.tCenter, a.price)}>{price} $BATTLE</p>
+					<p className={cf(s.wMax, s.tCenter, a.price)}>{priceLabel}</p>
 				</header>
 				<footer className={cf(s.wMax, s.flex, s.flexCenter, a.footer)}>
 					<BuyButton

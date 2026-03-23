@@ -24,7 +24,10 @@ export {
 	getChainBoiImageUrl,
 	getWeaponImageCandidates,
 	ipfsToGateway,
+	normalizeWeaponAsset,
+	normalizeWeaponAssets,
 } from './ipfsAssetUrls'
+export { fetchArmoryWeapons, fetchArmoryWeapon } from './armoryApi'
 export {
 	fetchInventory,
 	fetchInventoryHistory,

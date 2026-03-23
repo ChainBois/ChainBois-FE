@@ -1,6 +1,11 @@
 'use client'
 
-import { refreshRequest, request, requestUpload } from '@/utils'
+import {
+	normalizeWeaponAssets,
+	refreshRequest,
+	request,
+	requestUpload,
+} from '@/utils'
 import axios from 'axios'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { signOut, getSession, useSession } from 'next-auth/react'
@@ -52,18 +57,26 @@ const getMaxAssetLevel = (assets = [], fallback = 1) => {
 }
 
 const mergeWeaponsByTokenId = (currentWeapons = [], incomingWeapons = []) => {
-	if (!Array.isArray(currentWeapons) && !Array.isArray(incomingWeapons))
+	if (!Array.isArray(currentWeapons) && !Array.isArray(incomingWeapons)) {
 		return []
-	if (!Array.isArray(currentWeapons)) return incomingWeapons
-	if (!Array.isArray(incomingWeapons)) return currentWeapons
+	}
+
+	const normalizedCurrentWeapons = normalizeWeaponAssets(currentWeapons)
+	const normalizedIncomingWeapons = normalizeWeaponAssets(incomingWeapons)
+
+	if (!normalizedCurrentWeapons.length && !normalizedIncomingWeapons.length) {
+		return []
+	}
+	if (!normalizedCurrentWeapons.length) return normalizedIncomingWeapons
+	if (!normalizedIncomingWeapons.length) return normalizedCurrentWeapons
 
 	const byTokenId = new Map()
-	for (const weapon of currentWeapons) {
+	for (const weapon of normalizedCurrentWeapons) {
 		const tokenId = asTokenId(weapon?.tokenId)
 		if (tokenId === null) continue
 		byTokenId.set(tokenId, weapon)
 	}
-	for (const weapon of incomingWeapons) {
+	for (const weapon of normalizedIncomingWeapons) {
 		const tokenId = asTokenId(weapon?.tokenId)
 		if (tokenId === null) continue
 		byTokenId.set(tokenId, weapon)
@@ -127,7 +140,9 @@ const AuthContextProvider = ({ children }) => {
 			payload && Object.prototype.hasOwnProperty.call(payload, 'weapons')
 
 		const normalizedWeapons =
-			hasProvidedWeapons && Array.isArray(weapons) ? weapons : null
+			hasProvidedWeapons && Array.isArray(weapons)
+				? normalizeWeaponAssets(weapons)
+				: null
 
 		setUser((current) => {
 			const normalizedAssets = hasProvidedAssets
@@ -423,7 +438,7 @@ const AuthContextProvider = ({ children }) => {
 
 			const verifiedData = res?.data?.data ?? {}
 			const nextWeapons = Array.isArray(verifiedData?.ownedWeaponNfts)
-				? verifiedData.ownedWeaponNfts
+				? normalizeWeaponAssets(verifiedData.ownedWeaponNfts)
 				: []
 
 			setUser((current) => {
@@ -746,13 +761,13 @@ const AuthContextProvider = ({ children }) => {
 				path: 'auth/logout',
 				method: 'post',
 				body: {
-					address: activeAccount?.address ?? '',
+					address: activeAccount?.address ?? user?.address ?? '',
 				},
 				// includeClientID: true,
 			})
 			// router.push(x.url)
 		},
-		[activeAccount?.address, displayAlert, rejectPendingLogin],
+		[activeAccount?.address, displayAlert, rejectPendingLogin, user?.address],
 	)
 
 	const ContextValue = useMemo(

@@ -1,53 +1,30 @@
 'use client'
 
-import { cf, getWeaponImageCandidates } from '@/utils'
-import s from '@/styles'
-import i from './InventoryCard.module.css'
 import Image from 'next/image'
+import { useEffect, useMemo, useState } from 'react'
+import BuyButton from '../BuyButton'
 import Inventory_1 from '@/assets/img/Inventory_1.png'
 import Inventory_2 from '@/assets/img/Inventory_2.png'
 import Inventory_3 from '@/assets/img/Inventory_3.png'
 import Inventory_4 from '@/assets/img/Inventory_4.png'
-import BuyButton from '../BuyButton'
-import { useEffect, useMemo, useState } from 'react'
+import s from '@/styles'
+import { cf } from '@/utils'
+import i from './InventoryCard.module.css'
 
-	export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
-		const weaponName = weapon?.weaponName ?? weapon?.name ?? ''
+const SHOWCASE_IMAGES = [Inventory_1, Inventory_2, Inventory_3, Inventory_4]
 
-		const showcase = useMemo(() => {
-			const index = (pseudoIndex + 1) % 3
-			switch (index) {
-				case 0:
-				return Inventory_1
-			case 1:
-				return Inventory_2
-			case 2:
-				return Inventory_3
-			case 3:
-				return Inventory_4
-		}
-	}, [pseudoIndex])
+export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
+	const [showFallbackImage, setShowFallbackImage] = useState(false)
 
-		const imageCandidates = useMemo(
-			() =>
-				getWeaponImageCandidates({
-					tokenId: weapon?.tokenId,
-					name: weaponName,
-				}),
-			[weaponName, weapon?.tokenId],
-		)
+	const showcase = useMemo(
+		() => SHOWCASE_IMAGES[pseudoIndex % SHOWCASE_IMAGES.length] ?? Inventory_1,
+		[pseudoIndex],
+	)
 
-	const [imageIndex, setImageIndex] = useState(0)
-
-		useEffect(() => {
-			setImageIndex(0)
-		}, [weaponName, weapon?.tokenId])
-
-	const imageSrc = imageCandidates[imageIndex] ?? showcase
-
-		const title = useMemo(() => {
-			return weaponName || 'Weapon NFT'
-		}, [weaponName])
+	const title = useMemo(
+		() => weapon?.name || weapon?.weaponName || 'Weapon NFT',
+		[weapon?.name, weapon?.weaponName],
+	)
 
 	const description = useMemo(() => {
 		if (Number.isInteger(weapon?.tokenId)) {
@@ -56,11 +33,12 @@ import { useEffect, useMemo, useState } from 'react'
 		return 'Weapon NFT linked to your wallet.'
 	}, [weapon?.tokenId])
 
-	const handleImageError = () => {
-		if (imageIndex < imageCandidates.length - 1) {
-			setImageIndex((current) => current + 1)
-		}
-	}
+	useEffect(() => {
+		setShowFallbackImage(false)
+	}, [weapon?.imageUrl, weapon?.tokenId])
+
+	const imageSrc =
+		!showFallbackImage && weapon?.imageUrl ? weapon.imageUrl : showcase
 
 	return (
 		<section className={cf(s.flex, s.flexCenter, i.inventoryCard)}>
@@ -72,7 +50,7 @@ import { useEffect, useMemo, useState } from 'react'
 						fill
 						unoptimized={typeof imageSrc === 'string'}
 						className={cf(s.wMax, s.hMax, s.flex, s.flexCenter, i.img)}
-						onError={handleImageError}
+						onError={() => setShowFallbackImage(true)}
 					/>
 				</figure>
 				<div className={cf(s.wMax, s.flex, s.flexCenter, i.content)}>

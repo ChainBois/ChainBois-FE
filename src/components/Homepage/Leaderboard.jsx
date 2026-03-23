@@ -84,8 +84,9 @@ export default function Leaderboard() {
 			return Array.from({ length: 5 }, (_, index) => ({
 				id: `loading-${index}`,
 				username: 'Loading...',
-				score: '...',
-				pointsBalance: '...',
+				currentScore: '...',
+				scoreGained: '...',
+				gamesPlayed: null,
 			}))
 		}
 
@@ -96,9 +97,9 @@ export default function Leaderboard() {
 			rank: Number(entry?.rank ?? index + 1),
 			username:
 				getEntryValue(entry, ['username', 'displayName', 'name'], 'Unknown Player'),
-			score: getEntryValue(entry, ['score', 'totalScore'], 0),
-			pointsBalance: getEntryValue(entry, ['pointsBalance', 'points'], 0),
-			gamesPlayed: getEntryValue(entry, ['gamesPlayed'], 0),
+			currentScore: getEntryValue(entry, ['currentScore', 'score', 'totalScore'], 0),
+			scoreGained: getEntryValue(entry, ['scoreGained', 'scoreGain', 'pointsBalance', 'points'], 0),
+			gamesPlayed: getEntryValue(entry, ['gamesPlayed'], null),
 		}))
 	}, [entries, isLoading])
 
@@ -135,17 +136,19 @@ export default function Leaderboard() {
 								</div>
 								<div className={cf(s.flex, s.flex_dColumn, l.playerBlock)}>
 									<span className={cf(l.playerName)}>{entry.username}</span>
-									<span className={cf(l.playerMeta)}>
-										{Number(entry.gamesPlayed ?? 0)} games played
-									</span>
+									{entry.gamesPlayed !== null && entry.gamesPlayed !== undefined ? (
+										<span className={cf(l.playerMeta)}>
+											{Number(entry.gamesPlayed ?? 0)} games played
+										</span>
+									) : null}
 								</div>
 								<div className={cf(s.flex, s.flex_dColumn, l.statBlock)}>
-									<span className={cf(l.statLabel)}>Score</span>
-									<span className={cf(l.statValue)}>{entry.score}</span>
+									<span className={cf(l.statLabel)}>Current Score</span>
+									<span className={cf(l.statValue)}>{entry.currentScore}</span>
 								</div>
 								<div className={cf(s.flex, s.flex_dColumn, l.statBlock, l.pointsBlock)}>
-									<span className={cf(l.statLabel)}>Points</span>
-									<span className={cf(l.statValue)}>{entry.pointsBalance}</span>
+									<span className={cf(l.statLabel)}>Score Gained</span>
+									<span className={cf(l.statValue)}>{entry.scoreGained}</span>
 								</div>
 							</article>
 						))}

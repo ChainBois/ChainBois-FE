@@ -2,7 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import NextAuth from 'next-auth'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '@/config/firebase'
-import { request } from '@/utils'
+import { normalizeWeaponAssets, request } from '@/utils'
 
 export const authProviders = {
 	providers: [
@@ -40,7 +40,9 @@ export const authProviders = {
 						return {
 							...response?.data?.data.user,
 							assets: response?.data?.data?.assets ?? [],
-							weapons: response?.data?.data?.weapons ?? [],
+							weapons: normalizeWeaponAssets(
+								response?.data?.data?.weapons ?? [],
+							),
 							accessToken: userCredential.user.accessToken,
 						}
 					}

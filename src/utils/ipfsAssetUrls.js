@@ -8,13 +8,33 @@ const CHAINBOIS_CID =
 	'bafybeifd4wjgbvnpf7kmcrkjxp7i4ipz3w2aag3elgfj6v364y2meq6ep4'
 const WEAPONS_CID =
 	'bafybeigabwclqqsu4xz6konsq6dav3wva3xh3vlxcjw72vkoo6wxllxjfe'
+const WEAPON_FILE_MAP = {
+	'AM-18': '01',
+	'AR-M4-MK18': '02',
+	'SPAS-12': '03',
+	'HK-MP5': '04',
+	'Barrett-M82': '05',
+	'Sawed-Off-Shotgun': '06',
+	'M32A1-MSGL': '07',
+	'M-9-Bayonet': '08',
+	'Stoner-96': '09',
+	AK74M: '10',
+	'SRS99G-S6-AM': '11',
+	'Colt-M1911': '12',
+	'UMP-45': '13',
+}
+
+const asNonEmptyString = (value) => {
+	const normalizedValue = String(value ?? '').trim()
+	return normalizedValue || ''
+}
 
 const normalizeWeaponFileName = (name = '') =>
 	String(name)
 		.trim()
 		.replace(/\s/g, '-')
-		.replace(/-9-/g, '9-')
 		.replace(/&/g, '')
+		.replace(/M-9-/g, 'M9-')
 
 export const ipfsToGateway = (ipfsUri) => {
 	if (!ipfsUri) return []
@@ -45,18 +65,51 @@ export const getChainBoiImageCandidates = (tokenId) => {
 	)
 }
 
-export const getWeaponImageCandidates = ({ tokenId, name }) => {
-	const urls = []
-
+export const getWeaponImageCandidates = ({ name, imageUrl, imageUri } = {}) => {
+	const urls = [...ipfsToGateway(imageUrl), ...ipfsToGateway(imageUri)]
 	const normalizedName = normalizeWeaponFileName(name)
-	if (normalizedName) {
+	const fileNumber = WEAPON_FILE_MAP[normalizedName]
+
+	if (normalizedName && fileNumber) {
 		urls.push(
 			...IPFS_GATEWAYS.map(
 				(gateway) =>
-					`${gateway}/${WEAPONS_CID}/${String(tokenId).padStart(2, '0')}-${normalizedName}.jpeg`,
+					`${gateway}/${WEAPONS_CID}/${fileNumber}-${normalizedName}.jpeg`,
 			),
 		)
 	}
 
 	return [...new Set(urls)]
+}
+
+export const normalizeWeaponAsset = (weapon = {}) => {
+	if (!weapon || typeof weapon !== 'object' || Array.isArray(weapon))
+		return weapon
+
+	const name = asNonEmptyString(weapon?.name || weapon?.weaponName)
+	const imageCandidates = [
+		...getWeaponImageCandidates({
+			name,
+			imageUrl: weapon?.imageUrl,
+			imageUri: weapon?.imageUri,
+		}),
+	]
+
+	return {
+		...weapon,
+		...(name
+			? {
+					name,
+					weaponName: asNonEmptyString(weapon?.weaponName) || name,
+				}
+			: {}),
+		...(imageCandidates[0] ? { imageUrl: imageCandidates[0] } : {}),
+	}
+}
+
+export const normalizeWeaponAssets = (weapons = []) => {
+	if (!Array.isArray(weapons)) return []
+	return weapons
+		.filter((weapon) => weapon && typeof weapon === 'object')
+		.map((weapon) => normalizeWeaponAsset(weapon))
 }

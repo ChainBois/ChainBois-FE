@@ -1,3 +1,5 @@
+import { BATTLE_TOKEN_ADDRESS } from '@/lib/thirdwebChain'
+
 export const BACKEND_BASE_URI = process.env.NEXT_PUBLIC_BACKEND_BASE_URI
 export const NETWORK = process.env.NEXT_PUBLIC_NETWORK
 export const ADMIN_ADDRESS = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
@@ -8,7 +10,7 @@ export const WEBSOCKET_URL = process.env.NEXT_PUBLIC_WEBSOCKET_URL
 export const MOBILE_QUERY = '(max-width: 480px)'
 export const TABLET_QUERY =
 	'(max-width: 834px), (min-width: 600px) and (max-width: 960px) and (orientation: landscape)'
-export const BATTLE_TOKEN = '0xcC704c908A37A78d944a8310F8ebc0c0456CbeC0'
+export const BATTLE_TOKEN = BATTLE_TOKEN_ADDRESS
 export const FIREBASE_API_K = process.env.NEXT_PUBLIC_FIREBASE_API_K
 export const FIREBASE_A_DOMAIN = process.env.NEXT_PUBLIC_FIREBASE_A_DOMAIN
 export const FIREBASE_DATABASE_URL =
