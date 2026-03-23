@@ -84,7 +84,7 @@ const cards = [
 ]
 
 export default function Page() {
-	const { displayAlert } = useNotifications()
+	const { setCanCloseModal, setModal, setShowModal } = useNotifications()
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
 			<Hero
@@ -109,10 +109,9 @@ export default function Page() {
 						<BorderedButton
 							tag={'Convert'}
 							action={() => {
-								displayAlert({
-									title: 'Coming Soon',
-									message: 'This feature is coming soon.',
-								})
+								setCanCloseModal(true)
+								setModal('convertPoints')
+								setShowModal(true)
 							}}
 							borderButtonText={h.heroActionText}
 						/>

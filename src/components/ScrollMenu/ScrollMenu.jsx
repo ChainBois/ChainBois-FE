@@ -35,6 +35,7 @@ export default function ScrollMenu({ options = DEFAULT_OPTIONS }) {
 	const [canScrollLeft, setCanScrollLeft] = useState(false)
 	const [canScrollRight, setCanScrollRight] = useState(false)
 	const [activeIndex, setActiveIndex] = useState(0)
+	const optionsKey = options.map((opt) => opt?.tag).join('|')
 
 	// Recalculate overflow and scroll-edge state
 	const syncScrollState = useCallback(() => {
@@ -65,6 +66,10 @@ export default function ScrollMenu({ options = DEFAULT_OPTIONS }) {
 			ro.disconnect()
 		}
 	}, [syncScrollState])
+
+	useEffect(() => {
+		setActiveIndex(0)
+	}, [optionsKey])
 
 	// Derive the step: first item width + computed column-gap
 	const getStep = useCallback(() => {

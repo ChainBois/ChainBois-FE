@@ -16,6 +16,7 @@ export { fetchPaginatedData } from './fetchPaginatedData'
 export { formatAsCurrency } from './formatAsCurrency'
 export { formatAttributes } from './formatAttributes'
 export { formatTimestamp } from './formatTimestamp'
+export { getInventoryBalances } from './getInventoryBalances'
 export { getDuration } from './getDuration'
 export { handleIPFSMedia } from './handleIPFSMedia'
 export {
@@ -24,6 +25,12 @@ export {
 	getWeaponImageCandidates,
 	ipfsToGateway,
 } from './ipfsAssetUrls'
+export {
+	fetchInventory,
+	fetchInventoryHistory,
+	fetchInventoryNfts,
+	fetchInventoryWeapons,
+} from './inventoryApi'
 export { isNaN } from './isNaN'
 export { msToTime } from './msToTime'
 export { isFocused } from './navUtils'

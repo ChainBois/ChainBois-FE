@@ -7,6 +7,13 @@ import {
 	usePlatformDataFetcher,
 	useAuth,
 } from '@/hooks'
+import {
+	fetchInventory,
+	fetchInventoryHistory,
+	fetchInventoryNfts,
+	fetchInventoryWeapons,
+	request,
+} from '@/utils'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	useActiveAccount,
@@ -78,17 +85,119 @@ const MainContextProvider = ({ children }) => {
 	const [platformDataIsLoading, setPlatformDataIsLoading] = useState(false)
 	const [triggerCounter, setTriggerCounter] = useState(0)
 	const [platformSettings, setPlatformSettings] = useState({})
+	const [inventoryHistory, setInventoryHistory] = useState(null)
 
-	const updateTriggerCounter = () => setTriggerCounter((x) => x + 1)
+	const updateTriggerCounter = useCallback(
+		() => setTriggerCounter((x) => x + 1),
+		[],
+	)
 
-	const getPlatformSettings = async () => {
+	const getPlatformSettings = useCallback(async () => {
 		const res = await request({
 			path: '/settings',
 		})
 		if (res?.success) {
 			setPlatformSettings(res?.data?.data)
 		}
-	}
+	}, [])
+
+	const getUserInventoryData = useCallback(
+		async ({ address } = {}) => {
+			const walletAddress =
+				address ?? activeAccount?.address ?? user?.address ?? ''
+			if (!walletAddress) return { success: false, message: 'Wallet required' }
+
+			const res = await fetchInventory({ address: walletAddress })
+			if (res?.success) {
+				const inventory = res?.data?.data ?? {}
+				const weapons = Array.isArray(inventory?.weapons) ? inventory.weapons : []
+				const chainbois = Array.isArray(inventory?.chainbois)
+					? inventory.chainbois
+					: []
+				const balances =
+					inventory?.balances && typeof inventory.balances === 'object'
+						? inventory.balances
+						: {}
+				const counts =
+					inventory?.counts && typeof inventory.counts === 'object'
+						? inventory.counts
+						: {}
+
+				setUser((current) => ({
+					...current,
+					address: current?.address ?? walletAddress,
+					inventory,
+					weapons,
+					chainbois,
+					inventoryBalances: balances,
+					inventoryCounts: counts,
+				}))
+			}
+
+			return res
+		},
+		[activeAccount?.address, setUser, user?.address],
+	)
+
+	const getUserInventoryWeapons = useCallback(
+		async ({ address } = {}) => {
+			const walletAddress =
+				address ?? activeAccount?.address ?? user?.address ?? ''
+			if (!walletAddress) return { success: false, message: 'Wallet required' }
+
+			const res = await fetchInventoryWeapons({ address: walletAddress })
+			if (res?.success) {
+				const weapons = Array.isArray(res?.data?.data) ? res.data.data : []
+				setUser((current) => ({
+					...current,
+					address: current?.address ?? walletAddress,
+					weapons,
+				}))
+			}
+			return res
+		},
+		[activeAccount?.address, setUser, user?.address],
+	)
+
+	const getUserInventoryNfts = useCallback(
+		async ({ address } = {}) => {
+			const walletAddress =
+				address ?? activeAccount?.address ?? user?.address ?? ''
+			if (!walletAddress) return { success: false, message: 'Wallet required' }
+
+			const res = await fetchInventoryNfts({ address: walletAddress })
+			if (res?.success) {
+				const chainbois = Array.isArray(res?.data?.data) ? res.data.data : []
+				setUser((current) => ({
+					...current,
+					address: current?.address ?? walletAddress,
+					chainbois,
+				}))
+			}
+			return res
+		},
+		[activeAccount?.address, setUser, user?.address],
+	)
+
+	const getUserInventoryHistory = useCallback(
+		async ({ address, page, limit, type } = {}) => {
+			const walletAddress =
+				address ?? activeAccount?.address ?? user?.address ?? ''
+			if (!walletAddress) return { success: false, message: 'Wallet required' }
+
+			const res = await fetchInventoryHistory({
+				address: walletAddress,
+				page,
+				limit,
+				type,
+			})
+			if (res?.success) {
+				setInventoryHistory(res?.data?.data ?? null)
+			}
+			return res
+		},
+		[activeAccount?.address, user?.address],
+	)
 
 	const { retrievePlatformData } = usePlatformDataFetcher({
 		user,
@@ -97,6 +206,7 @@ const MainContextProvider = ({ children }) => {
 		setPlatformDataIsLoading,
 		updateTriggerCounter,
 		getPlatformSettings,
+		getUserInventoryData,
 	})
 
 	const ContextValue = useMemo(
@@ -105,8 +215,24 @@ const MainContextProvider = ({ children }) => {
 			query: matches,
 			retrievePlatformData,
 			platformSettings,
+			inventoryHistory,
+			setInventoryHistory,
+			getUserInventoryData,
+			getUserInventoryWeapons,
+			getUserInventoryNfts,
+			getUserInventoryHistory,
 		}),
-		[dimensions, matches, platformSettings, retrievePlatformData],
+		[
+			dimensions,
+			matches,
+			retrievePlatformData,
+			platformSettings,
+			inventoryHistory,
+			getUserInventoryData,
+			getUserInventoryWeapons,
+			getUserInventoryNfts,
+			getUserInventoryHistory,
+		],
 	)
 
 	const sessionAccessToken = session?.user?.accessToken ?? null
@@ -144,10 +270,6 @@ const MainContextProvider = ({ children }) => {
 		sessionAccessToken,
 		status,
 	])
-
-	useEffect(() => {
-		retrievePlatformData()
-	}, [retrievePlatformData])
 
 	return (
 		<MainContext.Provider value={ContextValue}>{children}</MainContext.Provider>

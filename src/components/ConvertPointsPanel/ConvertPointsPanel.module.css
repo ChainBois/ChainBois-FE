@@ -1,0 +1,346 @@
+.panel {
+	width: min(100%, 1120px);
+	gap: 24px;
+	padding: 34px 42px 28px;
+	border: 1px solid rgba(236, 27, 36, 0.92);
+	border-radius: 18px;
+	background:
+		linear-gradient(180deg, rgba(35, 35, 35, 0.98) 0%, rgba(25, 25, 25, 0.96) 100%);
+	box-shadow: 0 24px 48px rgba(0, 0, 0, 0.32);
+}
+
+.sectionPanel {
+	margin-top: 24px;
+}
+
+.popupPanel {
+	width: min(100%, 1120px);
+}
+
+.headerRow {
+	gap: 16px;
+	align-items: flex-start;
+}
+
+.titleBlock {
+	flex: 1 1 340px;
+	gap: 8px;
+}
+
+.title {
+	margin: 0;
+	color: #fff;
+	font-family: var(--font-inter);
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 120%;
+}
+
+.balanceMeta {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.74);
+	font-family: var(--font-inter);
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 145%;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.balanceMetrics {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.balanceCard {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 14px 16px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 14px;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.pointsBalanceCard {
+	border-color: rgba(236, 27, 36, 0.35);
+	box-shadow: inset 0 0 0 1px rgba(236, 27, 36, 0.08);
+}
+
+.battleBalanceCard {
+	border-color: rgba(255, 255, 255, 0.12);
+}
+
+.balanceCardLabel {
+	color: rgba(255, 255, 255, 0.68);
+	font-family: var(--font-inter);
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 135%;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.balanceCardValueRow {
+	display: flex;
+	gap: 8px;
+	align-items: baseline;
+	flex-wrap: wrap;
+}
+
+.balanceCardValue {
+	color: #fff;
+	font-family: var(--font-inter);
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 120%;
+}
+
+.balanceCardUnit {
+	color: rgba(255, 255, 255, 0.72);
+	font-family: var(--font-inter);
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 120%;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.actions {
+	gap: 8px;
+	flex: 0 0 auto;
+}
+
+.actionButton {
+	min-width: 48px;
+	height: 38px;
+	padding: 0 12px;
+	border: 1px solid rgba(236, 27, 36, 0.85);
+	border-radius: 8px;
+	background: rgba(0, 0, 0, 0.36);
+	color: #fff;
+	font-family: var(--font-inter);
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 1;
+}
+
+.actionButton:hover:not(:disabled) {
+	background: rgba(236, 27, 36, 0.18);
+}
+
+.actionButton:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.divider {
+	width: 100%;
+	height: 1px;
+	background: rgba(255, 255, 255, 0.84);
+}
+
+.details {
+	gap: 10px;
+}
+
+.detailRow {
+	gap: 12px 24px;
+	flex-wrap: nowrap;
+	align-items: baseline;
+}
+
+.detailLabel,
+.detailValue {
+	color: #fff;
+	font-family: var(--font-inter);
+	font-size: 18px;
+	line-height: 145%;
+}
+
+.detailLabel {
+	flex: 1 1 auto;
+	font-weight: 500;
+}
+
+.detailValue {
+	flex: 0 1 auto;
+	color: rgba(255, 255, 255, 0.88);
+	font-weight: 500;
+	text-align: right;
+}
+
+.highlightValue {
+	color: #ff5e63;
+	font-weight: 700;
+}
+
+.warningRow {
+	gap: 10px;
+}
+
+.warningIcon {
+	flex-shrink: 0;
+	color: #f6c63d;
+	font-size: 22px;
+}
+
+.warningText {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.82);
+	font-family: var(--font-inter);
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 145%;
+}
+
+.footer {
+	margin-top: 4px;
+}
+
+.convertButton {
+	width: min(100%, 200px) !important;
+}
+
+.convertButtonText {
+	font-size: 18px !important;
+	font-weight: 700 !important;
+}
+
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+	.panel {
+		gap: 20px;
+		padding: 28px;
+		border-radius: 16px;
+	}
+
+	.title {
+		font-size: 20px;
+	}
+
+	.balanceMeta {
+		font-size: 11px;
+	}
+
+	.detailLabel,
+	.detailValue {
+		font-size: 15px;
+	}
+
+	.warningText {
+		font-size: 13px;
+	}
+
+	.balanceMetrics {
+		gap: 10px;
+	}
+
+	.balanceCard {
+		padding: 12px 14px;
+	}
+
+	.balanceCardValue {
+		font-size: 19px;
+	}
+
+	.convertButton {
+		width: min(100%, 220px) !important;
+	}
+
+	.convertButtonText {
+		font-size: 16px !important;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.panel {
+		gap: 16px;
+		padding: 18px 16px 20px;
+		border-radius: 12px;
+	}
+
+	.sectionPanel {
+		margin-top: 16px;
+	}
+
+	.titleBlock {
+		flex: 1 1 150px;
+		gap: 6px;
+	}
+
+	.title {
+		font-size: 16px;
+	}
+
+	.balanceMeta {
+		font-size: 10px;
+	}
+
+	.balanceMetrics {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.balanceCard {
+		gap: 5px;
+		padding: 10px 12px;
+		border-radius: 10px;
+	}
+
+	.balanceCardLabel {
+		font-size: 9px;
+	}
+
+	.balanceCardValue {
+		font-size: 15px;
+	}
+
+	.balanceCardUnit {
+		font-size: 8px;
+	}
+
+	.actions {
+		gap: 4px;
+	}
+
+	.actionButton {
+		min-width: 30px;
+		height: 24px;
+		padding: 0 7px;
+		border-radius: 6px;
+		font-size: 10px;
+	}
+
+	.detailRow {
+		gap: 8px;
+	}
+
+	.detailLabel,
+	.detailValue {
+		font-size: 12px;
+	}
+
+	.warningRow {
+		gap: 8px;
+	}
+
+	.warningIcon {
+		font-size: 18px;
+	}
+
+	.warningText {
+		font-size: 10px;
+	}
+
+	.convertButton {
+		width: min(100%, 135px) !important;
+	}
+
+	.convertButtonText {
+		font-size: 13px !important;
+	}
+}

@@ -1,33 +1,102 @@
 'use client'
 
 import BorderedButton from '@/components/BorderedButton'
+import ConvertPointsPanel from '@/components/ConvertPointsPanel'
 import { Hero } from '@/components/Homepage'
 import Container from '@/components/Homepage/Container'
 import InventoryCard from '@/components/InventoryCard'
 import MaxWidth from '@/components/MaxWidth'
 import { PaginationLocal } from '@/components/Pagination'
 import ScrollMenu from '@/components/ScrollMenu'
-import { useAuth, useNotifications } from '@/hooks'
+import { useAuth, useMain, useNotifications } from '@/hooks'
 import s from '@/styles'
-import { cf } from '@/utils'
+import { cf, getInventoryBalances } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
 import { useEffect, useMemo, useState } from 'react'
 import NothingYet from '@/components/NothingYet'
 
+const CATEGORY_LABELS = {
+	assault: 'Assault Rifles',
+	smg: 'SMGs',
+	lmg: 'LMGs',
+	shotgun: 'Shotguns',
+	marksman: 'Marksman Rifles',
+	handgun: 'Handguns',
+	launcher: 'Launchers',
+	melee: 'Melee',
+}
+
+const CATEGORY_ORDER = [
+	'assault',
+	'smg',
+	'lmg',
+	'shotgun',
+	'marksman',
+	'handgun',
+	'launcher',
+	'melee',
+]
+
+const normalizeCategory = (category) => String(category ?? '').trim().toLowerCase()
+
 export default function Page() {
 	const { user, verifyAssets } = useAuth()
+	const { getUserInventoryData } = useMain()
 	const { showLoading, hideLoading, showError, displayAlert } =
 		useNotifications()
 	const weapons = useMemo(
 		() => (Array.isArray(user?.weapons) ? user.weapons : []),
 		[user?.weapons],
 	)
+	const inventoryBalances = getInventoryBalances(user)
+
+	const [activeCategory, setActiveCategory] = useState(null)
+
+	const possessedCategories = useMemo(() => {
+		const categories = new Set()
+		for (const weapon of weapons) {
+			const key = normalizeCategory(weapon?.category)
+			if (key && CATEGORY_LABELS[key]) categories.add(key)
+		}
+		return CATEGORY_ORDER.filter((key) => categories.has(key))
+	}, [weapons])
+
+	const filteredWeapons = useMemo(() => {
+		if (!activeCategory) return weapons
+		return weapons.filter(
+			(weapon) => normalizeCategory(weapon?.category) === activeCategory,
+		)
+	}, [activeCategory, weapons])
+
+	const weaponCategoryOptions = useMemo(() => {
+		const options = []
+
+		options.push({
+			tag: 'All',
+			action: () => setActiveCategory(null),
+		})
+
+		for (const category of possessedCategories) {
+			options.push({
+				tag: CATEGORY_LABELS[category] ?? category,
+				action: () => setActiveCategory(category),
+			})
+		}
+
+		return options
+	}, [possessedCategories])
 	const [visibleWeapons, setVisibleWeapons] = useState([])
 
 	useEffect(() => {
-		setVisibleWeapons(weapons.slice(0, 9))
-	}, [weapons])
+		if (activeCategory && !possessedCategories.includes(activeCategory)) {
+			setActiveCategory(null)
+		}
+	}, [activeCategory, possessedCategories])
+
+	useEffect(() => {
+		setVisibleWeapons(filteredWeapons.slice(0, 9))
+	}, [filteredWeapons])
 
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
@@ -51,26 +120,69 @@ export default function Page() {
 					<>
 						<BorderedButton
 							tag={'Refresh Assets'}
-							action={() =>
-								verifyAssets({
-									showLoading,
-									hideLoading,
-									showError,
-									displayAlert,
+							action={async () => {
+								showLoading?.({
+									title: 'Refreshing Inventory',
+									message: 'Syncing your wallet inventory.',
 								})
-							}
+								const res = await getUserInventoryData?.()
+								hideLoading?.()
+
+								if (!res?.success) {
+									showError?.({
+										title: 'Inventory Refresh Failed',
+										message:
+											res?.message ||
+											res?.error ||
+											'Unable to refresh your inventory right now.',
+									})
+									return
+								}
+
+								if (user?.accessToken) {
+									await verifyAssets({
+										showLoading,
+										hideLoading,
+										showError,
+										displayAlert,
+									})
+								}
+							}}
 							borderButtonText={h.heroActionText}
 						/>
 					</>
 				}
 			/>
 			<Container
+				tag={'Points'}
+				cusClass={cf(p.container)}
+			>
+				<MaxWidth
+					maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
+				>
+					<ConvertPointsPanel
+						pointsBalance={inventoryBalances?.points}
+						battleBalance={
+							inventoryBalances?.battle ?? inventoryBalances?.battleRaw
+						}
+						onConvert={() => {
+							displayAlert({
+								title: 'Coming Soon',
+								message:
+									'Points conversion is not live yet. Your balance stays unchanged for now.',
+								type: 'info',
+							})
+						}}
+					/>
+				</MaxWidth>
+			</Container>
+			<Container
 				tag={'Your Weapons'}
 				cusClass={cf(p.container)}
 			>
 				{visibleWeapons?.length > 0 ? (
 					<>
-						<ScrollMenu />
+						<ScrollMenu options={weaponCategoryOptions} />
 						<MaxWidth
 							maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
 						>
@@ -85,7 +197,7 @@ export default function Page() {
 									))}
 									<PaginationLocal
 										array={visibleWeapons}
-										refArray={weapons}
+										refArray={filteredWeapons}
 										step={9}
 										setArray={setVisibleWeapons}
 										full

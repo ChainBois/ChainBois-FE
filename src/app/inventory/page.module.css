@@ -1,3 +1,7 @@
+.page {
+	gap: 0;
+}
+
 .container {
 	padding-bottom: 110px;
 	gap: none !important;

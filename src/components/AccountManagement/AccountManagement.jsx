@@ -16,8 +16,12 @@ import BorderedButton from '../BorderedButton'
 import { useEffect, useMemo, useState } from 'react'
 import ConnectWalletButton from '../ConnectWalletButton'
 import { BsArrowRight } from 'react-icons/bs'
+import { DESKTOP_BUILD_URL, MOBILE_BUILD_URL } from '@/constants'
+import { MdDesktopWindows, MdPhoneIphone } from 'react-icons/md'
 
 export default function AccountManagement() {
+	const desktopBuildUrl = DESKTOP_BUILD_URL ?? '#'
+	const mobileBuildUrl = MOBILE_BUILD_URL ?? '#'
 	const { retrievePlatformData } = useMain()
 	const { login } = useAuth()
 	const {
@@ -42,7 +46,7 @@ export default function AccountManagement() {
 	const [userMediaData, setUserMediaData] = useState({})
 	const [userExists, setUserExists] = useState(null)
 
- const pathname = usePathname()
+	const pathname = usePathname()
 	const next = searchParams.get('next') ?? pathname
 	const relink = searchParams.get('relink')
 
@@ -81,8 +85,19 @@ export default function AccountManagement() {
 		2000,
 	)
 
+	useEffect(() => {
+		if (userExists === false) {
+			displayAlert({
+				title: 'User not found',
+				message:
+					'Please register through the game first. Or enter a different email address.',
+				type: 'error',
+			})
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [userExists])
+
 	const router = useRouter()
-	
 
 	/**
 	 * Handles changes to input fields and updates request body accordingly.
@@ -296,7 +311,7 @@ export default function AccountManagement() {
 						cusLabel={a.fieldLabel}
 						cusClass={a.fieldInput}
 					/>
-					{userExists === false && (
+					{/* {userExists === false && (
 						<InputField
 							tag={'username'}
 							state={requestBody}
@@ -308,8 +323,8 @@ export default function AccountManagement() {
 							cusLabel={a.fieldLabel}
 							cusClass={a.fieldInput}
 						/>
-					)}
-					{userExists !== null && (
+					)} */}
+					{userExists && (
 						<InputField
 							tag={'password'}
 							state={requestBody}
@@ -324,12 +339,37 @@ export default function AccountManagement() {
 						/>
 					)}
 					<div className={cf(s.wMax, s.flex, s.flexCenter, a.subCon)}>
-						<BorderedButton
-							type={'submit'}
-							tag={'Continue'}
-							icon={<BsArrowRight className={cf(s.dInlineBlock, a.subIcon)} />}
-							disabled={isDisabled}
-						/>
+						{userExists !== false ? (
+							<BorderedButton
+								type={'submit'}
+								tag={'Continue'}
+								icon={
+									<BsArrowRight className={cf(s.dInlineBlock, a.subIcon)} />
+								}
+								disabled={isDisabled}
+							/>
+						) : (
+							<>
+								<BorderedButton
+									tag={'Download Desktop Build'}
+									action={desktopBuildUrl}
+									isLink={true}
+									icon={
+										<MdDesktopWindows
+											className={cf(s.dInlineBlock, a.subIcon)}
+										/>
+									}
+								/>
+								<BorderedButton
+									tag={'Download Mobile Build'}
+									action={mobileBuildUrl}
+									isLink={true}
+									icon={
+										<MdPhoneIphone className={cf(s.dInlineBlock, a.subIcon)} />
+									}
+								/>
+							</>
+						)}
 					</div>
 				</form>
 			) : (

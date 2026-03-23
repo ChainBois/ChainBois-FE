@@ -10,11 +10,15 @@ export const usePlatformDataFetcher = ({
 	setPlatformDataIsLoading,
 	updateTriggerCounter,
 	getPlatformSettings,
+	getUserInventoryData,
 }) => {
 	const stateRef = useRef({
 		user,
 		activeAddress,
 		platformDataIsLoading,
+		getPlatformSettings,
+		getUserInventoryData,
+		updateTriggerCounter,
 	})
 
 	const activityRef = useRef({
@@ -31,6 +35,9 @@ export const usePlatformDataFetcher = ({
 				// roleIsAdmin,
 				user,
 				activeAddress,
+				getPlatformSettings,
+				getUserInventoryData,
+				updateTriggerCounter,
 			} = stateRef.current
 
 			try {
@@ -41,18 +48,8 @@ export const usePlatformDataFetcher = ({
 				// 	])
 				// }
 
-				if (
-					user?.userID &&
-					user?.address === activeAddress &&
-					user?.accessToken
-				) {
-					// User specific data retrievals
-					await Promise.all([
-						// getRoyalties(activeAddress),
-						// getUserAuctions(activeAddress),
-						// getUserShuffles(activeAddress),
-						// getUserUnclaimedCreatorFees(activeAddress),
-					])
+				if (activeAddress && typeof getUserInventoryData === 'function') {
+					await getUserInventoryData({ address: activeAddress, user })
 				}
 
 				await Promise.all([
@@ -88,10 +85,7 @@ export const usePlatformDataFetcher = ({
 			}
 		},
 		[
-			// Data retrieval callbacks
-			getPlatformSettings,
 			setPlatformDataIsLoading,
-			updateTriggerCounter,
 		],
 	)
 
@@ -101,27 +95,32 @@ export const usePlatformDataFetcher = ({
 			user,
 			activeAddress,
 			platformDataIsLoading,
+			getPlatformSettings,
+			getUserInventoryData,
+			updateTriggerCounter,
 		}
 	}, [
-		// roleIsAdmin,
 		user,
 		activeAddress,
 		platformDataIsLoading,
+		getPlatformSettings,
+		getUserInventoryData,
+		updateTriggerCounter,
 	])
 
 	useEffect(() => {
-		activityRef.current.platformTimerID = setTimeout(() => {
-			if (activityRef.current.isActive) {
+		const activityRefCurrent = activityRef.current
+
+		activityRefCurrent.platformTimerID = setTimeout(() => {
+			if (activityRefCurrent.isActive) {
 				retrievePlatformData()
 			}
 		}, 500)
 
 		return () => {
-			clearTimeout(activityRef.current.platformTimerID)
+			clearTimeout(activityRefCurrent.platformTimerID)
 		}
 	}, [
-		// roleIsAdmin,
-		user,
 		activeAddress,
 		retrievePlatformData,
 	])

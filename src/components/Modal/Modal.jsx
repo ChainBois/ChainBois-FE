@@ -5,6 +5,7 @@ import s from '@/styles'
 import { cf } from '@/utils'
 import {
 	Alert,
+	ConvertPoints,
 	CreationProgress,
 	Loading,
 	Error,
@@ -20,6 +21,7 @@ const Modal = () => {
 		creationProgress: <CreationProgress />,
 		error: <Error />,
 		alert: <Alert />,
+		convertPoints: <ConvertPoints />,
 		trainingAssetDetails: <TrainingAssetDetails />,
 	}
 
