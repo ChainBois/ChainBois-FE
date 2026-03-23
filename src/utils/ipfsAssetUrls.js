@@ -29,6 +29,22 @@ const asNonEmptyString = (value) => {
 	return normalizedValue || ''
 }
 
+const getPreferredGateways = (urls = []) => {
+	const preferred = []
+
+	for (const url of urls) {
+		const matchedGateway = IPFS_GATEWAYS.find((gateway) =>
+			String(url).startsWith(`${gateway}/`),
+		)
+
+		if (matchedGateway && !preferred.includes(matchedGateway)) {
+			preferred.push(matchedGateway)
+		}
+	}
+
+	return [...preferred, ...IPFS_GATEWAYS.filter((gateway) => !preferred.includes(gateway))]
+}
+
 const normalizeWeaponFileName = (name = '') =>
 	String(name)
 		.trim()
@@ -66,18 +82,23 @@ export const getChainBoiImageCandidates = (tokenId) => {
 }
 
 export const getWeaponImageCandidates = ({ name, imageUrl, imageUri } = {}) => {
-	const urls = [...ipfsToGateway(imageUrl), ...ipfsToGateway(imageUri)]
 	const normalizedName = normalizeWeaponFileName(name)
 	const fileNumber = WEAPON_FILE_MAP[normalizedName]
 
+	const providedUrls = [...ipfsToGateway(imageUrl), ...ipfsToGateway(imageUri)]
+	const urls = []
+
 	if (normalizedName && fileNumber) {
+		const gateways = getPreferredGateways(providedUrls)
 		urls.push(
-			...IPFS_GATEWAYS.map(
+			...gateways.map(
 				(gateway) =>
 					`${gateway}/${WEAPONS_CID}/${fileNumber}-${normalizedName}.jpeg`,
 			),
 		)
 	}
+
+	urls.push(...providedUrls)
 
 	return [...new Set(urls)]
 }
