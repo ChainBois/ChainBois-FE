@@ -20,11 +20,12 @@
 .showcase {
 	aspect-ratio: 432 / 264;
 	height: auto;
+	position: relative;
 	background: url(../../assets/img/bgBox.png) #000000;
 }
 
 .img {
-	object-position: center;
+	object-position: top center;
 	object-fit: cover;
 }
 
@@ -38,10 +39,32 @@
 	gap: 8px 0;
 }
 
+.metaRow {
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.metaPill {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px 10px;
+	border: 1px solid rgba(236, 27, 36, 0.4);
+	border-radius: 999px;
+	background: rgba(236, 27, 36, 0.12);
+	color: rgba(255, 255, 255, 0.78);
+	font-family: var(--font-inter);
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 120%;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
 .title {
 	font-family: var(--font-space-g);
 	font-weight: 700;
-	font-size: 40.89px;
+	font-size: 30px;
 	letter-spacing: 0%;
 }
 
@@ -51,6 +74,7 @@
 	font-size: 14px;
 	line-height: 140%;
 	letter-spacing: 0%;
+	min-height: 40px;
 }
 
 .footer {
@@ -103,8 +127,13 @@
 		gap: 6px 0;
 	}
 
+	.metaPill {
+		padding: 4px 8px;
+		font-size: 8px;
+	}
+
 	.title {
-		font-size: 21px;
+		font-size: 18px;
 	}
 
 	.footer {
@@ -148,8 +177,17 @@
 		gap: 4px 0;
 	}
 
+	.metaRow {
+		gap: 4px;
+	}
+
+	.metaPill {
+		padding: 3px 6px;
+		font-size: 7px;
+	}
+
 	.title {
-		font-size: 16px;
+		font-size: 13px;
 	}
 
 	.footer {

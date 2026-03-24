@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useActiveAccount } from 'thirdweb/react'
 import AR from '@/assets/img/AR.png'
 import MKR from '@/assets/img/MKR.png'
 import SMG from '@/assets/img/SMG.png'
@@ -8,12 +9,12 @@ import ArmoryCard from '@/components/ArmoryCard'
 import BorderedButton from '@/components/BorderedButton'
 import { Hero } from '@/components/Homepage'
 import Container from '@/components/Homepage/Container'
-import LootBoxes from '@/components/LootBoxes'
 import MaxWidth from '@/components/MaxWidth'
-import NothingYet from '@/components/NothingYet'
 import { PaginationLocal } from '@/components/Pagination'
+import SectionError from '@/components/SectionError'
+import SectionLoading from '@/components/SectionLoading'
 import ScrollMenu from '@/components/ScrollMenu'
-import { useNotifications } from '@/hooks'
+import { useArmoryTransactions, useNotifications } from '@/hooks'
 import s from '@/styles'
 import { cf, fetchArmoryWeapons, normalizeWeaponAssets } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
@@ -43,7 +44,10 @@ const CATEGORY_ORDER = [
 
 const FALLBACK_ARMORY_IMAGES = [SMG, AR, MKR]
 
-const normalizeCategory = (category) => String(category ?? '').trim().toLowerCase()
+const normalizeCategory = (category) =>
+	String(category ?? '')
+		.trim()
+		.toLowerCase()
 
 const formatDescriptor = (value) =>
 	String(value ?? '')
@@ -94,7 +98,10 @@ const getWeaponDescription = (weapon = {}) => {
 }
 
 export default function Page() {
+	const activeAccount = useActiveAccount()
 	const { setCanCloseModal, setModal, setShowModal } = useNotifications()
+	const { isPending, purchaseWeapon, refreshWalletSnapshot } =
+		useArmoryTransactions()
 	const [weapons, setWeapons] = useState([])
 	const [visibleWeapons, setVisibleWeapons] = useState([])
 	const [activeCategory, setActiveCategory] = useState(null)
@@ -121,7 +128,9 @@ export default function Page() {
 		const nextWeapons = flattenArmoryWeapons(res?.data?.data ?? {})
 		setWeapons(nextWeapons)
 		setLoadError(
-			nextWeapons.length ? '' : 'No weapons are currently available in the armory.',
+			nextWeapons.length
+				? ''
+				: 'No weapons are currently available in the armory.',
 		)
 		setIsLoadingWeapons(false)
 
@@ -131,6 +140,11 @@ export default function Page() {
 	useEffect(() => {
 		loadArmoryWeapons()
 	}, [loadArmoryWeapons])
+
+	useEffect(() => {
+		if (!activeAccount?.address) return
+		refreshWalletSnapshot({ address: activeAccount.address })
+	}, [activeAccount?.address, refreshWalletSnapshot])
 
 	const availableCategories = useMemo(() => {
 		const categories = new Set()
@@ -181,6 +195,17 @@ export default function Page() {
 		setVisibleWeapons(filteredWeapons.slice(0, 9))
 	}, [filteredWeapons])
 
+	const handlePurchase = useCallback(
+		async (weapon) => {
+			const res = await purchaseWeapon({ weapon })
+
+			if (res?.success) {
+				await loadArmoryWeapons()
+			}
+		},
+		[loadArmoryWeapons, purchaseWeapon],
+	)
+
 	return (
 		<div className={cf(s.wMax, s.flex, s.flexTop, p.page)}>
 			<Hero
@@ -195,9 +220,8 @@ export default function Page() {
 					<>
 						Gear up. Upgrade. Dominate the battlefield.
 						<br />
-						Purchase weapons, armor, loot boxes, and{' '}
-						<br className={cf(h.lgHidden)} />
-						convert points.
+						Purchase weapons with $BATTLE and
+						<br className={cf(h.lgHidden)} /> convert points in one place.
 					</>
 				}
 				links={
@@ -222,7 +246,12 @@ export default function Page() {
 					<MaxWidth
 						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
 					>
-						<NothingYet message='Loading the weapons armory...' />
+						<SectionLoading
+							message='Loading the weapons armory...'
+							subMessage='Syncing weapon stock, categories, and $BATTLE pricing.'
+							label='Armory Uplink Active'
+							minHeight='360px'
+						/>
 					</MaxWidth>
 				) : weapons.length > 0 ? (
 					<>
@@ -232,20 +261,43 @@ export default function Page() {
 						>
 							<div className={cf(s.wMax, s.flex, s.flexTop, p.content)}>
 								<div className={cf(s.wMax, s.flex, s.flexCenter, p.cards)}>
-									{visibleWeapons.map((weapon, index) => (
-										<ArmoryCard
-											key={`armory-weapon-${weapon?.tokenId ?? weapon?.id ?? index}`}
-											image={weapon?.imageUrl}
-											fallbackImage={
-												FALLBACK_ARMORY_IMAGES[
-													index % FALLBACK_ARMORY_IMAGES.length
-												]
-											}
-											name={weapon?.name || weapon?.weaponName || 'Weapon NFT'}
-											description={getWeaponDescription(weapon)}
-											price={weapon?.price}
-										/>
-									))}
+									{visibleWeapons.map((weapon, index) => {
+										const weaponTokenId = Number(weapon?.tokenId)
+										const purchaseKey = Number.isInteger(weaponTokenId)
+											? `weapon-${weaponTokenId}`
+											: 'weapon'
+
+										return (
+											<ArmoryCard
+												key={`armory-weapon-${
+													weapon?.tokenId ?? weapon?.id ?? index
+												}`}
+												image={weapon?.imageUrl}
+												fallbackImage={
+													FALLBACK_ARMORY_IMAGES[
+														index % FALLBACK_ARMORY_IMAGES.length
+													]
+												}
+												name={
+													weapon?.name || weapon?.weaponName || 'Weapon NFT'
+												}
+												description={getWeaponDescription(weapon)}
+												category={weapon?.category}
+												tier={weapon?.tier}
+												price={weapon?.price}
+												currency={`${
+													String(weapon?.currency ?? 'BATTLE').startsWith('$')
+														? ''
+														: '$'
+												}${weapon?.currency ?? 'BATTLE'}`}
+												actionLabel='Purchase'
+												note='One click to pay, confirm, and receive it in your inventory.'
+												isProcessing={isPending('weapon', purchaseKey)}
+												disabled={isPending('weapon')}
+												onAction={() => handlePurchase(weapon)}
+											/>
+										)
+									})}
 									<PaginationLocal
 										array={visibleWeapons}
 										refArray={filteredWeapons}
@@ -256,25 +308,31 @@ export default function Page() {
 								</div>
 							</div>
 						</MaxWidth>
+						<MaxWidth
+							maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
+						>
+							<div className={cf(p.noticePanel)}>
+								Weapon purchases are paid in $BATTLE and require an owned
+								ChainBoi NFT.
+							</div>
+						</MaxWidth>
 					</>
 				) : (
 					<MaxWidth
 						maxWidth={{ max: '1260px', tablet: '710px', mobile: '330px' }}
 					>
-						<NothingYet
-							message={loadError || 'No weapons are currently available.'}
-							cta={
-								<BorderedButton
-									tag={'Reload'}
-									action={loadArmoryWeapons}
-									borderButtonText={h.heroActionText}
-								/>
-							}
+						<SectionError
+							title='Armory Sync Failed'
+							message={loadError}
+							status='Armory Error'
+							graphicText='ARM'
+							actionLabel='Retry Armory Feed'
+							onAction={loadArmoryWeapons}
+							minHeight='320px'
 						/>
 					</MaxWidth>
 				)}
 			</Container>
-			<LootBoxes />
 		</div>
 	)
 }

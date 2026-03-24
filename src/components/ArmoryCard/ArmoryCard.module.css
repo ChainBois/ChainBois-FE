@@ -62,6 +62,29 @@
 	gap: 6px 0;
 }
 
+.metaRow {
+	gap: 8px;
+	flex-wrap: wrap;
+	min-height: 28px;
+}
+
+.metaPill {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 10px;
+	border: 1px solid rgba(236, 27, 36, 0.4);
+	border-radius: 999px;
+	background: rgba(236, 27, 36, 0.12);
+	color: rgba(255, 255, 255, 0.78);
+	font-family: var(--font-inter);
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 120%;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
 .name {
 	font-family: var(--font-space-g);
 	font-weight: 700;
@@ -87,9 +110,22 @@
 	color: rgba(236, 27, 36, 1);
 }
 
+.note {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.64);
+	font-family: var(--font-inter);
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 140%;
+}
+
 .footer {
 	gap: 6px 0;
 	margin-top: 10px;
+}
+
+.buyButton {
+	min-width: 172px;
 }
 
 /* --------------------------- Media Queries ------------------------- */
@@ -124,6 +160,11 @@
 		gap: 5px 0;
 	}
 
+	.metaPill {
+		padding: 4px 8px;
+		font-size: 9px;
+	}
+
 	.name {
 		font-size: 18.5px;
 	}
@@ -134,6 +175,10 @@
 
 	.price {
 		font-size: 14px;
+	}
+
+	.note {
+		font-size: 10px;
 	}
 }
 
@@ -148,6 +193,16 @@
 		padding: 20px 5px 20px;
 	}
 
+	.metaRow {
+		gap: 4px;
+		min-height: 0;
+	}
+
+	.metaPill {
+		padding: 3px 6px;
+		font-size: 7px;
+	}
+
 	.name {
 		font-size: 14px;
 	}
@@ -158,6 +213,14 @@
 
 	.price {
 		font-size: 10px;
+	}
+
+	.note {
+		font-size: 8px;
+	}
+
+	.buyButton {
+		min-width: 110px;
 	}
 }
 

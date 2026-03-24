@@ -1,0 +1,329 @@
+.sectionError {
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: clamp(24px, 4vw, 36px);
+	overflow: hidden;
+	isolation: isolate;
+	border: 1px solid rgba(236, 27, 36, 0.34);
+	border-radius: 24px;
+	background:
+		radial-gradient(circle at 50% 18%, rgba(236, 27, 36, 0.12), transparent 34%),
+		radial-gradient(circle at 82% 76%, rgba(59, 130, 246, 0.08), transparent 28%),
+		linear-gradient(180deg, rgba(8, 8, 8, 0.94), rgba(4, 4, 6, 0.96));
+	box-shadow:
+		inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+		0 24px 60px rgba(0, 0, 0, 0.24);
+}
+
+.sectionError::before,
+.sectionError::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.sectionError::before {
+	background-image:
+		radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.84) 0 1px, transparent 1.6px),
+		radial-gradient(circle at 24% 72%, rgba(255, 255, 255, 0.68) 0 1px, transparent 1.5px),
+		radial-gradient(circle at 36% 24%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1.5px),
+		radial-gradient(circle at 52% 14%, rgba(255, 255, 255, 0.88) 0 1px, transparent 1.6px),
+		radial-gradient(circle at 66% 32%, rgba(255, 255, 255, 0.66) 0 1px, transparent 1.4px),
+		radial-gradient(circle at 78% 70%, rgba(255, 255, 255, 0.74) 0 1px, transparent 1.5px),
+		radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.7) 0 1px, transparent 1.5px),
+		radial-gradient(circle at 84% 44%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1.6px);
+	opacity: 0.72;
+	animation: starTwinkle 4.8s ease-in-out infinite alternate;
+}
+
+.sectionError::after {
+	background: radial-gradient(circle at center, transparent 18%, rgba(0, 0, 0, 0.28) 100%);
+	opacity: 0.96;
+}
+
+.content {
+	position: relative;
+	z-index: 1;
+	width: min(100%, 520px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 18px;
+	text-align: center;
+}
+
+.graphicWrap {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+
+.graphicHalo {
+	position: relative;
+	width: 124px;
+	height: 124px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.graphicRing,
+.graphicRingSecondary {
+	position: absolute;
+	border-radius: 50%;
+}
+
+.graphicRing {
+	inset: 10px;
+	border: 1.5px solid rgba(236, 27, 36, 0.5);
+	box-shadow: 0 0 22px rgba(236, 27, 36, 0.14);
+	animation: spin 8s linear infinite;
+}
+
+.graphicRingSecondary {
+	inset: 28px;
+	border: 2px solid transparent;
+	border-left-color: rgba(59, 130, 246, 0.92);
+	border-bottom-color: rgba(59, 130, 246, 0.92);
+	box-shadow: 0 0 16px rgba(59, 130, 246, 0.18);
+	animation: spinReverse 3.2s linear infinite;
+}
+
+.graphicSlash {
+	position: absolute;
+	width: 80px;
+	height: 3px;
+	border-radius: 999px;
+	background: linear-gradient(
+		90deg,
+		rgba(236, 27, 36, 0.12),
+		rgba(236, 27, 36, 0.95),
+		rgba(236, 27, 36, 0.18)
+	);
+	box-shadow: 0 0 18px rgba(236, 27, 36, 0.3);
+	transform: rotate(-31deg);
+	animation: slashPulse 1.7s ease-in-out infinite alternate;
+}
+
+.graphicCore {
+	width: 68px;
+	height: 68px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 18px;
+	border: 1px solid rgba(236, 27, 36, 0.38);
+	background:
+		radial-gradient(circle at 35% 30%, rgba(236, 27, 36, 0.18), transparent 42%),
+		linear-gradient(180deg, rgba(20, 20, 22, 0.96), rgba(6, 6, 8, 0.98));
+	box-shadow:
+		inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+		0 0 24px rgba(236, 27, 36, 0.14);
+}
+
+.graphicText {
+	font-family: 'Orbitron', monospace;
+	font-size: 1.5rem;
+	font-weight: 900;
+	letter-spacing: 0.12em;
+	text-indent: 0.12em;
+	color: #ff2b2b;
+	text-shadow:
+		0 0 16px rgba(236, 27, 36, 0.55),
+		0 0 30px rgba(236, 27, 36, 0.22);
+}
+
+.status {
+	margin: 0;
+	font-family: var(--font-space-g);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.88);
+	animation: glitch 2.4s infinite;
+}
+
+.copy {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.title {
+	margin: 0;
+	font-family: var(--font-space-g);
+	font-size: clamp(1.45rem, 3vw, 2rem);
+	font-weight: 700;
+	line-height: 1.08;
+	color: #ffffff;
+}
+
+.message {
+	margin: 0;
+	max-width: 470px;
+	font-family: var(--font-space-g);
+	font-size: 0.97rem;
+	font-weight: 500;
+	line-height: 1.6;
+	color: rgba(255, 255, 255, 0.76);
+}
+
+.clippedButton {
+	min-width: 190px;
+}
+
+.clippedButtonContent {
+	padding: 13px 24px 13px 18px;
+	gap: 8px;
+}
+
+.clippedButtonText {
+	color: #060606;
+	font-family: var(--font-space-g);
+	font-size: 0.95rem;
+	font-weight: 700;
+}
+
+.clippedButtonIcon {
+	width: 18px;
+	height: 18px;
+}
+
+.buttonIcon {
+	width: 18px;
+	height: 18px;
+	color: #060606;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes spinReverse {
+	from {
+		transform: rotate(360deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
+}
+
+@keyframes slashPulse {
+	from {
+		opacity: 0.72;
+		transform: rotate(-31deg) scaleX(0.94);
+	}
+	to {
+		opacity: 1;
+		transform: rotate(-31deg) scaleX(1.02);
+	}
+}
+
+@keyframes starTwinkle {
+	from {
+		opacity: 0.44;
+	}
+	to {
+		opacity: 0.78;
+	}
+}
+
+@keyframes glitch {
+	0%,
+	100% {
+		text-shadow:
+			0.04em 0 0 #dc2626,
+			-0.04em -0.02em 0 #3b82f6;
+	}
+	32%,
+	58% {
+		text-shadow: none;
+	}
+	33%,
+	59% {
+		text-shadow:
+			0.04em 0 0 #dc2626,
+			-0.04em -0.02em 0 #3b82f6;
+	}
+}
+
+@media only screen and (max-width: 834px),
+	(min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+	.sectionError {
+		padding: 24px 22px;
+		border-radius: 20px;
+	}
+
+	.graphicHalo {
+		width: 108px;
+		height: 108px;
+	}
+
+	.graphicCore {
+		width: 60px;
+		height: 60px;
+	}
+
+	.graphicText {
+		font-size: 1.3rem;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.sectionError {
+		padding: 22px 16px;
+		border-radius: 18px;
+	}
+
+	.content {
+		gap: 16px;
+	}
+
+	.graphicHalo {
+		width: 96px;
+		height: 96px;
+	}
+
+	.graphicCore {
+		width: 54px;
+		height: 54px;
+		border-radius: 14px;
+	}
+
+	.graphicText {
+		font-size: 1.15rem;
+	}
+
+	.status {
+		font-size: 0.7rem;
+		letter-spacing: 0.18em;
+	}
+
+	.message {
+		font-size: 0.9rem;
+	}
+
+	.clippedButton {
+		min-width: 164px;
+	}
+
+	.clippedButtonContent {
+		padding: 11px 20px 11px 16px;
+	}
+
+	.clippedButtonText {
+		font-size: 0.85rem;
+	}
+}

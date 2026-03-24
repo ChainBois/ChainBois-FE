@@ -39,7 +39,7 @@ const completedTourneys = [
 
 export default function Page() {
 	const { query: { isMobile = false } = {} } = useMain()
-	const { displayAlert } = useNotifications()
+	const { setCanCloseModal, setModal, setShowModal } = useNotifications()
 	const [displayTourneys, setDisplayTourneys] = useState([])
 	const [upcoming_dTourneys, setUpcoming_dTourneys] = useState([])
 
@@ -155,10 +155,9 @@ export default function Page() {
 						<BorderedButton
 							tag={'Convert'}
 							action={() => {
-								displayAlert({
-									title: 'Coming Soon',
-									message: 'This feature is coming soon.',
-								})
+								setCanCloseModal(true)
+								setModal('convertPoints')
+								setShowModal(true)
 							}}
 							borderButtonText={h.heroActionText}
 						/>

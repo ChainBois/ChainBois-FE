@@ -1,5 +1,6 @@
 export { useAsync } from './useAsync'
 export { useAuth } from './useAuth'
+export { useArmoryTransactions } from './useArmoryTransactions'
 export { useDebounce } from './useDebounce'
 export { useDebouncedEffect } from './useDebouncedEffect'
 export { isEqual, useLiveState } from './useLiveState'

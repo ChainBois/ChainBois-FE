@@ -170,6 +170,7 @@
 .buttonIcon {
 	width: 16px;
 	height: 16px;
+	color: #ffffff;
 }
 
 .errorInfo {
@@ -210,13 +211,11 @@
 	}
 
 	.actionButtons {
-		flex-direction: column;
 		width: 100%;
 	}
 
-	.clippedButton,
-	.polyButton,
-	.borderButton {
-		width: min(280px, 100%);
+	.buttonIcon {
+		width: 9px !important;
+		height: 9px !important;
 	}
 }

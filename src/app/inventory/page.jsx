@@ -1,20 +1,26 @@
 'use client'
 
+import { useEffect, useMemo, useState } from 'react'
+import { useActiveAccount } from 'thirdweb/react'
 import BorderedButton from '@/components/BorderedButton'
 import ConvertPointsPanel from '@/components/ConvertPointsPanel'
 import { Hero } from '@/components/Homepage'
 import Container from '@/components/Homepage/Container'
 import InventoryCard from '@/components/InventoryCard'
 import MaxWidth from '@/components/MaxWidth'
+import NothingYet from '@/components/NothingYet'
 import { PaginationLocal } from '@/components/Pagination'
 import ScrollMenu from '@/components/ScrollMenu'
-import { useAuth, useMain, useNotifications } from '@/hooks'
+import {
+	useArmoryTransactions,
+	useAuth,
+	useMain,
+	useNotifications,
+} from '@/hooks'
 import s from '@/styles'
 import { cf, getInventoryBalances } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
-import { useEffect, useMemo, useState } from 'react'
-import NothingYet from '@/components/NothingYet'
 
 const CATEGORY_LABELS = {
 	assault: 'Assault Rifles',
@@ -38,20 +44,35 @@ const CATEGORY_ORDER = [
 	'melee',
 ]
 
-const normalizeCategory = (category) => String(category ?? '').trim().toLowerCase()
+const normalizeCategory = (category) =>
+	String(category ?? '')
+		.trim()
+		.toLowerCase()
 
 export default function Page() {
+	const activeAccount = useActiveAccount()
 	const { user, verifyAssets } = useAuth()
 	const { getUserInventoryData } = useMain()
 	const { showLoading, hideLoading, showError, displayAlert } =
 		useNotifications()
+	const { convertPoints, isPending, refreshWalletSnapshot } =
+		useArmoryTransactions()
 	const weapons = useMemo(
 		() => (Array.isArray(user?.weapons) ? user.weapons : []),
 		[user?.weapons],
 	)
 	const inventoryBalances = getInventoryBalances(user)
-
+	const pointsInfo = user?.pointsInfo ?? {}
 	const [activeCategory, setActiveCategory] = useState(null)
+	const [visibleWeapons, setVisibleWeapons] = useState([])
+
+	useEffect(() => {
+		if (!activeAccount?.address) return
+		refreshWalletSnapshot({
+			address: activeAccount.address,
+			includeHistory: true,
+		})
+	}, [activeAccount?.address, refreshWalletSnapshot])
 
 	const possessedCategories = useMemo(() => {
 		const categories = new Set()
@@ -70,12 +91,12 @@ export default function Page() {
 	}, [activeCategory, weapons])
 
 	const weaponCategoryOptions = useMemo(() => {
-		const options = []
-
-		options.push({
-			tag: 'All',
-			action: () => setActiveCategory(null),
-		})
+		const options = [
+			{
+				tag: 'All',
+				action: () => setActiveCategory(null),
+			},
+		]
 
 		for (const category of possessedCategories) {
 			options.push({
@@ -86,7 +107,6 @@ export default function Page() {
 
 		return options
 	}, [possessedCategories])
-	const [visibleWeapons, setVisibleWeapons] = useState([])
 
 	useEffect(() => {
 		if (activeCategory && !possessedCategories.includes(activeCategory)) {
@@ -123,17 +143,24 @@ export default function Page() {
 							action={async () => {
 								showLoading?.({
 									title: 'Refreshing Inventory',
-									message: 'Syncing your wallet inventory.',
+									message: 'Syncing your wallet inventory and balances.',
 								})
-								const res = await getUserInventoryData?.()
+
+								const [inventoryRes] = await Promise.all([
+									getUserInventoryData?.(),
+									refreshWalletSnapshot({
+										address: activeAccount?.address ?? user?.address,
+										includeHistory: true,
+									}),
+								])
 								hideLoading?.()
 
-								if (!res?.success) {
+								if (!inventoryRes?.success) {
 									showError?.({
 										title: 'Inventory Refresh Failed',
 										message:
-											res?.message ||
-											res?.error ||
+											inventoryRes?.message ||
+											inventoryRes?.error ||
 											'Unable to refresh your inventory right now.',
 									})
 									return
@@ -165,14 +192,12 @@ export default function Page() {
 						battleBalance={
 							inventoryBalances?.battle ?? inventoryBalances?.battleRaw
 						}
-						onConvert={() => {
-							displayAlert({
-								title: 'Coming Soon',
-								message:
-									'Points conversion is not live yet. Your balance stays unchanged for now.',
-								type: 'info',
-							})
-						}}
+						ratePoints={1}
+						rateBattle={pointsInfo?.conversionRate ?? 1}
+						maxConvertible={pointsInfo?.maxConvertible}
+						history={user?.pointsHistory}
+						isConverting={isPending('points')}
+						onConvert={({ points }) => convertPoints({ amount: points })}
 					/>
 				</MaxWidth>
 			</Container>
@@ -211,13 +236,16 @@ export default function Page() {
 						maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
 					>
 						<NothingYet
-							message={`You don’t have any NFT yet`}
+							message={
+								activeAccount?.address
+									? `You don't have any NFT yet`
+									: 'Connect a wallet to view your inventory'
+							}
 							cta={
 								<BorderedButton
 									tag={'Purchase'}
-									action={'https://chainbois-testnet-faucet.vercel.app'}
+									action={'/marketplace'}
 									isLink
-									target={'_blank'}
 									borderButtonText={h.heroActionText}
 								/>
 							}

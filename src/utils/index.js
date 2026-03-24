@@ -27,7 +27,23 @@ export {
 	normalizeWeaponAsset,
 	normalizeWeaponAssets,
 } from './ipfsAssetUrls'
-export { fetchArmoryWeapons, fetchArmoryWeapon } from './armoryApi'
+export {
+	convertPointsToBattle,
+	fetchArmoryBalance,
+	fetchArmoryNft,
+	fetchArmoryNfts,
+	fetchArmoryWeapon,
+	fetchArmoryWeapons,
+	fetchPointsBalance,
+	fetchPointsHistory,
+	normalizeArmoryBalance,
+	normalizeChainBoiListing,
+	normalizeChainBoiListingsPayload,
+	normalizePointsBalancePayload,
+	normalizePointsHistoryPayload,
+	purchaseArmoryNft,
+	purchaseArmoryWeapon,
+} from './armoryApi'
 export {
 	fetchInventory,
 	fetchInventoryHistory,

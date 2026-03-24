@@ -9,24 +9,40 @@ import FloatingStars from '../FloatingStars'
 import BuyButton from '../BuyButton'
 import a from './ArmoryCard.module.css'
 
-const formatPriceLabel = (price) => {
+const formatPriceLabel = (price, currency = 'BATTLE') => {
 	const numericValue = Number(price)
 	if (Number.isFinite(numericValue) && numericValue >= 0) {
 		return `${numericValue.toLocaleString('en-US', {
-			maximumFractionDigits: 2,
-		})} $BATTLE`
+			maximumFractionDigits: 4,
+		})} ${currency}`
 	}
 
 	const fallbackLabel = String(price ?? '').trim()
 	return fallbackLabel || 'Price TBA'
 }
 
+const formatTagLabel = (value) =>
+	String(value ?? '')
+		.trim()
+		.split(/[-_\s]+/)
+		.filter(Boolean)
+		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+		.join(' ')
+
 export default function ArmoryCard({
 	image,
 	fallbackImage = DefaultArmoryImage,
 	name,
 	description,
+	category,
+	tier,
 	price,
+	currency = '$BATTLE',
+	actionLabel = 'Buy Weapon',
+	note = '',
+	disabled = false,
+	isProcessing = false,
+	onAction = null,
 }) {
 	const [showFallbackImage, setShowFallbackImage] = useState(false)
 
@@ -36,7 +52,17 @@ export default function ArmoryCard({
 
 	const imageSrc =
 		!showFallbackImage && image ? image : fallbackImage || DefaultArmoryImage
-	const priceLabel = useMemo(() => formatPriceLabel(price), [price])
+	const priceLabel = useMemo(
+		() => formatPriceLabel(price, currency),
+		[currency, price],
+	)
+	const cardTags = useMemo(
+		() =>
+			[formatTagLabel(category), tier ? `${formatTagLabel(tier)} Tier` : '']
+				.filter(Boolean)
+				.slice(0, 2),
+		[category, tier],
+	)
 
 	return (
 		<article className={cf(s.flex, s.flexCenter, a.card)}>
@@ -102,15 +128,27 @@ export default function ArmoryCard({
 				<header
 					className={cf(s.wMax, s.flex, s.flexLeft, s.flex_dColumn, a.header)}
 				>
+					<div className={cf(s.wMax, s.flex, s.flexCenter, a.metaRow)}>
+						{cardTags.map((tag) => (
+							<span
+								key={`${name || 'weapon'}-${tag}`}
+								className={cf(a.metaPill)}
+							>
+								{tag}
+							</span>
+						))}
+					</div>
 					<h3 className={cf(s.wMax, s.tCenter, a.name)}>{name}</h3>
 					<p className={cf(s.wMax, s.tCenter, a.description)}>{description}</p>
 					<p className={cf(s.wMax, s.tCenter, a.price)}>{priceLabel}</p>
+					{note ? <p className={cf(s.wMax, s.tCenter, a.note)}>{note}</p> : null}
 				</header>
 				<footer className={cf(s.wMax, s.flex, s.flexCenter, a.footer)}>
 					<BuyButton
-						isLink
-						action={`https://chainbois-testnet-faucet.vercel.app/`}
-						target={'_blank'}
+						action={typeof onAction === 'function' ? onAction : undefined}
+						tag={isProcessing ? 'Processing...' : actionLabel}
+						disabled={disabled || isProcessing}
+						buyButton={a.buyButton}
 					/>
 				</footer>
 			</div>

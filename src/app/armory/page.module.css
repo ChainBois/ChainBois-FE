@@ -7,6 +7,19 @@
 	/* padding: 0 170px; */
 }
 
+.noticePanel {
+	margin-bottom: 24px;
+	padding: 14px 16px;
+	border: 1px solid rgba(236, 27, 36, 0.28);
+	border-radius: 14px;
+	background: rgba(236, 27, 36, 0.08);
+	color: rgba(255, 255, 255, 0.82);
+	font-family: var(--font-inter);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 145%;
+}
+
 .cards {
 	gap: 30px 10px;
 	margin-bottom: 100px;
@@ -29,6 +42,10 @@
 		gap: 33px 10px;
 		margin-bottom: 75px;
 	}
+
+	.noticePanel {
+		font-size: 12px;
+	}
 }
 
 /* Tiny device */
@@ -44,5 +61,12 @@
 	.cards {
 		gap: 32px 15px;
 		margin-bottom: 0px;
+	}
+
+	.noticePanel {
+		margin-bottom: 18px;
+		padding: 12px;
+		font-size: 10px;
+		border-radius: 10px;
 	}
 }

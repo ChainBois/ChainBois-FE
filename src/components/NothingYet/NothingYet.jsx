@@ -1,26 +1,39 @@
 'use client'
 
-import { cf } from '@/utils'
-import s from '@/styles'
 import n from './NothingYet.module.css'
-import h from '../Homepage/Hero.module.css'
 
-export default function NothingYet({ message, cta }) {
+export default function NothingYet({
+	message,
+	cta,
+	title = 'Awaiting Deployment',
+	eyebrow = 'ChainBoi Intel',
+}) {
+	const resolvedMessage =
+		String(message ?? '').trim() ||
+		'Nothing has been deployed here yet. Check back soon.'
+
 	return (
-		<div
-			className={cf(
-				s.flex,
-				s.flex_dColumn,
-				s.flexTop,
-				s.tCenter,
-				s.pX10,
-				s.pY20,
-			)}
-		>
-			<div className={cf(s.flex, s.flex_dColumn, s.flexTop, n.wrapper)}>
-				<p className={cf(s.wMax, s.tLeft, h.heroTitle, n.message)}>{message ?? 'Nothing Yet'}</p>
-				{cta}
+		<section className={n.emptyState} aria-live='polite'>
+			<div className={n.panel}>
+				<div className={n.art} aria-hidden='true'>
+					<div className={n.starfield}></div>
+					<div className={n.orbit}></div>
+					<div className={n.orbitInner}></div>
+					<div className={n.beacon}></div>
+					<div className={n.signal}></div>
+					<div className={`${n.ping} ${n.pingOne}`}></div>
+					<div className={`${n.ping} ${n.pingTwo}`}></div>
+					<div className={`${n.chip} ${n.chipTop}`}>NFT</div>
+					<div className={`${n.chip} ${n.chipBottom}`}>READY</div>
+				</div>
+
+				<div className={n.copy}>
+					<p className={n.eyebrow}>{eyebrow}</p>
+					<h2 className={n.title}>{title}</h2>
+					<p className={n.message}>{resolvedMessage}</p>
+					{cta ? <div className={n.cta}>{cta}</div> : null}
+				</div>
 			</div>
-		</div>
+		</section>
 	)
 }

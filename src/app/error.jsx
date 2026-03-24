@@ -6,7 +6,7 @@ import PolyButton from '@/components/PolyButton'
 import s from '@/styles'
 import { cf } from '@/utils'
 import { useRouter } from 'next/navigation'
-import { MdHome, MdRefresh } from 'react-icons/md'
+import { MdChevronLeft, MdHome, MdRefresh } from 'react-icons/md'
 import styles from './error.module.css'
 
 export default function ErrorPage({
@@ -64,7 +64,9 @@ export default function ErrorPage({
 						<p className={styles.errorMessage}>{message}</p>
 					</div>
 
-					<div className={cf(s.flex, s.flexCenter, s.g20, styles.actionButtons)}>
+					<div
+						className={cf(s.flex, s.flexCenter, s.g20, styles.actionButtons)}
+					>
 						{showRetry && (
 							<ClippedButton
 								tag='Retry Mission'
@@ -77,27 +79,32 @@ export default function ErrorPage({
 							/>
 						)}
 
-						<PolyButton
-							tag='Go Back'
-							action={handleGoBack}
-							side='left'
-							polyButton={styles.polyButton}
-							polyButtonText={styles.polyButtonText}
-						/>
-
-						<BorderedButton
+						<ClippedButton
 							tag='Home Base'
-							action='/'
+							action={'/'}
 							isLink
 							icon={<MdHome className={styles.buttonIcon} />}
-							borderButton={styles.borderButton}
-							borderButtonContent={styles.borderButtonContent}
-							borderButtonText={styles.borderButtonText}
+							clippedButton={styles.clippedButton}
+							clippedButtonContent={styles.clippedButtonContent}
+							clippedButtonText={styles.clippedButtonText}
+							clippedButtonIcon={styles.clippedButtonIcon}
+						/>
+
+						<ClippedButton
+							tag='Go Back'
+							action={handleRetry}
+							icon={<MdChevronLeft className={styles.buttonIcon} />}
+							clippedButton={styles.clippedButton}
+							clippedButtonContent={styles.clippedButtonContent}
+							clippedButtonText={styles.clippedButtonText}
+							clippedButtonIcon={styles.clippedButtonIcon}
 						/>
 					</div>
 
 					<div className={styles.errorInfo}>
-						<p>If this problem persists, contact the support team at base camp.</p>
+						<p>
+							If this problem persists, contact the support team at base camp.
+						</p>
 						<code className={styles.errorId}>
 							Error ID: {Date.now().toString(36).toUpperCase()}
 						</code>
