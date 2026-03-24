@@ -342,7 +342,7 @@ export default function ConvertPointsPanel({
 			</footer>
 			<section className={cf(s.wMax, s.flex, s.flex_dColumn, c.historySection)}>
 				<div className={cf(s.wMax, s.flex, s.spaceXBetween, c.historyHeader)}>
-					<h4 className={cf(c.historyTitle)}>Recent conversions</h4>
+					<h4 className={cf(c.historyTitle)}>Recent transactions</h4>
 					<span className={cf(c.historyMeta)}>
 						{historyEntries.length
 							? `${visibleHistoryEntries.length} shown`
@@ -386,7 +386,8 @@ export default function ConvertPointsPanel({
 					</div>
 				) : (
 					<p className={cf(c.historyEmpty)}>
-						Your completed conversions will appear here after the first payout.
+						Your recent spending activity will appear here after your first
+						purchase or conversion.
 					</p>
 				)}
 			</section>
