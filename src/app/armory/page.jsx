@@ -14,9 +14,9 @@ import { PaginationLocal } from '@/components/Pagination'
 import SectionError from '@/components/SectionError'
 import SectionLoading from '@/components/SectionLoading'
 import ScrollMenu from '@/components/ScrollMenu'
-import { useArmoryTransactions, useNotifications } from '@/hooks'
+import { useArmoryTransactions, useMain, useNotifications } from '@/hooks'
 import s from '@/styles'
-import { cf, fetchArmoryWeapons, normalizeWeaponAssets } from '@/utils'
+import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
 
@@ -57,28 +57,6 @@ const formatDescriptor = (value) =>
 		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
 		.join(' ')
 
-const flattenArmoryWeapons = (payload = {}) => {
-	if (Array.isArray(payload)) {
-		return normalizeWeaponAssets(payload)
-	}
-	if (!payload || typeof payload !== 'object') return []
-
-	const weapons = []
-
-	for (const [category, items] of Object.entries(payload)) {
-		if (!Array.isArray(items)) continue
-
-		for (const weapon of items) {
-			weapons.push({
-				category: weapon?.category ?? category,
-				...weapon,
-			})
-		}
-	}
-
-	return normalizeWeaponAssets(weapons)
-}
-
 const getWeaponDescription = (weapon = {}) => {
 	const directDescription = String(weapon?.description ?? '').trim()
 	if (directDescription) return directDescription
@@ -99,46 +77,21 @@ const getWeaponDescription = (weapon = {}) => {
 
 export default function Page() {
 	const activeAccount = useActiveAccount()
+	const { armoryContent, loadArmoryWeapons } = useMain()
 	const { setCanCloseModal, setModal, setShowModal } = useNotifications()
 	const { isPending, purchaseWeapon, refreshWalletSnapshot } =
 		useArmoryTransactions()
-	const [weapons, setWeapons] = useState([])
 	const [visibleWeapons, setVisibleWeapons] = useState([])
 	const [activeCategory, setActiveCategory] = useState(null)
-	const [isLoadingWeapons, setIsLoadingWeapons] = useState(true)
-	const [loadError, setLoadError] = useState('')
-
-	const loadArmoryWeapons = useCallback(async () => {
-		setIsLoadingWeapons(true)
-		setLoadError('')
-
-		const res = await fetchArmoryWeapons()
-
-		if (!res?.success) {
-			setWeapons([])
-			setLoadError(
-				res?.message ||
-					res?.error ||
-					'We could not load the armory weapons right now.',
-			)
-			setIsLoadingWeapons(false)
-			return res
-		}
-
-		const nextWeapons = flattenArmoryWeapons(res?.data?.data ?? {})
-		setWeapons(nextWeapons)
-		setLoadError(
-			nextWeapons.length
-				? ''
-				: 'No weapons are currently available in the armory.',
-		)
-		setIsLoadingWeapons(false)
-
-		return res
-	}, [])
+	const weapons = useMemo(
+		() => (Array.isArray(armoryContent?.weapons) ? armoryContent.weapons : []),
+		[armoryContent?.weapons],
+	)
+	const isLoadingWeapons = armoryContent?.isLoading ?? true
+	const loadError = armoryContent?.error ?? ''
 
 	useEffect(() => {
-		loadArmoryWeapons()
+		void loadArmoryWeapons()
 	}, [loadArmoryWeapons])
 
 	useEffect(() => {
@@ -200,7 +153,7 @@ export default function Page() {
 			const res = await purchaseWeapon({ weapon })
 
 			if (res?.success) {
-				await loadArmoryWeapons()
+				await loadArmoryWeapons({ force: true })
 			}
 		},
 		[loadArmoryWeapons, purchaseWeapon],
@@ -327,7 +280,7 @@ export default function Page() {
 							status='Armory Error'
 							graphicText='ARM'
 							actionLabel='Retry Armory Feed'
-							onAction={loadArmoryWeapons}
+							onAction={() => loadArmoryWeapons({ force: true })}
 							minHeight='320px'
 						/>
 					</MaxWidth>

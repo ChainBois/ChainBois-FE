@@ -3,11 +3,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Hero } from '@/components/Homepage'
 import Container from '@/components/Homepage/Container'
-import { cf, request } from '@/utils'
+import { cf } from '@/utils'
 import s from '@/styles'
 import l from '@/components/Homepage/Leaderboard.module.css'
 import BorderedButton from '@/components/BorderedButton'
-import { useAuth } from '@/hooks'
+import { useMain } from '@/hooks'
 import h from '@/components/Homepage/Homepage.module.css'
 import p from './page.module.css'
 import pg from '@/components/Pagination/Pagination.module.css'
@@ -19,54 +19,6 @@ const PERIODS = [
 	{ key: 'monthly', label: 'Monthly' },
 ]
 
-const normalizeLeaderboardEntries = (payload) => {
-	const candidates = [
-		payload?.data?.entries,
-		payload?.data?.leaderboard,
-		payload?.data?.items,
-		payload?.data?.data?.entries,
-		payload?.data?.data?.leaderboard,
-		payload?.data?.data?.items,
-		payload?.data,
-	]
-
-	for (const candidate of candidates) {
-		if (Array.isArray(candidate)) return candidate
-	}
-
-	return []
-}
-
-const normalizePagination = (payload) => {
-	const candidates = [
-		payload?.data?.pagination,
-		payload?.data?.data?.pagination,
-		payload?.data,
-		payload?.data?.data,
-		payload?.pagination,
-	]
-	for (const candidate of candidates) {
-		if (!candidate || typeof candidate !== 'object') continue
-
-		// Newer leaderboard payloads return pagination fields at the root of `data`.
-		const pages = candidate?.pages ?? candidate?.totalPages
-		const currentPage = candidate?.page ?? candidate?.currentPage
-		const totalUsers = candidate?.total ?? candidate?.totalUsers
-		const hasUsefulFields =
-			pages !== undefined || currentPage !== undefined || totalUsers !== undefined
-
-		if (hasUsefulFields) {
-			return {
-				...candidate,
-				pages,
-				page: currentPage,
-				total: totalUsers,
-			}
-		}
-	}
-	return null
-}
-
 const getEntryValue = (entry, keys, fallback = 0) => {
 	for (const key of keys) {
 		const value = entry?.[key]
@@ -75,126 +27,38 @@ const getEntryValue = (entry, keys, fallback = 0) => {
 	return fallback
 }
 
-const getViewerUid = (user) =>
-	user?.uid ?? user?.userID ?? user?._id ?? user?.id ?? null
-
-const buildLeaderboardPaths = ({ period = 'all', limit = 20, page = 1 }) => {
-	const safePeriod = period || 'all'
-	const safeLimit = Number(limit) || 20
-	const safePage = Number(page) || 1
-
-	if (safePeriod === 'all') {
-		return [`leaderboard?limit=${safeLimit}&page=${safePage}`]
-	}
-
-	return [
-		`leaderboard/${safePeriod}?limit=${safeLimit}&page=${safePage}`,
-		`leaderboard?period=${encodeURIComponent(safePeriod)}&limit=${safeLimit}&page=${safePage}`,
-	]
-}
-
-const buildRankPaths = ({ uid, period = 'all' }) => {
-	if (!uid) return []
-	const safePeriod = period || 'all'
-
-	return [
-		`leaderboard/rank/${uid}`,
-		`leaderboard/rank/${uid}?period=${encodeURIComponent(safePeriod)}`,
-		`leaderboard/rank/${uid}/${safePeriod}`,
-	]
-}
-
-const requestWithFallbackPaths = async (paths, accessToken) => {
-	for (const path of paths) {
-		const res = await request({
-			path,
-			method: 'get',
-			...(accessToken ? { accessToken } : {}),
-		})
-		if (res?.success) return res
-	}
-	return null
+const DEFAULT_LEADERBOARD_CONTENT = {
+	entries: [],
+	viewerRank: null,
+	pagination: null,
+	isLoading: true,
+	hasError: false,
 }
 
 export default function Page() {
-	const { user } = useAuth()
-	const viewerUid = useMemo(() => getViewerUid(user), [user])
+	const {
+		buildLeaderboardPageKey,
+		leaderboardContentByKey,
+		loadLeaderboardContent,
+	} = useMain()
 	const [period, setPeriod] = useState('all')
 	const [page, setPage] = useState(1)
 	const [limit] = useState(20)
-
-	const [entries, setEntries] = useState([])
-	const [viewerRank, setViewerRank] = useState(null)
-	const [isLoading, setIsLoading] = useState(true)
-	const [hasError, setHasError] = useState(false)
-	const [pagination, setPagination] = useState(null)
-
-	useEffect(() => {
-		let isActive = true
-
-		const loadLeaderboard = async () => {
-			setIsLoading(true)
-			setHasError(false)
-
-			const leaderboardRes = await requestWithFallbackPaths(
-				buildLeaderboardPaths({ period, limit, page }),
-				user?.accessToken ?? '',
-			)
-
-			if (!isActive) return
-
-			if (!leaderboardRes?.success) {
-				setEntries([])
-				setPagination(null)
-				setHasError(true)
-				setIsLoading(false)
-				return
-			}
-
-			const nextEntries = normalizeLeaderboardEntries(leaderboardRes)
-			setEntries(nextEntries)
-			setPagination(normalizePagination(leaderboardRes))
-			setIsLoading(false)
-		}
-
-		loadLeaderboard()
-
-		return () => {
-			isActive = false
-		}
-	}, [limit, page, period, user?.accessToken])
+	const leaderboardKey = useMemo(
+		() => buildLeaderboardPageKey?.({ period, limit, page }) ?? '',
+		[buildLeaderboardPageKey, limit, page, period],
+	)
+	const {
+		entries,
+		viewerRank,
+		pagination,
+		isLoading,
+		hasError,
+	} = leaderboardContentByKey?.[leaderboardKey] ?? DEFAULT_LEADERBOARD_CONTENT
 
 	useEffect(() => {
-		let isActive = true
-
-		const loadRank = async () => {
-			if (!viewerUid) {
-				setViewerRank(null)
-				return
-			}
-
-			const rankRes = await requestWithFallbackPaths(
-				buildRankPaths({ uid: viewerUid, period }),
-				user?.accessToken ?? '',
-			)
-
-			if (!isActive) return
-
-			if (!rankRes?.success) {
-				setViewerRank(null)
-				return
-			}
-
-			const data = rankRes?.data?.data ?? rankRes?.data ?? null
-			setViewerRank(data)
-		}
-
-		loadRank()
-
-		return () => {
-			isActive = false
-		}
-	}, [period, user?.accessToken, viewerUid])
+		void loadLeaderboardContent({ period, limit, page })
+	}, [limit, loadLeaderboardContent, page, period])
 
 	const content = useMemo(() => {
 		if (isLoading) {

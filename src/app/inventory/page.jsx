@@ -242,12 +242,21 @@ export default function Page() {
 									: 'Connect a wallet to view your inventory'
 							}
 							cta={
-								<BorderedButton
-									tag={'Purchase'}
-									action={'/marketplace'}
-									isLink
-									borderButtonText={h.heroActionText}
-								/>
+								activeAccount?.address ? (
+									<BorderedButton
+										tag={'Purchase'}
+										action={'/marketplace'}
+										isLink
+										borderButtonText={h.heroActionText}
+									/>
+								) : (
+									<BorderedButton
+										tag={'Purchase'}
+										action={() => {}}
+										borderButtonText={h.heroActionText}
+										disabled
+									/>
+								)
 							}
 						/>
 					</MaxWidth>

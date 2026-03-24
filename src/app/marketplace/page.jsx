@@ -11,69 +11,34 @@ import MaxWidth from '@/components/MaxWidth'
 import NothingYet from '@/components/NothingYet'
 import { PaginationLocal } from '@/components/Pagination'
 import SectionLoading from '@/components/SectionLoading'
-import { useArmoryTransactions } from '@/hooks'
+import { useArmoryTransactions, useMain } from '@/hooks'
 import s from '@/styles'
-import {
-	cf,
-	fetchArmoryNfts,
-	normalizeChainBoiListingsPayload,
-} from '@/utils'
+import { cf } from '@/utils'
 import h from '../../components/Homepage/Homepage.module.css'
 import p from './page.module.css'
 
 export default function Page() {
 	const activeAccount = useActiveAccount()
+	const { marketplaceContent, loadPrimaryMarket } = useMain()
 	const { isPending, purchaseChainBoi, refreshWalletSnapshot } =
 		useArmoryTransactions()
-	const [marketData, setMarketData] = useState({
-		nfts: [],
-		price: null,
-		currency: 'AVAX',
-		available: 0,
-		paymentAddress: '',
-	})
 	const [visibleListings, setVisibleListings] = useState([])
-	const [isLoadingListings, setIsLoadingListings] = useState(true)
-	const [loadError, setLoadError] = useState('')
-
-	const loadPrimaryMarket = useCallback(async () => {
-		setIsLoadingListings(true)
-		setLoadError('')
-
-		const res = await fetchArmoryNfts()
-		if (!res?.success) {
-			setMarketData({
+	const marketData = useMemo(
+		() =>
+			marketplaceContent?.marketData ?? {
 				nfts: [],
 				price: null,
 				currency: 'AVAX',
 				available: 0,
 				paymentAddress: '',
-			})
-			setLoadError(
-				res?.message ||
-					res?.error ||
-					'We could not load the Primary Market listings right now.',
-			)
-			setIsLoadingListings(false)
-			return res
-		}
-
-		const nextMarketData = normalizeChainBoiListingsPayload(
-			res?.data?.data ?? {},
-		)
-		setMarketData(nextMarketData)
-		setLoadError(
-			nextMarketData?.nfts?.length
-				? ''
-				: 'No purchasable ChainBois are currently listed in the Primary Market.',
-		)
-		setIsLoadingListings(false)
-
-		return res
-	}, [])
+			},
+		[marketplaceContent?.marketData],
+	)
+	const isLoadingListings = marketplaceContent?.isLoading ?? true
+	const loadError = marketplaceContent?.error ?? ''
 
 	useEffect(() => {
-		loadPrimaryMarket()
+		void loadPrimaryMarket()
 	}, [loadPrimaryMarket])
 
 	useEffect(() => {
@@ -95,7 +60,7 @@ export default function Page() {
 			const res = await purchaseChainBoi({ listing })
 
 			if (res?.success) {
-				await loadPrimaryMarket()
+				await loadPrimaryMarket({ force: true })
 			}
 		},
 		[loadPrimaryMarket, purchaseChainBoi],
@@ -211,7 +176,7 @@ export default function Page() {
 							status='Marketplace Error'
 							graphicText='MKT'
 							actionLabel='Retry Market Feed'
-							onAction={loadPrimaryMarket}
+							onAction={() => loadPrimaryMarket({ force: true })}
 							minHeight='320px'
 						/>
 					</MaxWidth>

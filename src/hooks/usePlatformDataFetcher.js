@@ -27,6 +27,7 @@ export const usePlatformDataFetcher = ({
 		retryCount: 0,
 		platformTimerID: null,
 	})
+	const pageRequestsRef = useRef(new Map())
 
 	const retrievePlatformData = useCallback(
 		async () => {
@@ -159,5 +160,69 @@ export const usePlatformDataFetcher = ({
 		}
 	}, [retrievePlatformData])
 
-	return { retrievePlatformData }
+	const retrievePageContent = useCallback(
+		async ({
+			key,
+			fetcher,
+			onSuccess,
+			onError,
+			onLoadingChange,
+			retries = 1,
+		} = {}) => {
+			if (!key || typeof fetcher !== 'function') {
+				return {
+					success: false,
+					message: 'key and fetcher are required',
+				}
+			}
+
+			if (pageRequestsRef.current.has(key)) {
+				return pageRequestsRef.current.get(key)
+			}
+
+			onLoadingChange?.(true)
+
+			const executeRequest = async (attempt = 0) => {
+				try {
+					const res = await fetcher()
+
+					if (res?.success) {
+						onSuccess?.(res)
+						return res
+					}
+
+					if (attempt < retries) {
+						return executeRequest(attempt + 1)
+					}
+
+					onError?.(res)
+					return res
+				} catch (error) {
+					if (attempt < retries) {
+						return executeRequest(attempt + 1)
+					}
+
+					const failure = {
+						success: false,
+						error,
+						message:
+							error?.message || 'Unable to retrieve page content right now.',
+					}
+					onError?.(failure)
+					return failure
+				}
+			}
+
+			const requestPromise = executeRequest().finally(() => {
+				pageRequestsRef.current.delete(key)
+				onLoadingChange?.(false)
+			})
+
+			pageRequestsRef.current.set(key, requestPromise)
+			return requestPromise
+		},
+		[],
+	)
+
+	return { retrievePlatformData, retrievePageContent }
 }
