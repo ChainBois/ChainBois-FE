@@ -100,13 +100,14 @@ export default function NotFoundPage() {
 
 					<p className={styles.statusText}>Location Not Found</p>
 					<p className={styles.stageCaption}>
-						Navigation locked onto a route, but the destination dissolved before
-						touchdown.
+						This page either moved, vanished, or was never on the grid to begin
+						with. We can get you back to a live zone without making the detour
+						feel like a dead end.
 					</p>
 				</div>
 
 				<div className={styles.copyColumn}>
-					<div className={styles.copyIntro}>
+					{/* <div className={styles.copyIntro}>
 						<p className={styles.eyebrow}>ChainBoi Navigation</p>
 						<h1 className={styles.title}>
 							You&apos;ve drifted into unmapped space.
@@ -116,9 +117,9 @@ export default function NotFoundPage() {
 							with. We can get you back to a live zone without making the detour
 							feel like a dead end.
 						</p>
-					</div>
+					</div> */}
 
-					<div className={styles.telemetryRow}>
+					{/* <div className={styles.telemetryRow}>
 						{telemetry.map(({ label, value, meta }) => (
 							<div
 								key={label}
@@ -129,10 +130,10 @@ export default function NotFoundPage() {
 								<span className={styles.telemetryMeta}>{meta}</span>
 							</div>
 						))}
-					</div>
+					</div> */}
 
 					<div className={styles.actionButtons}>
-						<ClippedButton
+						{/* <ClippedButton
 							tag='Return to Base'
 							action='/'
 							isLink
@@ -141,7 +142,7 @@ export default function NotFoundPage() {
 							clippedButtonContent={styles.primaryButtonContent}
 							clippedButtonText={styles.primaryButtonText}
 							clippedButtonIcon={styles.primaryButtonIcon}
-						/>
+						/> */}
 
 						<BorderedButton
 							tag='Go Back'
