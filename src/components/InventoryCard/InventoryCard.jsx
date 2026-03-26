@@ -41,7 +41,7 @@ export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
 		!showFallbackImage && weapon?.imageUrl ? weapon.imageUrl : showcase
 
 	return (
-		<section className={cf(s.flex, s.flexCenter, i.inventoryCard)}>
+		<article className={cf(s.flex, s.flexCenter, i.inventoryCard)}>
 			<div className={cf(s.wMax, s.flex, s.flexCenter, i.cardWrapper)}>
 				<figure className={cf(s.wMax, s.flex, s.flexCenter, i.showcase)}>
 					<Image
@@ -60,11 +60,11 @@ export default function InventoryCard({ pseudoIndex = 0, weapon = {} }) {
 							{description}
 						</p>
 					</header>
-					<footer className={cf(s.wMax, s.flex, s.flexCenter, i.footer)}>
+					{/* <footer className={cf(s.wMax, s.flex, s.flexCenter, i.footer)}>
 						<BuyButton buyButton={i.buyButton} sell />
-					</footer>
+					</footer> */}
 				</div>
 			</div>
-		</section>
+		</article>
 	)
 }

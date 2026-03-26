@@ -96,7 +96,7 @@ export default function Page() {
 				}
 			/>
 			<Container
-				tag={'Primary Marketplace'}
+				tag={'Listings'}
 				cusClass={cf(p.container)}
 			>
 				{isLoadingListings ? (
@@ -104,9 +104,9 @@ export default function Page() {
 						maxWidth={{ max: '1370px', tablet: '710px', mobile: '330px' }}
 					>
 						<SectionLoading
-							message='Loading ChainBoi listings from the Primary Market...'
+							message='Loading ChainBoi listings from the Marketplace...'
 							subMessage='Checking available drops, pricing, and wallet-ready inventory.'
-							label='Primary Market Feed Active'
+							label='Marketplace Feed Active'
 							minHeight='360px'
 						/>
 					</MaxWidth>
@@ -182,7 +182,7 @@ export default function Page() {
 					</MaxWidth>
 				)}
 			</Container>
-			<Container
+			{/* <Container
 				tag={'Secondary Marketplace'}
 				cusClass={cf(p.container)}
 			>
@@ -193,7 +193,7 @@ export default function Page() {
 						message='Community listings are not live yet. Purchasable ChainBois are shown only in the Primary Market section.'
 					/>
 				</MaxWidth>
-			</Container>
+			</Container> */}
 		</div>
 	)
 }

@@ -3,13 +3,11 @@
 	background: var(--chain-red);
 	clip-path: polygon(
 		0 0,
-		calc(100% - 3px) 0,
-		100% 3px,
-		100% 40px,
-		100% 100%,
-		40px 100%,
-		0 calc(100% - 25px),
-		0 0
+		calc(100%) 0,
+		calc(100%) 100%,
+		calc(100%) calc(100% - 28px),
+		calc(100% - 48px) calc(100%),
+		0 100%
 	);
 }
 
@@ -17,11 +15,10 @@
 	clip-path: polygon(
 		0 0,
 		calc(100% - 3px) 0,
-		calc(100% - 3px) 100%,
-		calc(100% - 3px) calc(100% - 3px),
-		45px calc(100% - 3px),
-		10px calc(100% - 25px),
-		0 calc(100% - 25px)
+		calc(100% - 4px) 100%,
+		calc(100% - 4px) calc(100% - 30px),
+		calc(100% - 50px) calc(100% - 3px),
+		0 100%
 	);
 }
 
@@ -90,25 +87,22 @@
 		width: 222px;
 		clip-path: polygon(
 			0 0,
-			calc(100% - 2.5px) 0,
-			100% 2.5px,
-			100% 40px,
-			100% 100%,
-			30px 100%,
-			0 calc(100% - 20px),
-			0 0
+			calc(100%) 0,
+			calc(100%) 100%,
+			calc(100%) calc(100% - 23px),
+			calc(100% - 38px) calc(100%),
+			0 100%
 		);
 	}
 
 	.cardWrapper {
 		clip-path: polygon(
 			0 0,
-			calc(100% - 2.5px) 0,
-			calc(100% - 2.5px) 100%,
-			calc(100% - 2.5px) calc(100% - 2.5px),
-			34px calc(100% - 2.5px),
-			8px calc(100% - 20px),
-			0 calc(100% - 20px)
+			calc(100% - 3px) 0,
+			calc(100% - 4px) 100%,
+			calc(100% - 4px) calc(100% - 25px),
+			calc(100% - 40px) calc(100% - 3px),
+			0 100%
 		);
 	}
 
@@ -144,25 +138,22 @@
 		width: 155px;
 		clip-path: polygon(
 			0 0,
-			calc(100% - 3px) 0,
-			100% 3px,
-			100% 40px,
-			100% 100%,
-			20px 100%,
-			0 calc(100% - 10px),
-			0 0
+			calc(100%) 0,
+			calc(100%) 100%,
+			calc(100%) calc(100% - 18px),
+			calc(100% - 28px) calc(100%),
+			0 100%
 		);
 	}
 
 	.cardWrapper {
 		clip-path: polygon(
 			0 0,
-			calc(100% - 2px) 0,
-			calc(100% - 2px) 100%,
-			calc(100% - 2px) calc(100% - 2px),
-			22px calc(100% - 2px),
-			6px calc(100% - 10px),
-			0 calc(100% - 10px)
+			calc(100% - 3px) 0,
+			calc(100% - 4px) 100%,
+			calc(100% - 4px) calc(100% - 20px),
+			calc(100% - 30px) calc(100% - 3px),
+			0 100%
 		);
 	}
 
